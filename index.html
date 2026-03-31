@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鲁三江的记忆</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0f0f0f; --sidebar: #161618; --card: #1c1c1e;
+  --text: #e5e5e7; --muted: #8e8e93; --accent: #0a84ff;
+  --accent2: #5e5ce6; --border: #2c2c2e; --hover: #2c2c2e;
+  --green: #30d158; --orange: #ff9f0a; --red: #ff453a;
+}
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif; display: flex; height: 100vh; overflow: hidden; }
+
+/* Sidebar */
+.sidebar { width: 280px; min-width: 280px; background: var(--sidebar); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+.sidebar-header { padding: 24px 20px 16px; border-bottom: 1px solid var(--border); }
+.sidebar-header h1 { font: 600 20px/1.2 sans-serif; color: var(--text); }
+.sidebar-header p { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.sidebar-search { padding: 12px 16px; }
+.sidebar-search input {
+  width: 100%; padding: 8px 12px; border: 1px solid var(--border);
+  border-radius: 8px; background: var(--card); color: var(--text);
+  font-size: 13px; outline: none;
+}
+.sidebar-search input:focus { border-color: var(--accent); }
+.nav-section { padding: 8px 16px 4px; font: 600 11px/1 sans-serif; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.nav-list { flex: 1; overflow-y: auto; padding: 4px 8px; }
+.nav-item {
+  display: block; padding: 8px 12px; border-radius: 8px; color: var(--muted);
+  font-size: 13px; cursor: pointer; text-decoration: none; transition: all 120ms;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.nav-item:hover { background: var(--hover); color: var(--text); }
+.nav-item.active { background: var(--accent); color: white; }
+.nav-item .date { font: 11px monospace; margin-right: 8px; opacity: 0.6; }
+
+/* Main */
+.main { flex: 1; overflow-y: auto; padding: 32px 48px; }
+.main-header { margin-bottom: 28px; }
+.main-header h2 { font: 700 28px/1.2 Georgia, serif; }
+.main-header .tag { display: inline-block; padding: 3px 10px; border-radius: 6px; font: 500 11px/1.4 sans-serif; margin-left: 12px; vertical-align: middle; }
+.tag-memory { background: rgba(10,132,255,0.15); color: var(--accent); }
+.tag-archive { background: rgba(94,92,230,0.15); color: var(--accent2); }
+
+/* Markdown rendered content */
+.content { max-width: 760px; }
+.content h1 { font: 700 24px/1.3 sans-serif; margin: 28px 0 12px; color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+.content h2 { font: 600 20px/1.3 sans-serif; margin: 24px 0 10px; color: var(--text); }
+.content h3 { font: 600 16px/1.3 sans-serif; margin: 18px 0 8px; color: var(--accent); }
+.content p { line-height: 1.75; margin: 8px 0; font-size: 15px; }
+.content ul, .content ol { padding-left: 24px; margin: 8px 0; }
+.content li { line-height: 1.75; margin: 4px 0; font-size: 15px; }
+.content code { background: var(--card); padding: 2px 6px; border-radius: 4px; font: 13px/1 "SF Mono", monospace; color: var(--orange); }
+.content pre { background: var(--card); padding: 16px; border-radius: 10px; overflow-x: auto; margin: 12px 0; border: 1px solid var(--border); }
+.content pre code { background: none; padding: 0; color: var(--text); font-size: 13px; line-height: 1.6; }
+.content strong { color: white; }
+.content a { color: var(--accent); text-decoration: none; }
+.content a:hover { text-decoration: underline; }
+.content table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+.content th, .content td { padding: 8px 12px; border: 1px solid var(--border); font-size: 14px; text-align: left; }
+.content th { background: var(--card); font-weight: 600; }
+.content hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+.content blockquote { border-left: 3px solid var(--accent); padding: 8px 16px; margin: 12px 0; background: rgba(10,132,255,0.05); color: var(--muted); }
+
+/* Stats bar */
+.stats { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+.stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; min-width: 120px; }
+.stat-val { font: 700 22px/1 sans-serif; color: var(--accent); }
+.stat-label { font: 12px/1.4 sans-serif; color: var(--muted); margin-top: 4px; }
+
+/* Mobile */
+@media (max-width: 768px) {
+  body { flex-direction: column; }
+  .sidebar { width: 100%; min-width: unset; max-height: 40vh; border-right: none; border-bottom: 1px solid var(--border); }
+  .main { padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <h1>鲁三江的记忆</h1>
+    <p>AI助理：豆豆 | 极空间NAS</p>
+  </div>
+  <div class="sidebar-search">
+    <input type="text" placeholder="搜索记忆..." id="searchBox" oninput="filterNav()">
+  </div>
+  <div class="nav-section">长期记忆</div>
+  <div class="nav-list" id="navMain"></div>
+  <div class="nav-section">每日归档</div>
+  <div class="nav-list" id="navArchive"></div>
+</aside>
+
+<main class="main" id="mainContent">
+  <div class="main-header">
+    <h2>鲁三江的记忆</h2>
+  </div>
+  <div class="stats">
+    <div class="stat-card"><div class="stat-val">33</div><div class="stat-label">已安装技能</div></div>
+    <div class="stat-card"><div class="stat-val">3</div><div class="stat-label">运行天数</div></div>
+    <div class="stat-card"><div class="stat-val">017612</div><div class="stat-label">跟踪基金</div></div>
+    <div class="stat-card"><div class="stat-val">88.9%</div><div class="stat-label">买入模型准确率</div></div>
+  </div>
+  <div class="content" id="contentArea"></div>
+</main>
+
+<script>
+// ===== 记忆数据 =====
+var memoryData = {
+  "长期记忆 (MEMORY.md)": MEM`## 文件架构
+\`\`\`
+/data/workspace/
+├── HEARTBEAT.md        # 心跳任务清单
+├── AGENTS.md           # 操作规则
+├── SOUL.md             # 核心准则
+├── TOOLS.md            # 工具说明
+├── IDENTITY.md         # 身份信息
+├── USER.md             # 用户画像
+├── MEMORY.md           # 长期记忆
+├── heartbeat/          # 心跳数据
+│   ├── HEARTBEAT.md    # 心跳详细配置
+│   └── PROGRESS.md     # 任务进度跟踪
+├── output/             # 输出文件
+│   └── temp/           # 临时文件归档
+├── scripts/            # 脚本文件
+├── docs/               # 文档资料
+│   └── fund/           # 基金相关数据
+├── memory/             # 记忆归档
+├── skills/             # 技能目录 (33个)
+└── env/                # Python虚拟环境
+\`\`\`
+
+## 用户信息
+- **姓名**: 鲁三江 | **年龄**: 35岁 | **设备**: 极空间 Z4 Pro (ARM64)
+- **AI**: 火山方舟 Doubao-Seed-2.0-Pro
+- **技术背景**: Python爬虫 (业余)、VBA、Excel脚本
+- **偏好**: 简洁直接，不接受未验证信息，回答需有据可查
+
+## 时段规则
+- **后半夜 (0:00-8:00)**: 静默执行，不打扰用户，早上8点统一汇报
+- **白天 (8:00-24:00)**: 正常交互，重要决策可询问用户
+
+## 关键决策记录
+- **[2026-03-29]** 完成 OpenClaw 极空间部署
+- **[2026-03-29]** 助理名称: 豆豆
+- **[2026-03-29]** 完成飞书单向发送配置
+- **[2026-03-30]** 建立文件架构管理体系
+- **[2026-03-30]** 修正emoji乱码问题，建立文件生成规则
+- **[2026-03-31]** 系统健康体检57分，完成文件整理整改
+- **[2026-03-31]** 新增每日晨检心跳任务
+
+## 已安装技能 (33个)
+
+| # | 名称 | 类别 | 星标 |
+|---|------|------|------|
+| 1 | 智能办公系统 (724-Office) | 办公自动化 | 1080 |
+| 2 | 图片提示词推荐 | 图片处理 | 1325 |
+| 3 | Office办公套件 (OfficeCLI) | 文字/表格 | 453 |
+| 4 | Jina信息收集 | 信息收集 | 278 |
+| 5 | CLI-Anything | 软件转CLI | - |
+| 6 | SEO文章生成 | 文字处理 | 0 |
+| 7 | 内容总结工具 | 信息收集 | 1 |
+| 8 | 银行对账工具 | 财务处理 | 0 |
+| 9 | Excel VBA自动化 | 表格处理 | 6 ⚠ |
+| 10 | 爬虫处理工具 | 爬虫知识 | 1 |
+| 11 | ImageMagick图片处理 | 图片处理 | - |
+| 12 | Crawlee爬虫工具 | 爬虫知识 | 8694 |
+| 13 | Playwright浏览器自动化 | 浏览器 | 54 |
+| 14 | 实时数据抓取工具 | 信息收集 | 7 |
+| 15 | NotebookLM工具 | 信息收集 | 8150 |
+| 16 | AI文本人性化 | 文字处理 | 30 |
+| 17 | 可视化图表工具 | 数据可视化 | 3895 |
+| 18 | OpenClaw技能合集 | 系统自动化 | 1907 |
+| 19 | Excel办公自动化 | 表格/文档 | 4 |
+| 20 | Office办公技能 | 办公自动化 | 445 |
+| 21 | PDF表格提取 (pdfplumber) | PDF处理 | 10008 |
+| 22 | 安全审计工具 (clawsec) | 安全审计 | 860 |
+| 23 | Polymarket预测市场 | 金融分析 | 14 |
+| 24 | md-wechat | 文字处理 | 7 |
+| 25 | 面试模拟工具 | 文字处理 | 3 |
+| 26 | 周报生成器 | 文字处理 | 3 |
+| 27 | 工作流引擎 (undertow) | 自动化 | 0 |
+| 28 | SmartRecon费用对账 | 财务处理 | 0 |
+| 29 | Supabase数据库工具 | 数据库 | 1 |
+| 30 | OCR文字识别 | 图片处理 | 4 |
+| 31 | agent-skills-hub | 注册表 | 1 |
+| 32 | OpenClaw技能大全 | 系统自动化 | - |
+| 33 | Pretext文本排版 | 前端排版 | 6591 |
+
+## 基金跟踪
+- **017612 宏利复兴混合C** - 混合型-灵活配置，高波动
+- 学习笔记: /data/workspace/docs/基金学习笔记.md
+
+## 工具偏好
+- **GIF生成**: gifski 1.34.0 (首选)
+- **图片去背景**: ImageMagick
+- **正泰查询**: ZTMJ_safe.py (账号被封中)`,
+
+  "2026-03-30 每日记忆": MEM`# 2026-03-30 每日记忆
+
+## 上午工作
+
+### 技能安装 (夜间自动)
+- 02:18 ImageMagick图片处理
+- 02:47 Crawlee爬虫工具 (8694★)
+- 03:17 PDF表格提取工具 (10008★)
+- 03:47 实时数据抓取工具 (7★)
+- 04:47 NotebookLM工具 (8150★)
+- 05:17 AI文本人性化 (30★)
+- 06:17 可视化图表工具 (3895★)
+- 09:17 Decodo网页抓取工具 (97★) - 后被删除
+
+### 工具配置
+- gifski 1.34.0 安装，设为GIF生成首选工具
+- ddddocr 验证码OCR库已安装
+- 自动安装脚本加入黑名单过滤
+
+### 图片处理
+- ImageMagick去背景测试 (4张图片)
+- 亮度阈值法效果最好 (保留衣服，去除暗色背景)
+
+### 正泰价格查询
+- 用户发来ZTMJ.py脚本 (爬虫，自动登录查价格)
+- 登录成功但查询接口返回"验证已过期"
+- 判断: 账号被平台限制了
+- 改进版ZTMJ_safe.py已保存 (随机延时、随机UA)
+
+## 下午工作 - 基金交易模型
+
+### 用户持仓
+- **基金**: 017612 宏利复兴混合C
+- **持有金额**: 7,271.86元
+- **收益**: +3.88% (+271.86元)
+- **可用资金**: 约5,000元
+- **交易风格**: 短线为主
+
+### 回测模型成果
+- 测试了100天+140天历史数据
+- 累计测试28,500+种参数组合
+- 8轮优化+滚动窗口验证
+
+#### 最优买入模型
+- **88.9%准确率** (100天数据)
+- 条件: 跌>3.5%+连跌3天+5日累跌>6%+MA5偏离<-3.5%+波动>2%
+- 交叉验证: 80-87%稳定
+
+#### 最优卖出模型
+- **94.2%准确率** (100天数据)
+- 条件: 涨>2.5%+连涨2天+3日累涨>5%
+- 交叉验证: 84-91%稳定
+
+### 策略建议
+- 买入: 单次3000-4000元 (不全仓)
+- 卖出: 持仓的50-70% (留部分仓位)
+- 间隔: 买卖间隔至少1-2天`
+};
+
+// Tag template function
+function MEM(strings) { return strings[0]; }
+
+// Navigation
+function buildNav() {
+  var navMain = document.getElementById('navMain');
+  var navArchive = document.getElementById('navArchive');
+  var keys = Object.keys(memoryData);
+  
+  keys.forEach(function(key, i) {
+    var div = document.createElement('div');
+    div.className = 'nav-item' + (i === 0 ? ' active' : '');
+    div.textContent = key;
+    div.dataset.key = key;
+    div.onclick = function() { showContent(key); };
+    
+    if (key.indexOf('2026-') === 0 || key.indexOf('20') === 0) {
+      var dateMatch = key.match(/(\d{4}-\d{2}-\d{2})/);
+      if (dateMatch) {
+        div.innerHTML = '<span class="date">' + dateMatch[1] + '</span>' + key.replace(dateMatch[0] + ' ', '');
+      }
+      navArchive.appendChild(div);
+    } else {
+      navMain.appendChild(div);
+    }
+  });
+}
+
+function showContent(key) {
+  // Update active nav
+  document.querySelectorAll('.nav-item').forEach(function(el) {
+    el.classList.toggle('active', el.dataset.key === key);
+  });
+  
+  // Render markdown
+  var md = memoryData[key];
+  var html = renderMarkdown(md);
+  
+  var isArchive = key.indexOf('2026-') === 0;
+  var tagClass = isArchive ? 'tag-archive' : 'tag-memory';
+  var tagText = isArchive ? '归档' : '长期记忆';
+  
+  document.getElementById('contentArea').innerHTML = html;
+  document.querySelector('.main-header h2').innerHTML = key + ' <span class="tag ' + tagClass + '">' + tagText + '</span>';
+}
+
+function renderMarkdown(md) {
+  var lines = md.split('\n');
+  var html = '';
+  var inList = false;
+  var inCode = false;
+  var inTable = false;
+  var tableStarted = false;
+  
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+    
+    // Code blocks
+    if (line.trim().startsWith('```')) {
+      if (inCode) { html += '</code></pre>'; inCode = false; }
+      else { html += '<pre><code>'; inCode = true; }
+      continue;
+    }
+    if (inCode) { html += escapeHtml(line) + '\n'; continue; }
+    
+    // Headers
+    if (line.startsWith('# ')) { closeList(); html += '<h1>' + inlineFormat(line.slice(2)) + '</h1>'; continue; }
+    if (line.startsWith('## ')) { closeList(); html += '<h2>' + inlineFormat(line.slice(3)) + '</h2>'; continue; }
+    if (line.startsWith('### ')) { closeList(); html += '<h3>' + inlineFormat(line.slice(4)) + '</h3>'; continue; }
+    if (line.startsWith('#### ')) { closeList(); html += '<h4>' + inlineFormat(line.slice(5)) + '</h4>'; continue; }
+    
+    // Table
+    if (line.includes('|') && line.trim().startsWith('|')) {
+      if (!inTable) {
+        inTable = true;
+        tableStarted = false;
+        html += '<table>';
+      }
+      if (line.match(/^\|[\s\-:|]+\|$/)) { tableStarted = true; continue; }
+      var cells = line.split('|').filter(function(c) { return c.trim() !== ''; });
+      if (!tableStarted) {
+        html += '<thead><tr>';
+        cells.forEach(function(c) { html += '<th>' + inlineFormat(c.trim()) + '</th>'; });
+        html += '</tr></thead><tbody>';
+      } else {
+        html += '<tr>';
+        cells.forEach(function(c) { html += '<td>' + inlineFormat(c.trim()) + '</td>'; });
+        html += '</tr>';
+      }
+      continue;
+    } else if (inTable) {
+      html += '</tbody></table>';
+      inTable = false;
+    }
+    
+    // HR
+    if (line.trim() === '---') { closeList(); html += '<hr>'; continue; }
+    
+    // List items
+    if (line.match(/^\s*[-*]\s/)) {
+      if (!inList) { html += '<ul>'; inList = true; }
+      html += '<li>' + inlineFormat(line.replace(/^\s*[-*]\s/, '')) + '</li>';
+      continue;
+    }
+    if (line.match(/^\s*\d+\.\s/)) {
+      if (!inList) { html += '<ol>'; inList = true; }
+      html += '<li>' + inlineFormat(line.replace(/^\s*\d+\.\s/, '')) + '</li>';
+      continue;
+    }
+    
+    // Empty line
+    if (line.trim() === '') { closeList(); continue; }
+    
+    // Paragraph
+    closeList();
+    html += '<p>' + inlineFormat(line) + '</p>';
+  }
+  
+  closeList();
+  if (inTable) html += '</tbody></table>';
+  
+  return html;
+  
+  function closeList() {
+    if (inList) { html += '</ul>'; inList = false; }
+  }
+}
+
+function inlineFormat(text) {
+  text = escapeHtml(text);
+  text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  text = text.replace(/`(.+?)`/g, '<code>$1</code>');
+  text = text.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank">$1</a>');
+  return text;
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function filterNav() {
+  var q = document.getElementById('searchBox').value.toLowerCase();
+  document.querySelectorAll('.nav-item').forEach(function(el) {
+    el.style.display = el.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+// Init
+buildNav();
+showContent(Object.keys(memoryData)[0]);
+</script>
+</body>
+</html>
