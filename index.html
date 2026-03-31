@@ -3,286 +3,351 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>长沙天气</title>
+<title>豆豆状态看板</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#09090b;--surface:#111113;--surface2:#18181b;
-  --border:#27272a;--text:#fafafa;--text2:#d4d4d8;--muted:#71717a;
-  --cyan:#06b6d4;--cyan2:#22d3ee;
-  --blue:#3b82f6;--blue2:#60a5fa;
-  --purple:#a855f7;--green:#22c55e;--orange:#f59e0b;--red:#ef4444;
+  --bg:#09090b;--surface:#111113;--surface2:#18181b;--surface3:#1f1f23;
+  --border:#27272a;--border2:#3f3f46;
+  --text:#fafafa;--text2:#d4d4d8;--muted:#71717a;--dim:#52525b;
+  --cyan:#06b6d4;--cyan2:#22d3ee;--cyan-dim:rgba(6,182,212,0.08);
+  --purple:#a855f7;--purple2:#c084fc;
+  --green:#22c55e;--green-dim:rgba(34,197,94,0.08);
+  --orange:#f59e0b;--orange-dim:rgba(245,158,11,0.08);
+  --red:#ef4444;--red-dim:rgba(239,68,68,0.08);
+  --blue:#3b82f6;--blue-dim:rgba(59,130,246,0.08);
 }
-body{background:var(--bg);color:var(--text);font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;
-  min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 20px;
-  background-image:radial-gradient(ellipse at 30% 0%,rgba(59,130,246,0.08) 0%,transparent 50%),
-                   radial-gradient(ellipse at 70% 100%,rgba(6,182,212,0.06) 0%,transparent 50%)}
-.container{max-width:900px;width:100%}
+body{background:var(--bg);color:var(--text);font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;min-height:100vh;padding:32px}
+body::before{content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse at 10% 20%,rgba(34,197,94,0.04) 0%,transparent 50%),
+             radial-gradient(ellipse at 90% 80%,rgba(6,182,212,0.04) 0%,transparent 50%);
+  pointer-events:none}
+
+.container{max-width:1100px;margin:0 auto}
 
 /* Header */
-.header{text-align:center;margin-bottom:40px}
-.city{font:700 42px/1.1 'Inter',sans-serif;letter-spacing:-0.03em;
-  background:linear-gradient(135deg,var(--blue2),var(--cyan2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.update-time{font:12px/1 monospace;color:var(--muted);margin-top:8px}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:16px}
+.header-left{display:flex;align-items:center;gap:16px}
+.avatar{width:48px;height:48px;border-radius:14px;
+  background:linear-gradient(135deg,var(--green),var(--cyan));
+  display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:white;
+  box-shadow:0 0 24px rgba(34,197,94,0.3);position:relative}
+.avatar::after{content:'';position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;
+  border-radius:50%;background:var(--green);border:3px solid var(--bg);
+  box-shadow:0 0 8px var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+.header-info h1{font:700 24px/1.2 'Inter',sans-serif;letter-spacing:-0.02em}
+.header-info p{font:13px/1.4 'Inter',sans-serif;color:var(--muted);margin-top:2px}
+.header-time{font:500 14px/1 monospace;color:var(--cyan2);text-align:right}
+.header-time .date{font-size:12px;color:var(--muted);margin-top:4px}
 
-/* Current Weather */
-.current{background:var(--surface);border:1px solid var(--border);border-radius:20px;
-  padding:36px 40px;display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:24px;position:relative;overflow:hidden}
-.current::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:linear-gradient(90deg,var(--blue),var(--cyan))}
-.current-temp{font:700 72px/1 'JetBrains Mono',monospace;color:var(--text)}
-.current-temp .unit{font:300 32px/1 'Inter',sans-serif;color:var(--muted);margin-left:4px}
-.current-desc{font:18px/1.4 'Inter',sans-serif;color:var(--text2);margin-top:8px}
-.current-icon{font-size:72px;filter:drop-shadow(0 0 20px rgba(59,130,246,0.3));animation:float 3s ease-in-out infinite}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+/* Stats Row */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:28px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;
+  position:relative;overflow:hidden;transition:all 200ms}
+.stat:hover{border-color:var(--border2);transform:translateY(-1px)}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.stat:nth-child(1)::before{background:var(--green)}
+.stat:nth-child(2)::before{background:var(--cyan)}
+.stat:nth-child(3)::before{background:var(--purple)}
+.stat:nth-child(4)::before{background:var(--orange)}
+.stat:nth-child(5)::before{background:var(--blue)}
+.stat-val{font:700 28px/1 monospace}
+.stat:nth-child(1) .stat-val{color:var(--green)}
+.stat:nth-child(2) .stat-val{color:var(--cyan2)}
+.stat:nth-child(3) .stat-val{color:var(--purple2)}
+.stat:nth-child(4) .stat-val{color:var(--orange)}
+.stat:nth-child(5) .stat-val{color:var(--blue)}
+.stat-label{font:11px/1.4 'Inter',sans-serif;color:var(--muted);margin-top:6px}
 
-/* Details */
-.details{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
-.detail-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 16px;
-  text-align:center;transition:all 200ms}
-.detail-card:hover{border-color:var(--border2);transform:translateY(-2px)}
-.detail-icon{font-size:24px;margin-bottom:8px}
-.detail-val{font:600 20px/1 'JetBrains Mono',monospace;color:var(--cyan2)}
-.detail-label{font:11px/1.4 'Inter',sans-serif;color:var(--muted);margin-top:6px}
+/* Section Title */
+.section-title{font:600 14px/1 'Inter',sans-serif;color:var(--muted);text-transform:uppercase;
+  letter-spacing:0.1em;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.section-title .live{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;
+  background:var(--green-dim);color:var(--green);font-size:11px}
+.section-title .live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);
+  animation:pulse 1.5s infinite}
 
-/* Forecast */
-.forecast-title{font:600 16px/1 'Inter',sans-serif;color:var(--muted);
-  text-transform:uppercase;letter-spacing:0.1em;margin-bottom:16px;
-  display:flex;align-items:center;gap:10px}
-.forecast-title::after{content:'';flex:1;height:1px;background:var(--border)}
+/* Task Columns */
+.columns{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.column{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px}
+.col-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.col-title{font:600 14px/1 'Inter',sans-serif;display:flex;align-items:center;gap:8px}
+.col-count{font:11px/1 monospace;padding:2px 8px;border-radius:8px;background:var(--surface3);color:var(--muted)}
 
-.forecast{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
-.forecast-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;
-  padding:24px 20px;text-align:center;transition:all 200ms;position:relative;overflow:hidden}
-.forecast-card:hover{border-color:rgba(6,182,212,0.3);transform:translateY(-2px)}
-.forecast-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
-.forecast-card:nth-child(1)::before{background:linear-gradient(90deg,var(--blue),transparent)}
-.forecast-card:nth-child(2)::before{background:linear-gradient(90deg,var(--cyan),transparent)}
-.forecast-card:nth-child(3)::before{background:linear-gradient(90deg,var(--purple),transparent)}
-.forecast-date{font:600 14px/1 'Inter',sans-serif;color:var(--text2);margin-bottom:4px}
-.forecast-week{font:11px/1 monospace;color:var(--muted);margin-bottom:16px}
-.forecast-icon{font-size:40px;margin-bottom:12px}
-.forecast-temp{font:600 22px/1 'JetBrains Mono',monospace}
-.forecast-temp .low{color:var(--blue2)}
-.forecast-temp .high{color:var(--orange)}
-.forecast-desc{font:13px/1.4 'Inter',sans-serif;color:var(--muted);margin-top:8px}
+.task{padding:12px 14px;border-radius:10px;margin-bottom:8px;border:1px solid var(--border);
+  transition:all 150ms;position:relative}
+.task:hover{border-color:var(--border2);background:var(--surface2)}
+.task:last-child{margin-bottom:0}
+.task-title{font:500 13px/1.4 'Inter',sans-serif;color:var(--text2);margin-bottom:4px}
+.task-meta{font:11px/1 monospace;color:var(--dim);display:flex;align-items:center;gap:8px}
+.task-tag{display:inline-block;padding:2px 6px;border-radius:4px;font:500 10px/1 monospace}
+.tag-green{background:var(--green-dim);color:var(--green)}
+.tag-cyan{background:var(--cyan-dim);color:var(--cyan)}
+.tag-orange{background:var(--orange-dim);color:var(--orange)}
+.tag-purple{background:rgba(168,85,247,0.08);color:var(--purple2)}
+.tag-red{background:var(--red-dim);color:var(--red)}
+.tag-blue{background:var(--blue-dim);color:var(--blue)}
 
-/* Hourly */
-.hourly-wrap{background:var(--surface);border:1px solid var(--border);border-radius:16px;
-  padding:24px;margin-bottom:24px;overflow-x:auto}
-.hourly{display:flex;gap:20px;min-width:max-content}
-.hourly-item{text-align:center;min-width:60px}
-.hourly-time{font:11px/1 monospace;color:var(--muted);margin-bottom:8px}
-.hourly-icon{font-size:24px;margin-bottom:6px}
-.hourly-temp{font:500 14px/1 'JetBrains Mono',monospace;color:var(--text2)}
+.task-bar{position:absolute;bottom:0;left:12px;right:12px;height:2px;border-radius:1px;background:var(--border)}
+.task-bar-fill{height:100%;border-radius:1px}
+.fill-green .task-bar-fill{background:var(--green);width:100%}
+.fill-cyan .task-bar-fill{background:var(--cyan);width:75%}
+.fill-orange .task-bar-fill{background:var(--orange);width:50%}
 
-/* Tips */
-.tips{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 24px;
-  border-left:3px solid var(--cyan)}
-.tips-title{font:600 14px/1 'Inter',sans-serif;color:var(--cyan2);margin-bottom:8px}
-.tips-text{font:14px/1.7 'Inter',sans-serif;color:var(--muted)}
+/* Timeline */
+.timeline{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 24px;
+  margin-bottom:32px;max-height:400px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.tl-item{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border);position:relative}
+.tl-item:last-child{border-bottom:none}
+.tl-time{font:11px/1 monospace;color:var(--dim);min-width:48px;padding-top:2px}
+.tl-dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.tl-dot.success{background:var(--green);box-shadow:0 0 6px rgba(34,197,94,0.4)}
+.tl-dot.fail{background:var(--red);box-shadow:0 0 6px rgba(239,68,68,0.4)}
+.tl-dot.info{background:var(--cyan);box-shadow:0 0 6px rgba(6,182,212,0.4)}
+.tl-dot.warn{background:var(--orange);box-shadow:0 0 6px rgba(245,158,11,0.4)}
+.tl-content{font:13px/1.5 'Inter',sans-serif;color:var(--text2);flex:1}
+.tl-content strong{color:var(--text);font-weight:500}
+
+/* Heartbeat Schedule */
+.hb-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:32px}
+.hb-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;
+  display:flex;align-items:center;gap:14px;transition:all 200ms}
+.hb-card:hover{border-color:var(--border2)}
+.hb-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0}
+.hb-info h3{font:600 13px/1.2 'Inter',sans-serif;color:var(--text2)}
+.hb-info p{font:11px/1.4 'Inter',sans-serif;color:var(--muted);margin-top:3px}
+.hb-status{margin-left:auto;font:11px/1 monospace;padding:4px 10px;border-radius:8px;white-space:nowrap}
+.hb-active{background:var(--green-dim);color:var(--green)}
+.hb-scheduled{background:var(--cyan-dim);color:var(--cyan)}
+.hb-idle{background:var(--surface3);color:var(--dim)}
 
 /* Footer */
-.footer{text-align:center;margin-top:32px;font:11px/1 monospace;color:var(--dim)}
+.footer{text-align:center;font:11px/1 monospace;color:var(--dim);margin-top:20px}
 .footer a{color:var(--cyan);text-decoration:none}
 
-/* Responsive */
-@media(max-width:640px){
-  .current{flex-direction:column;text-align:center;gap:20px;padding:28px}
-  .details{grid-template-columns:repeat(2,1fr)}
-  .forecast{grid-template-columns:1fr}
-  .city{font-size:32px}
-  .current-temp{font-size:56px}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+@media(max-width:768px){
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .columns{grid-template-columns:1fr}
+  .hb-grid{grid-template-columns:1fr}
+  body{padding:16px}
 }
 </style>
 </head>
 <body>
 <div class="container">
+  <!-- Header -->
   <div class="header">
-    <div class="city">长沙天气</div>
-    <div class="update-time" id="updateTime">数据加载中...</div>
-  </div>
-
-  <div class="current">
-    <div>
-      <div class="current-temp" id="currentTemp">--<span class="unit">°C</span></div>
-      <div class="current-desc" id="currentDesc">--</div>
+    <div class="header-left">
+      <div class="avatar">豆</div>
+      <div class="header-info">
+        <h1>豆豆状态看板</h1>
+        <p>AI助理 · 极空间 Z4 Pro · OpenClaw</p>
+      </div>
     </div>
-    <div class="current-icon" id="currentIcon">🌤️</div>
-  </div>
-
-  <div class="details">
-    <div class="detail-card">
-      <div class="detail-icon">💧</div>
-      <div class="detail-val" id="humidity">--%</div>
-      <div class="detail-label">湿度</div>
-    </div>
-    <div class="detail-card">
-      <div class="detail-icon">💨</div>
-      <div class="detail-val" id="wind">-- km/h</div>
-      <div class="detail-label">风速</div>
-    </div>
-    <div class="detail-card">
-      <div class="detail-icon">🌡️</div>
-      <div class="detail-val" id="feelsLike">--°C</div>
-      <div class="detail-label">体感温度</div>
-    </div>
-    <div class="detail-card">
-      <div class="detail-icon">👁️</div>
-      <div class="detail-val" id="visibility">-- km</div>
-      <div class="detail-label">能见度</div>
+    <div class="header-time">
+      <div id="clock">--:--:--</div>
+      <div class="date" id="dateStr">----/--/--</div>
     </div>
   </div>
 
-  <div class="forecast-title">未来三天预报</div>
-  <div class="forecast" id="forecastContainer"></div>
-
-  <div class="forecast-title">今日逐时</div>
-  <div class="hourly-wrap">
-    <div class="hourly" id="hourlyContainer"></div>
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat"><div class="stat-val">36</div><div class="stat-label">已安装技能</div></div>
+    <div class="stat"><div class="stat-val">3天</div><div class="stat-label">运行时间</div></div>
+    <div class="stat"><div class="stat-val">99%</div><div class="stat-label">心跳正常率</div></div>
+    <div class="stat"><div class="stat-val">57</div><div class="stat-label">健康评分</div></div>
+    <div class="stat"><div class="stat-val">4000</div><div class="stat-label">今日基金操作</div></div>
   </div>
 
-  <div class="tips" id="tipsBox">
-    <div class="tips-title">出行建议</div>
-    <div class="tips-text" id="tipsText">加载中...</div>
+  <!-- Kanban -->
+  <div class="section-title">任务看板 <span class="live">LIVE</span></div>
+  <div class="columns">
+    <!-- 已完成 -->
+    <div class="column">
+      <div class="col-header">
+        <div class="col-title" style="color:var(--green)">已完成</div>
+        <div class="col-count">6</div>
+      </div>
+      <div class="task fill-green">
+        <div class="task-title">系统健康体检整改</div>
+        <div class="task-meta"><span class="task-tag tag-green">完成</span> 03-31 08:38</div>
+        <div class="task-bar"><div class="task-bar-fill"></div></div>
+      </div>
+      <div class="task fill-green">
+        <div class="task-title">MEMORY.md 瘦身 (19KB→5KB)</div>
+        <div class="task-meta"><span class="task-tag tag-green">完成</span> 03-31 08:38</div>
+        <div class="task-bar"><div class="task-bar-fill"></div></div>
+      </div>
+      <div class="task fill-green">
+        <div class="task-title">基金买入 017612 ¥4,000</div>
+        <div class="task-meta"><span class="task-tag tag-green">完成</span> 03-31 ~11:00</div>
+        <div class="task-bar"><div class="task-bar-fill"></div></div>
+      </div>
+      <div class="task fill-green">
+        <div class="task-title">Pretext排版引擎安装+Demo</div>
+        <div class="task-meta"><span class="task-tag tag-green">完成</span> 03-31 16:36</div>
+        <div class="task-bar"><div class="task-bar-fill"></div></div>
+      </div>
+      <div class="task fill-green">
+        <div class="task-title">GitHub Pages 记忆网页部署</div>
+        <div class="task-meta"><span class="task-tag tag-green">完成</span> 03-31 17:21</div>
+        <div class="task-bar"><div class="task-bar-fill"></div></div>
+      </div>
+      <div class="task fill-green">
+        <div class="task-title">天气预报网页 (长沙)</div>
+        <div class="task-meta"><span class="task-tag tag-green">完成</span> 03-31 17:56</div>
+        <div class="task-bar"><div class="task-bar-fill"></div></div>
+      </div>
+    </div>
+
+    <!-- 进行中 -->
+    <div class="column">
+      <div class="col-header">
+        <div class="col-title" style="color:var(--cyan)">进行中</div>
+        <div class="col-count">3</div>
+      </div>
+      <div class="task fill-cyan">
+        <div class="task-title">自动安装Skill (每30分钟)</div>
+        <div class="task-meta"><span class="task-tag tag-cyan">运行中</span> 后半夜静默</div>
+        <div class="task-bar"><div class="task-bar-fill"></div></div>
+      </div>
+      <div class="task fill-cyan">
+        <div class="task-title">基金盯盘 017612</div>
+        <div class="task-meta"><span class="task-tag tag-cyan">监控中</span> 每日14:00提醒</div>
+        <div class="task-bar"><div class="task-bar-fill"></div></div>
+      </div>
+      <div class="task fill-cyan">
+        <div class="task-title">语雀文档研究</div>
+        <div class="task-meta"><span class="task-tag tag-orange">待推进</span> React事件未触发</div>
+        <div class="task-bar"><div class="task-bar-fill"></div></div>
+      </div>
+    </div>
+
+    <!-- 待处理 -->
+    <div class="column">
+      <div class="col-header">
+        <div class="col-title" style="color:var(--orange)">待处理</div>
+        <div class="col-count">3</div>
+      </div>
+      <div class="task fill-orange">
+        <div class="task-title">飞书双向对话配置</div>
+        <div class="task-meta"><span class="task-tag tag-orange">等待中</span> 需用户提供参数</div>
+        <div class="task-bar"><div class="task-bar-fill"></div></div>
+      </div>
+      <div class="task fill-orange">
+        <div class="task-title">图片OCR识别优化</div>
+        <div class="task-meta"><span class="task-tag tag-orange">待推进</span> 准确率85%→95%</div>
+        <div class="task-bar"><div class="task-bar-fill"></div></div>
+      </div>
+      <div class="task fill-orange">
+        <div class="task-title">正泰价格查询 (账号封禁中)</div>
+        <div class="task-meta"><span class="task-tag tag-red">阻塞</span> 等平台解封</div>
+        <div class="task-bar"><div class="task-bar-fill"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Heartbeat Tasks -->
+  <div class="section-title">心跳任务</div>
+  <div class="hb-grid">
+    <div class="hb-card">
+      <div class="hb-icon" style="background:var(--green-dim)">🌅</div>
+      <div class="hb-info">
+        <h3>每日晨检</h3>
+        <p>08:00 系统健康体检+评分</p>
+      </div>
+      <span class="hb-status hb-scheduled">每日触发</span>
+    </div>
+    <div class="hb-card">
+      <div class="hb-icon" style="background:var(--cyan-dim)">🔧</div>
+      <div class="hb-info">
+        <h3>自动安装Skill</h3>
+        <p>后半夜每30分钟静默执行</p>
+      </div>
+      <span class="hb-status hb-active">运行中</span>
+    </div>
+    <div class="hb-card">
+      <div class="hb-icon" style="background:var(--orange-dim)">📈</div>
+      <div class="hb-info">
+        <h3>基金盯盘</h3>
+        <p>017612 每日14:00提醒</p>
+      </div>
+      <span class="hb-status hb-scheduled">14:00触发</span>
+    </div>
+    <div class="hb-card">
+      <div class="hb-icon" style="background:rgba(168,85,247,0.08)">📚</div>
+      <div class="hb-info">
+        <h3>语雀文档研究</h3>
+        <p>JS逆向实战学习</p>
+      </div>
+      <span class="hb-status hb-idle">暂停</span>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="section-title">今日活动时间线</div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-time">00:23</div><div class="tl-dot success"></div>
+      <div class="tl-content">安装 <strong>Polymarket预测市场工具</strong> (14★)</div></div>
+    <div class="tl-item"><div class="tl-time">00:53</div><div class="tl-dot success"></div>
+      <div class="tl-content">安装 <strong>安全审计工具 clawsec</strong> (860★) — 文件完整性+注入检测</div></div>
+    <div class="tl-item"><div class="tl-time">01:23</div><div class="tl-dot success"></div>
+      <div class="tl-content">安装 <strong>面试模拟工具</strong> (3★)</div></div>
+    <div class="tl-item"><div class="tl-time">01:53</div><div class="tl-dot success"></div>
+      <div class="tl-content">安装 <strong>周报生成器</strong> (3★) — 8种职业模板</div></div>
+    <div class="tl-item"><div class="tl-time">03:23</div><div class="tl-dot fail"></div>
+      <div class="tl-content">安装 <strong>cetus</strong> 失败 — Git克隆HTTP2错误</div></div>
+    <div class="tl-item"><div class="tl-time">04:23</div><div class="tl-dot success"></div>
+      <div class="tl-content">安装 <strong>工作流引擎 undertow</strong> (0★)</div></div>
+    <div class="tl-item"><div class="tl-time">06:53</div><div class="tl-dot success"></div>
+      <div class="tl-content">安装 <strong>维加斯通道交易分析</strong> (5★) — EMA多层通道+斐波那契</div></div>
+    <div class="tl-item"><div class="tl-time">08:31</div><div class="tl-dot info"></div>
+      <div class="tl-content">用户查询 <strong>017612基金走势</strong></div></div>
+    <div class="tl-item"><div class="tl-time">08:38</div><div class="tl-dot success"></div>
+      <div class="tl-content"><strong>系统健康体检</strong> 完成 — 57分，9个问题已整改</div></div>
+    <div class="tl-item"><div class="tl-time">10:57</div><div class="tl-dot info"></div>
+      <div class="tl-content">基金实时行情分析 — 光通信板块回调</div></div>
+    <div class="tl-item"><div class="tl-time">~11:00</div><div class="tl-dot success"></div>
+      <div class="tl-content">用户 <strong>买入 017612 ¥4,000</strong></div></div>
+    <div class="tl-item"><div class="tl-time">14:53</div><div class="tl-dot info"></div>
+      <div class="tl-content">基金收盘分析 — 净值估算 -2.42%</div></div>
+    <div class="tl-item"><div class="tl-time">16:13</div><div class="tl-dot info"></div>
+      <div class="tl-content">安装 <strong>Pretext排版引擎</strong> (6591★) — 前端文本测量库</div></div>
+    <div class="tl-item"><div class="tl-time">16:51</div><div class="tl-dot success"></div>
+      <div class="tl-content">GitHub Pages <strong>记忆网页</strong> 首次部署</div></div>
+    <div class="tl-item"><div class="tl-time">17:21</div><div class="tl-dot success"></div>
+      <div class="tl-content">记忆网页 <strong>科技感美化</strong> + Pretext集成</div></div>
+    <div class="tl-item"><div class="tl-time">17:56</div><div class="tl-dot success"></div>
+      <div class="tl-content">替换为 <strong>长沙天气预报网页</strong></div></div>
   </div>
 
   <div class="footer">
-    数据来源: wttr.in | 由豆豆自动更新 | <a href="https://lusanjiang.github.io/nas-place/">记忆网页</a>
+    豆豆 · AI助理 · 由 OpenClaw 驱动 | <a href="https://lusanjiang.github.io/nas-place/">天气看板</a>
   </div>
 </div>
 
 <script>
-const weatherIcons = {
-  'Clear':'☀️','Sunny':'☀️','Partly cloudy':'⛅','Cloudy':'☁️',
-  'Overcast':'🌥️','Mist':'🌫️','Fog':'🌫️',
-  'Light rain':'🌦️','Moderate rain':'🌧️','Heavy rain':'🌧️',
-  'Patchy rain nearby':'🌦️','Light drizzle':'🌦️',
-  'Light snow':'🌨️','Moderate snow':'🌨️','Heavy snow':'❄️',
-  'Thunderstorm':'⛈️','Thunder':'⛈️'
-};
-
-function getIcon(desc) {
-  for (const [k,v] of Object.entries(weatherIcons)) {
-    if (desc.includes(k) || k.includes(desc)) return v;
-  }
-  return '🌤️';
+function updateClock(){
+  const now=new Date();
+  const h=String(now.getHours()).padStart(2,'0');
+  const m=String(now.getMinutes()).padStart(2,'0');
+  const s=String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('clock').textContent=h+':'+m+':'+s;
+  const y=now.getFullYear();
+  const mo=String(now.getMonth()+1).padStart(2,'0');
+  const d=String(now.getDate()).padStart(2,'0');
+  const days=['周日','周一','周二','周三','周四','周五','周六'];
+  document.getElementById('dateStr').textContent=y+'/'+mo+'/'+d+' '+days[now.getDay()];
 }
-
-function getWeekday(dateStr) {
-  const days = ['周日','周一','周二','周三','周四','周五','周六'];
-  return days[new Date(dateStr).getDay()];
-}
-
-function getTips(temp, desc, humidity) {
-  const tips = [];
-  if (temp < 10) tips.push('气温较低，注意保暖，建议穿厚外套');
-  else if (temp < 20) tips.push('气温适中，建议穿长袖或薄外套');
-  else if (temp > 30) tips.push('天气炎热，注意防暑降温，多喝水');
-
-  if (desc.includes('雨')) tips.push('有降雨，出门记得带伞');
-  if (desc.includes('雪')) tips.push('有降雪，注意路面湿滑');
-  if (humidity > 80) tips.push('湿度较高，注意防潮');
-
-  if (tips.length === 0) tips.push('天气不错，适合外出活动');
-  return tips.join('。');
-}
-
-async function loadWeather() {
-  try {
-    const resp = await fetch('https://wttr.in/长沙?format=j1');
-    const data = await resp.json();
-    const cur = data.current_condition[0];
-    const today = data.weather[0];
-    const now = new Date();
-
-    // Current
-    document.getElementById('currentTemp').innerHTML = cur.temp_C + '<span class="unit">°C</span>';
-    document.getElementById('currentDesc').textContent = cur.weatherDesc[0].value;
-    document.getElementById('currentIcon').textContent = getIcon(cur.weatherDesc[0].value);
-    document.getElementById('humidity').textContent = cur.humidity + '%';
-    document.getElementById('wind').textContent = cur.windspeedKmph + ' km/h';
-    document.getElementById('feelsLike').textContent = cur.FeelsLikeC + '°C';
-    document.getElementById('visibility').textContent = cur.visibility + ' km';
-    document.getElementById('updateTime').textContent =
-      '更新于 ' + now.toLocaleString('zh-CN', {timeZone:'Asia/Shanghai'}) + ' | 实时数据';
-
-    // Forecast
-    const fc = document.getElementById('forecastContainer');
-    fc.innerHTML = '';
-    data.weather.forEach((day, i) => {
-      const desc = day.hourly[4].weatherDesc[0].value;
-      fc.innerHTML += `
-        <div class="forecast-card">
-          <div class="forecast-date">${day.date}</div>
-          <div class="forecast-week">${getWeekday(day.date)}</div>
-          <div class="forecast-icon">${getIcon(desc)}</div>
-          <div class="forecast-temp">
-            <span class="low">${day.mintempC}°</span>
-            <span style="color:var(--dim);margin:0 4px">/</span>
-            <span class="high">${day.maxtempC}°</span>
-          </div>
-          <div class="forecast-desc">${desc}</div>
-        </div>`;
-    });
-
-    // Hourly
-    const hc = document.getElementById('hourlyContainer');
-    hc.innerHTML = '';
-    today.hourly.forEach(h => {
-      const hour = parseInt(h.time) / 100;
-      const label = hour < 10 ? '0' + hour + ':00' : hour + ':00';
-      hc.innerHTML += `
-        <div class="hourly-item">
-          <div class="hourly-time">${label}</div>
-          <div class="hourly-icon">${getIcon(h.weatherDesc[0].value)}</div>
-          <div class="hourly-temp">${h.tempC}°</div>
-        </div>`;
-    });
-
-    // Tips
-    document.getElementById('tipsText').textContent =
-      getTips(parseInt(cur.temp_C), cur.weatherDesc[0].value, parseInt(cur.humidity));
-
-  } catch(e) {
-    console.error('Weather load failed:', e);
-    // Fallback static data
-    document.getElementById('currentTemp').innerHTML = '17<span class="unit">°C</span>';
-    document.getElementById('currentDesc').textContent = '多云';
-    document.getElementById('humidity').textContent = '83%';
-    document.getElementById('wind').textContent = '13 km/h';
-    document.getElementById('feelsLike').textContent = '15°C';
-    document.getElementById('visibility').textContent = '10 km';
-    document.getElementById('updateTime').textContent = '静态数据 (API暂不可用)';
-
-    const fc = document.getElementById('forecastContainer');
-    const staticDays = [
-      {date:'2026-03-31', low:12, high:13, desc:'小雨'},
-      {date:'2026-04-01', low:11, high:21, desc:'多云'},
-      {date:'2026-04-02', low:15, high:19, desc:'阵雨'}
-    ];
-    staticDays.forEach(day => {
-      fc.innerHTML += `
-        <div class="forecast-card">
-          <div class="forecast-date">${day.date}</div>
-          <div class="forecast-week">${getWeekday(day.date)}</div>
-          <div class="forecast-icon">${getIcon(day.desc)}</div>
-          <div class="forecast-temp">
-            <span class="low">${day.low}°</span>
-            <span style="color:var(--dim);margin:0 4px">/</span>
-            <span class="high">${day.high}°</span>
-          </div>
-          <div class="forecast-desc">${day.desc}</div>
-        </div>`;
-    });
-
-    document.getElementById('tipsText').textContent =
-      '今天有小雨，出门带伞。明天多云转晴，气温回升。';
-  }
-}
-
-loadWeather();
+setInterval(updateClock,1000);
+updateClock();
 </script>
 </body>
 </html>
