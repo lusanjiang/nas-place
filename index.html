@@ -3,587 +3,286 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>鲁三江的记忆</title>
+<title>湘潭天气</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#09090b;--surface:#111113;--surface2:#18181b;--surface3:#1f1f23;
-  --border:#27272a;--border2:#3f3f46;
-  --text:#fafafa;--text2:#d4d4d8;--muted:#71717a;--dim:#52525b;
-  --cyan:#06b6d4;--cyan2:#22d3ee;--cyan-dim:rgba(6,182,212,0.08);
-  --purple:#a855f7;--purple2:#c084fc;--purple-dim:rgba(168,85,247,0.08);
-  --green:#22c55e;--orange:#f59e0b;--red:#ef4444;
+  --bg:#09090b;--surface:#111113;--surface2:#18181b;
+  --border:#27272a;--text:#fafafa;--text2:#d4d4d8;--muted:#71717a;
+  --cyan:#06b6d4;--cyan2:#22d3ee;
+  --blue:#3b82f6;--blue2:#60a5fa;
+  --purple:#a855f7;--green:#22c55e;--orange:#f59e0b;--red:#ef4444;
 }
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;display:flex;height:100vh;overflow:hidden}
-body::before{content:'';position:fixed;inset:0;
-  background:radial-gradient(ellipse at 20% 50%,rgba(6,182,212,0.03) 0%,transparent 50%),
-             radial-gradient(ellipse at 80% 20%,rgba(168,85,247,0.03) 0%,transparent 50%);
-  pointer-events:none;z-index:0}
+body{background:var(--bg);color:var(--text);font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 20px;
+  background-image:radial-gradient(ellipse at 30% 0%,rgba(59,130,246,0.08) 0%,transparent 50%),
+                   radial-gradient(ellipse at 70% 100%,rgba(6,182,212,0.06) 0%,transparent 50%)}
+.container{max-width:900px;width:100%}
 
-/* ===== Sidebar ===== */
-.sidebar{width:300px;min-width:300px;background:var(--surface);border-right:1px solid var(--border);
-  display:flex;flex-direction:column;overflow:hidden;position:relative;z-index:1}
-.sidebar::after{content:'';position:absolute;top:0;right:0;width:1px;height:100%;
-  background:linear-gradient(180deg,var(--cyan),transparent 30%,transparent 70%,var(--purple));opacity:0.3}
-.sidebar-header{padding:28px 24px 20px;border-bottom:1px solid var(--border);position:relative}
-.sidebar-header::after{content:'';position:absolute;bottom:0;left:24px;right:24px;height:1px;
-  background:linear-gradient(90deg,var(--cyan),var(--purple));opacity:0.4}
-.logo{display:flex;align-items:center;gap:12px}
-.logo-icon{width:36px;height:36px;border-radius:10px;
-  background:linear-gradient(135deg,var(--cyan),var(--purple));
-  display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:white;
-  box-shadow:0 0 20px rgba(6,182,212,0.3)}
-.logo-text h1{font:600 18px/1.2 'Inter',sans-serif;letter-spacing:-0.02em}
-.logo-text p{font:12px/1.4 monospace;color:var(--muted);margin-top:2px}
-.status-bar{display:flex;gap:6px;margin-top:12px}
-.status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);
-  box-shadow:0 0 6px var(--green);animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-.status-text{font:11px/1 monospace;color:var(--dim)}
-.search-box{padding:16px 20px;position:relative}
-.search-box::before{content:'⌕';position:absolute;left:32px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:14px;pointer-events:none}
-.search-input{width:100%;padding:10px 14px 10px 36px;border:1px solid var(--border);border-radius:10px;
-  background:var(--surface2);color:var(--text);font:13px/1 'Inter',sans-serif;outline:none;transition:all 200ms}
-.search-input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(6,182,212,0.1)}
-.nav-section{padding:12px 24px 6px;font:600 10px/1 monospace;color:var(--dim);
-  text-transform:uppercase;letter-spacing:0.12em;display:flex;align-items:center;gap:8px}
-.nav-section::after{content:'';flex:1;height:1px;background:var(--border)}
-.nav-list{flex:1;overflow-y:auto;padding:4px 12px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
-.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;
-  color:var(--muted);font:13px/1.3 'Inter',sans-serif;cursor:pointer;transition:all 150ms;text-decoration:none}
-.nav-item:hover{background:var(--surface2);color:var(--text2)}
-.nav-item.active{background:var(--cyan-dim);color:var(--cyan2)}
-.nav-item.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);
-  width:3px;height:20px;border-radius:0 3px 3px 0;background:var(--cyan)}
-.nav-date{font:11px/1 monospace;color:var(--dim);min-width:56px}
+/* Header */
+.header{text-align:center;margin-bottom:40px}
+.city{font:700 42px/1.1 'Inter',sans-serif;letter-spacing:-0.03em;
+  background:linear-gradient(135deg,var(--blue2),var(--cyan2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.update-time{font:12px/1 monospace;color:var(--muted);margin-top:8px}
 
-/* ===== Main ===== */
-.main{flex:1;overflow-y:auto;position:relative;z-index:1;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
-.main-inner{max-width:860px;margin:0 auto;padding:40px 48px 80px}
-.hero{margin-bottom:36px}
-.hero-label{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;
-  background:var(--cyan-dim);border:1px solid rgba(6,182,212,0.2);
-  font:500 11px/1 monospace;color:var(--cyan);margin-bottom:16px}
-.hero-label .dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:pulse 1.5s ease-in-out infinite}
-.hero h2{font:700 32px/1.15 'Inter',sans-serif;letter-spacing:-0.03em}
-.hero-sub{font:14px/1.6 'Inter',sans-serif;color:var(--muted);margin-top:8px}
-.pretext-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:6px;
-  background:var(--purple-dim);border:1px solid rgba(168,85,247,0.2);
-  font:500 10px/1 monospace;color:var(--purple2);margin-left:10px;vertical-align:middle}
+/* Current Weather */
+.current{background:var(--surface);border:1px solid var(--border);border-radius:20px;
+  padding:36px 40px;display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:24px;position:relative;overflow:hidden}
+.current::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--blue),var(--cyan))}
+.current-temp{font:700 72px/1 'JetBrains Mono',monospace;color:var(--text)}
+.current-temp .unit{font:300 32px/1 'Inter',sans-serif;color:var(--muted);margin-left:4px}
+.current-desc{font:18px/1.4 'Inter',sans-serif;color:var(--text2);margin-top:8px}
+.current-icon{font-size:72px;filter:drop-shadow(0 0 20px rgba(59,130,246,0.3));animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;
-  padding:18px 16px;position:relative;overflow:hidden;transition:all 200ms}
-.stat-card:hover{border-color:var(--border2);transform:translateY(-1px)}
-.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
-.stat-card:nth-child(1)::before{background:linear-gradient(90deg,var(--cyan),transparent)}
-.stat-card:nth-child(2)::before{background:linear-gradient(90deg,var(--purple),transparent)}
-.stat-card:nth-child(3)::before{background:linear-gradient(90deg,var(--green),transparent)}
-.stat-card:nth-child(4)::before{background:linear-gradient(90deg,var(--orange),transparent)}
-.stat-val{font:700 24px/1 monospace}
-.stat-card:nth-child(1) .stat-val{color:var(--cyan2)}
-.stat-card:nth-child(2) .stat-val{color:var(--purple2)}
-.stat-card:nth-child(3) .stat-val{color:var(--green)}
-.stat-card:nth-child(4) .stat-val{color:var(--orange)}
-.stat-label{font:11px/1.4 'Inter',sans-serif;color:var(--muted);margin-top:6px}
+/* Details */
+.details{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.detail-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 16px;
+  text-align:center;transition:all 200ms}
+.detail-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.detail-icon{font-size:24px;margin-bottom:8px}
+.detail-val{font:600 20px/1 'JetBrains Mono',monospace;color:var(--cyan2)}
+.detail-label{font:11px/1.4 'Inter',sans-serif;color:var(--muted);margin-top:6px}
 
-/* ===== Pretext Accordion ===== */
-.accordion{margin:20px 0}
-.acc-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;
-  margin-bottom:8px;overflow:hidden;transition:border-color 200ms}
-.acc-section:hover{border-color:var(--border2)}
-.acc-section.open{border-color:rgba(6,182,212,0.3)}
-.acc-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;
-  cursor:pointer;user-select:none;transition:background 150ms}
-.acc-header:hover{background:var(--surface2)}
-.acc-header .acc-title{display:flex;align-items:center;gap:10px;font:600 14px/1.3 'Inter',sans-serif;color:var(--text2)}
-.acc-header .acc-icon{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;
-  font-size:11px;transition:transform 200ms ease}
-.acc-section.open .acc-icon{transform:rotate(90deg)}
-.acc-meta{display:flex;align-items:center;gap:8px}
-.acc-metric{font:11px/1 monospace;color:var(--dim);padding:3px 8px;background:var(--surface2);border-radius:4px}
-.acc-chevron{width:16px;height:16px;color:var(--dim);transition:transform 200ms ease}
-.acc-section.open .acc-chevron{transform:rotate(90deg);color:var(--cyan)}
-.acc-body{height:0;overflow:hidden;transition:height 250ms cubic-bezier(0.4,0,0.2,1)}
-.acc-inner{padding:0 18px 16px}
+/* Forecast */
+.forecast-title{font:600 16px/1 'Inter',sans-serif;color:var(--muted);
+  text-transform:uppercase;letter-spacing:0.1em;margin-bottom:16px;
+  display:flex;align-items:center;gap:10px}
+.forecast-title::after{content:'';flex:1;height:1px;background:var(--border)}
 
-/* Content styles */
-.content{color:var(--text2)}
-.content h1{font:700 22px/1.3 'Inter',sans-serif;margin:20px 0 10px;padding-bottom:8px;
-  border-bottom:1px solid var(--border)}
-.content h2{font:600 18px/1.3 'Inter',sans-serif;margin:18px 0 8px;color:var(--cyan2);
-  display:flex;align-items:center;gap:8px}
-.content h2::before{content:'';width:3px;height:18px;border-radius:2px;background:linear-gradient(180deg,var(--cyan),var(--purple))}
-.content h3{font:600 15px/1.3 'Inter',sans-serif;margin:14px 0 6px;color:var(--purple2)}
-.content h4{font:600 13px/1.3 'Inter',sans-serif;margin:12px 0 4px;color:var(--text2)}
-.content p{line-height:1.8;margin:6px 0;font-size:14px}
-.content ul,.content ol{padding-left:18px;margin:6px 0}
-.content li{line-height:1.75;margin:2px 0;font-size:14px}
-.content ul li::marker{color:var(--cyan)}
-.content code{background:var(--surface2);padding:2px 6px;border-radius:4px;
-  font:12px/1 monospace;color:var(--cyan2);border:1px solid var(--border)}
-.content pre{background:var(--surface);padding:16px 18px;border-radius:10px;overflow-x:auto;
-  margin:12px 0;border:1px solid var(--border)}
-.content pre code{background:none;padding:0;color:var(--text2);font-size:12px;line-height:1.6;border:none}
-.content strong{color:var(--text);font-weight:600}
-.content a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(6,182,212,0.3)}
-.content table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
-.content th{background:var(--surface2);font:600 12px/1.4 'Inter',sans-serif;color:var(--text);
-  padding:8px 12px;border:1px solid var(--border);text-align:left}
-.content td{padding:7px 12px;border:1px solid var(--border);color:var(--text2)}
-.content tr:hover td{background:var(--surface)}
-.content hr{border:none;height:1px;margin:16px 0;
-  background:linear-gradient(90deg,var(--cyan),var(--purple));opacity:0.3}
+.forecast{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.forecast-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  padding:24px 20px;text-align:center;transition:all 200ms;position:relative;overflow:hidden}
+.forecast-card:hover{border-color:rgba(6,182,212,0.3);transform:translateY(-2px)}
+.forecast-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.forecast-card:nth-child(1)::before{background:linear-gradient(90deg,var(--blue),transparent)}
+.forecast-card:nth-child(2)::before{background:linear-gradient(90deg,var(--cyan),transparent)}
+.forecast-card:nth-child(3)::before{background:linear-gradient(90deg,var(--purple),transparent)}
+.forecast-date{font:600 14px/1 'Inter',sans-serif;color:var(--text2);margin-bottom:4px}
+.forecast-week{font:11px/1 monospace;color:var(--muted);margin-bottom:16px}
+.forecast-icon{font-size:40px;margin-bottom:12px}
+.forecast-temp{font:600 22px/1 'JetBrains Mono',monospace}
+.forecast-temp .low{color:var(--blue2)}
+.forecast-temp .high{color:var(--orange)}
+.forecast-desc{font:13px/1.4 'Inter',sans-serif;color:var(--muted);margin-top:8px}
 
-::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-@media(max-width:768px){
-  body{flex-direction:column}
-  .sidebar{width:100%;min-width:unset;max-height:38vh;border-right:none;border-bottom:1px solid var(--border)}
-  .main-inner{padding:20px}
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .hero h2{font-size:24px}
+/* Hourly */
+.hourly-wrap{background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  padding:24px;margin-bottom:24px;overflow-x:auto}
+.hourly{display:flex;gap:20px;min-width:max-content}
+.hourly-item{text-align:center;min-width:60px}
+.hourly-time{font:11px/1 monospace;color:var(--muted);margin-bottom:8px}
+.hourly-icon{font-size:24px;margin-bottom:6px}
+.hourly-temp{font:500 14px/1 'JetBrains Mono',monospace;color:var(--text2)}
+
+/* Tips */
+.tips{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 24px;
+  border-left:3px solid var(--cyan)}
+.tips-title{font:600 14px/1 'Inter',sans-serif;color:var(--cyan2);margin-bottom:8px}
+.tips-text{font:14px/1.7 'Inter',sans-serif;color:var(--muted)}
+
+/* Footer */
+.footer{text-align:center;margin-top:32px;font:11px/1 monospace;color:var(--dim)}
+.footer a{color:var(--cyan);text-decoration:none}
+
+/* Responsive */
+@media(max-width:640px){
+  .current{flex-direction:column;text-align:center;gap:20px;padding:28px}
+  .details{grid-template-columns:repeat(2,1fr)}
+  .forecast{grid-template-columns:1fr}
+  .city{font-size:32px}
+  .current-temp{font-size:56px}
 }
 </style>
 </head>
 <body>
+<div class="container">
+  <div class="header">
+    <div class="city">湘潭天气</div>
+    <div class="update-time" id="updateTime">数据加载中...</div>
+  </div>
 
-<aside class="sidebar">
-  <div class="sidebar-header">
-    <div class="logo">
-      <div class="logo-icon">鲁</div>
-      <div class="logo-text"><h1>鲁三江的记忆</h1><p>AI: 豆豆 | NAS: Z4 Pro</p></div>
+  <div class="current">
+    <div>
+      <div class="current-temp" id="currentTemp">--<span class="unit">°C</span></div>
+      <div class="current-desc" id="currentDesc">--</div>
     </div>
-    <div class="status-bar">
-      <span class="status-dot"></span>
-      <span class="status-text">ONLINE — MEMORY SYNC ACTIVE</span>
+    <div class="current-icon" id="currentIcon">🌤️</div>
+  </div>
+
+  <div class="details">
+    <div class="detail-card">
+      <div class="detail-icon">💧</div>
+      <div class="detail-val" id="humidity">--%</div>
+      <div class="detail-label">湿度</div>
+    </div>
+    <div class="detail-card">
+      <div class="detail-icon">💨</div>
+      <div class="detail-val" id="wind">-- km/h</div>
+      <div class="detail-label">风速</div>
+    </div>
+    <div class="detail-card">
+      <div class="detail-icon">🌡️</div>
+      <div class="detail-val" id="feelsLike">--°C</div>
+      <div class="detail-label">体感温度</div>
+    </div>
+    <div class="detail-card">
+      <div class="detail-icon">👁️</div>
+      <div class="detail-val" id="visibility">-- km</div>
+      <div class="detail-label">能见度</div>
     </div>
   </div>
-  <div class="search-box">
-    <input type="text" class="search-input" placeholder="搜索记忆..." id="searchBox" oninput="filterNav()">
+
+  <div class="forecast-title">未来三天预报</div>
+  <div class="forecast" id="forecastContainer"></div>
+
+  <div class="forecast-title">今日逐时</div>
+  <div class="hourly-wrap">
+    <div class="hourly" id="hourlyContainer"></div>
   </div>
-  <div class="nav-section">长期记忆</div>
-  <div class="nav-list" id="navMain"></div>
-  <div class="nav-section">每日归档</div>
-  <div class="nav-list" id="navArchive"></div>
-</aside>
 
-<main class="main">
-  <div class="main-inner">
-    <div class="hero" id="heroSection">
-      <div class="hero-label"><span class="dot"></span> MEMORY SYSTEM ACTIVE</div>
-      <h2 id="heroTitle">鲁三江的记忆<span class="pretext-badge">⚡ Pretext Layout</span></h2>
-      <p class="hero-sub" id="heroSub">AI助理豆豆的长期记忆系统 — 文本高度由 Pretext 精确计算</p>
-    </div>
-    <div class="stats" id="statsGrid">
-      <div class="stat-card"><div class="stat-val">33</div><div class="stat-label">已安装技能</div></div>
-      <div class="stat-card"><div class="stat-val">3天</div><div class="stat-label">运行时间</div></div>
-      <div class="stat-card"><div class="stat-val">017612</div><div class="stat-label">跟踪基金</div></div>
-      <div class="stat-card"><div class="stat-val">88.9%</div><div class="stat-label">买入模型准确率</div></div>
-    </div>
-    <div id="accordionContainer" class="accordion"></div>
+  <div class="tips" id="tipsBox">
+    <div class="tips-title">出行建议</div>
+    <div class="tips-text" id="tipsText">加载中...</div>
   </div>
-</main>
 
-<script type="module">
-import { prepare, layout } from './pretext.js';
+  <div class="footer">
+    数据来源: wttr.in | 由豆豆自动更新 | <a href="https://lusanjiang.github.io/nas-place/">记忆网页</a>
+  </div>
+</div>
 
-// ===== Memory Data =====
-const memoryData = {
-  "长期记忆": {
-    icon: "◆",
-    sections: [
-      {
-        title: "文件架构",
-        icon: "▣",
-        content: `\`\`\`
-/data/workspace/
-├── HEARTBEAT.md        # 心跳任务清单
-├── AGENTS.md / SOUL.md / TOOLS.md
-├── IDENTITY.md / USER.md / MEMORY.md
-├── heartbeat/          # PROGRESS.md
-├── output/             # 输出文件 + temp/
-├── scripts/            # 脚本文件
-├── docs/               # 文档 + fund/
-├── memory/             # 记忆归档
-├── skills/             # 33个技能
-└── env/                # Python虚拟环境
-\`\`\``
-      },
-      {
-        title: "用户信息",
-        icon: "◉",
-        content: `- **姓名**: 鲁三江 | **年龄**: 35岁 | **设备**: 极空间 Z4 Pro (ARM64)
-- **AI**: 火山方舟 Doubao-Seed-2.0-Pro
-- **技术背景**: Python爬虫 (业余)、VBA、Excel脚本
-- **偏好**: 简洁直接，不接受未验证信息，回答需有据可查
-
-### 时段规则
-- **后半夜 (0:00-8:00)**: 静默执行，不打扰用户，早上8点统一汇报
-- **白天 (8:00-24:00)**: 正常交互，重要决策可询问用户`
-      },
-      {
-        title: "关键决策记录",
-        icon: "◈",
-        content: `- **[2026-03-29]** 完成 OpenClaw 极空间部署
-- **[2026-03-29]** 助理名称: 豆豆
-- **[2026-03-29]** 完成飞书单向发送配置
-- **[2026-03-30]** 建立文件架构管理体系
-- **[2026-03-30]** 修正emoji乱码问题，建立文件生成规则
-- **[2026-03-31]** 系统健康体检57分，完成文件整理整改
-- **[2026-03-31]** 新增每日晨检心跳任务
-- **[2026-03-31]** 部署记忆网页到 GitHub Pages`
-      },
-      {
-        title: "已安装技能 (33个)",
-        icon: "⬡",
-        content: `| # | 名称 | 类别 | 星标 |
-|---|------|------|------|
-| 1 | 智能办公系统 (724-Office) | 办公自动化 | 1080 |
-| 2 | 图片提示词推荐 | 图片处理 | 1325 |
-| 3 | OfficeCLI | 文字/表格 | 453 |
-| 4 | Jina信息收集 | 信息收集 | 278 |
-| 5 | Crawlee爬虫工具 | 爬虫知识 | 8694 |
-| 6 | NotebookLM工具 | 信息收集 | 8150 |
-| 7 | 可视化图表工具 | 数据可视化 | 3895 |
-| 8 | PDF表格提取 | PDF处理 | 10008 |
-| 9 | OpenClaw技能合集 | 系统自动化 | 1907 |
-| 10 | 安全审计工具 | 安全审计 | 860 |
-| 11 | Pretext文本排版 | 前端排版 | 6591 |
-
-> 完整列表33个，含Office、OCR、爬虫、金融等类别`
-      },
-      {
-        title: "基金跟踪",
-        icon: "◈",
-        content: `### 017612 宏利复兴混合C
-- **类型**: 混合型-灵活配置 | **特点**: 高波动
-- **持仓**: ¥11,343 (原7,343 + 新买入4,000)
-- **回测模型**: 买入88.9%准确率 / 卖出94.2%准确率
-- **今日操作 (03-31)**: 买入¥4,000，净值约3.0127
-
-### 工具偏好
-- **GIF生成**: gifski 1.34.0 (首选)
-- **图片去背景**: ImageMagick`
-      }
-    ]
-  },
-  "2026-03-31": {
-    icon: "◉",
-    date: "03-31",
-    sections: [
-      {
-        title: "系统健康体检",
-        icon: "▣",
-        content: `### 综合评分: 57/100
-- 文件整洁度: 60分 | 记忆系统: 55分 | 规则执行: 70分 | 整洁度: 45分
-
-### 发现并整改
-- 删除 BOOTSTRAP.md
-- 清理脚本旧版本 (pingpong v1-v5, report v1-v5)
-- 删除3个空技能目录
-- output临时文件归档到 temp/
-- MEMORY.md 从19KB瘦身到5KB`
-      },
-      {
-        title: "基金操作",
-        icon: "◈",
-        content: `- 买入 017612 宏利复兴混合C **¥4,000**
-- 买入时净值约 3.0127 (当日跌-2.42%)
-- 操作依据: 上周涨6.48%后回调，趋势未破
-- 重仓光通信板块，工业富联当日+5.11%`
-      },
-      {
-        title: "Pretext排版引擎 + 记忆网页",
-        icon: "⬡",
-        content: `- 安装 chenglou/pretext (6591★)
-- 前端文本排版引擎，纯JS，无DOM reflow
-- 用法: \`prepare(text, font)\` → \`layout(prepared, width, lineHeight)\`
-- 创建 GitHub Pages 记忆网页
-- 仓库: github.com/lusanjiang/nas-place
-- 暗色科技主题，Pretext精确高度计算`
-      }
-    ]
-  },
-  "2026-03-30": {
-    icon: "◉",
-    date: "03-30",
-    sections: [
-      {
-        title: "技能安装 (夜间自动)",
-        icon: "⬡",
-        content: `- 02:18 ImageMagick图片处理
-- 02:47 Crawlee爬虫工具 (8694★)
-- 03:17 PDF表格提取工具 (10008★)
-- 03:47 实时数据抓取工具 (7★)
-- 04:47 NotebookLM工具 (8150★)
-- 05:17 AI文本人性化 (30★)
-- 06:17 可视化图表工具 (3895★)`
-      },
-      {
-        title: "基金交易模型",
-        icon: "◈",
-        content: `### 回测成果
-- 测试 100天+140天历史数据
-- 累计测试 28,500+ 种参数组合
-- 8轮优化+滚动窗口验证
-
-### 最优买入模型 — 88.9%准确率
-- 条件: 跌>3.5%+连跌3天+5日累跌>6%+MA5偏离<-3.5%+波动>2%
-- 交叉验证: 80-87%稳定
-
-### 最优卖出模型 — 94.2%准确率
-- 条件: 涨>2.5%+连涨2天+3日累涨>5%
-- 交叉验证: 84-91%稳定`
-      },
-      {
-        title: "工具配置",
-        icon: "▣",
-        content: `- gifski 1.34.0 安装，设为GIF生成首选工具
-- ddddocr 验证码OCR库已安装
-- 自动安装脚本加入黑名单过滤
-- 正泰ZTMJ_safe.py (账号被平台限制，等解封)
-- ImageMagick去背景: 亮度阈值法效果最好`
-      }
-    ]
-  }
+<script>
+const weatherIcons = {
+  'Clear':'☀️','Sunny':'☀️','Partly cloudy':'⛅','Cloudy':'☁️',
+  'Overcast':'🌥️','Mist':'🌫️','Fog':'🌫️',
+  'Light rain':'🌦️','Moderate rain':'🌧️','Heavy rain':'🌧️',
+  'Patchy rain nearby':'🌦️','Light drizzle':'🌦️',
+  'Light snow':'🌨️','Moderate snow':'🌨️','Heavy snow':'❄️',
+  'Thunderstorm':'⛈️','Thunder':'⛈️'
 };
 
-// ===== Pretext-powered Accordion =====
-const preparedCache = new Map();
-const fontCache = new Map();
-
-function getPrepared(text, font) {
-  const key = font + '::' + text;
-  if (!preparedCache.has(key)) {
-    preparedCache.set(key, prepare(text, font));
+function getIcon(desc) {
+  for (const [k,v] of Object.entries(weatherIcons)) {
+    if (desc.includes(k) || k.includes(desc)) return v;
   }
-  return preparedCache.get(key);
+  return '🌤️';
 }
 
-function createAccordion(key, data) {
-  const container = document.getElementById('accordionContainer');
-  container.innerHTML = '';
+function getWeekday(dateStr) {
+  const days = ['周日','周一','周二','周三','周四','周五','周六'];
+  return days[new Date(dateStr).getDay()];
+}
 
-  data.sections.forEach((section, idx) => {
-    const el = document.createElement('div');
-    el.className = 'acc-section' + (idx === 0 ? ' open' : '');
+function getTips(temp, desc, humidity) {
+  const tips = [];
+  if (temp < 10) tips.push('气温较低，注意保暖，建议穿厚外套');
+  else if (temp < 20) tips.push('气温适中，建议穿长袖或薄外套');
+  else if (temp > 30) tips.push('天气炎热，注意防暑降温，多喝水');
 
-    const htmlContent = renderMarkdown(section.content);
+  if (desc.includes('雨')) tips.push('有降雨，出门记得带伞');
+  if (desc.includes('雪')) tips.push('有降雪，注意路面湿滑');
+  if (humidity > 80) tips.push('湿度较高，注意防潮');
 
-    el.innerHTML = `
-      <div class="acc-header" data-idx="${idx}">
-        <div class="acc-title">
-          <span class="acc-icon" style="background:var(--cyan-dim);color:var(--cyan)">${section.icon}</span>
-          ${section.title}
-        </div>
-        <div class="acc-meta">
-          <span class="acc-metric" data-metric="${idx}">measuring...</span>
-          <svg class="acc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M6 4l4 4-4 4"/>
-          </svg>
-        </div>
-      </div>
-      <div class="acc-body" data-body="${idx}">
-        <div class="acc-inner content" data-content="${idx}">${htmlContent}</div>
-      </div>
-    `;
+  if (tips.length === 0) tips.push('天气不错，适合外出活动');
+  return tips.join('。');
+}
 
-    container.appendChild(el);
+async function loadWeather() {
+  try {
+    const resp = await fetch('https://wttr.in/湘潭?format=j1');
+    const data = await resp.json();
+    const cur = data.current_condition[0];
+    const today = data.weather[0];
+    const now = new Date();
 
-    // Pretext measurement after render
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        measureAndUpdate(el, idx, idx === 0);
-      });
+    // Current
+    document.getElementById('currentTemp').innerHTML = cur.temp_C + '<span class="unit">°C</span>';
+    document.getElementById('currentDesc').textContent = cur.weatherDesc[0].value;
+    document.getElementById('currentIcon').textContent = getIcon(cur.weatherDesc[0].value);
+    document.getElementById('humidity').textContent = cur.humidity + '%';
+    document.getElementById('wind').textContent = cur.windspeedKmph + ' km/h';
+    document.getElementById('feelsLike').textContent = cur.FeelsLikeC + '°C';
+    document.getElementById('visibility').textContent = cur.visibility + ' km';
+    document.getElementById('updateTime').textContent =
+      '更新于 ' + now.toLocaleString('zh-CN', {timeZone:'Asia/Shanghai'}) + ' | 实时数据';
+
+    // Forecast
+    const fc = document.getElementById('forecastContainer');
+    fc.innerHTML = '';
+    data.weather.forEach((day, i) => {
+      const desc = day.hourly[4].weatherDesc[0].value;
+      fc.innerHTML += `
+        <div class="forecast-card">
+          <div class="forecast-date">${day.date}</div>
+          <div class="forecast-week">${getWeekday(day.date)}</div>
+          <div class="forecast-icon">${getIcon(desc)}</div>
+          <div class="forecast-temp">
+            <span class="low">${day.mintempC}°</span>
+            <span style="color:var(--dim);margin:0 4px">/</span>
+            <span class="high">${day.maxtempC}°</span>
+          </div>
+          <div class="forecast-desc">${desc}</div>
+        </div>`;
     });
 
-    // Click handler
-    el.querySelector('.acc-header').addEventListener('click', () => {
-      const isOpen = el.classList.contains('open');
-      el.classList.toggle('open');
-      measureAndUpdate(el, idx, !isOpen);
+    // Hourly
+    const hc = document.getElementById('hourlyContainer');
+    hc.innerHTML = '';
+    today.hourly.forEach(h => {
+      const hour = parseInt(h.time) / 100;
+      const label = hour < 10 ? '0' + hour + ':00' : hour + ':00';
+      hc.innerHTML += `
+        <div class="hourly-item">
+          <div class="hourly-time">${label}</div>
+          <div class="hourly-icon">${getIcon(h.weatherDesc[0].value)}</div>
+          <div class="hourly-temp">${h.tempC}°</div>
+        </div>`;
     });
-  });
-}
 
-function measureAndUpdate(el, idx, open) {
-  const inner = el.querySelector('.acc-inner');
-  const body = el.querySelector(`[data-body="${idx}"]`);
-  const metric = el.querySelector(`[data-metric="${idx}"]`);
+    // Tips
+    document.getElementById('tipsText').textContent =
+      getTips(parseInt(cur.temp_C), cur.weatherDesc[0].value, parseInt(cur.humidity));
 
-  if (!inner || !body || !metric) return;
+  } catch(e) {
+    console.error('Weather load failed:', e);
+    // Fallback static data
+    document.getElementById('currentTemp').innerHTML = '17<span class="unit">°C</span>';
+    document.getElementById('currentDesc').textContent = '多云';
+    document.getElementById('humidity').textContent = '83%';
+    document.getElementById('wind').textContent = '13 km/h';
+    document.getElementById('feelsLike').textContent = '15°C';
+    document.getElementById('visibility').textContent = '10 km';
+    document.getElementById('updateTime').textContent = '静态数据 (API暂不可用)';
 
-  // Get all text nodes for Pretext measurement
-  const textEls = inner.querySelectorAll('p, li, td, th, h1, h2, h3, h4, code');
-  let totalHeight = 0;
-  let totalLines = 0;
+    const fc = document.getElementById('forecastContainer');
+    const staticDays = [
+      {date:'2026-03-31', low:12, high:13, desc:'小雨'},
+      {date:'2026-04-01', low:11, high:21, desc:'多云'},
+      {date:'2026-04-02', low:15, high:19, desc:'阵雨'}
+    ];
+    staticDays.forEach(day => {
+      fc.innerHTML += `
+        <div class="forecast-card">
+          <div class="forecast-date">${day.date}</div>
+          <div class="forecast-week">${getWeekday(day.date)}</div>
+          <div class="forecast-icon">${getIcon(day.desc)}</div>
+          <div class="forecast-temp">
+            <span class="low">${day.low}°</span>
+            <span style="color:var(--dim);margin:0 4px">/</span>
+            <span class="high">${day.high}°</span>
+          </div>
+          <div class="forecast-desc">${day.desc}</div>
+        </div>`;
+    });
 
-  textEls.forEach(textEl => {
-    const text = textEl.textContent.trim();
-    if (!text) return;
-
-    const styles = getComputedStyle(textEl);
-    const font = styles.font || `${styles.fontSize}/${styles.lineHeight} ${styles.fontFamily}`;
-    const lineHeight = parseFloat(styles.lineHeight) || parseFloat(styles.fontSize) * 1.5;
-    const width = textEl.getBoundingClientRect().width;
-
-    if (width > 0 && text) {
-      const prepared = getPrepared(text, font);
-      const result = layout(prepared, width, lineHeight);
-      totalHeight += result.height;
-      totalLines += result.lineCount;
-    }
-  });
-
-  // Add padding for pre blocks, tables, margins
-  const preBlocks = inner.querySelectorAll('pre');
-  preBlocks.forEach(pre => {
-    totalHeight += pre.getBoundingClientRect().height + 16;
-  });
-  const tables = inner.querySelectorAll('table');
-  tables.forEach(table => {
-    totalHeight += table.getBoundingClientRect().height + 16;
-  });
-
-  const padding = 32;
-  const finalHeight = Math.ceil(totalHeight + padding);
-
-  metric.textContent = `${totalLines} lines · ${finalHeight}px`;
-
-  if (open) {
-    body.style.height = finalHeight + 'px';
-  } else {
-    body.style.height = '0px';
+    document.getElementById('tipsText').textContent =
+      '今天有小雨，出门带伞。明天多云转晴，气温回升。';
   }
 }
 
-// ===== Markdown Renderer =====
-function renderMarkdown(md) {
-  const lines = md.split('\n');
-  let html = '', inList = false, inCode = false, inTable = false, tableHead = false;
-
-  for (const line of lines) {
-    if (line.trim().startsWith('```')) {
-      if (inCode) { html += '</code></pre>'; inCode = false; }
-      else { html += '<pre><code>'; inCode = true; }
-      continue;
-    }
-    if (inCode) { html += esc(line) + '\n'; continue; }
-    if (line.startsWith('### ')) { closeList(); html += '<h3>' + fmt(line.slice(4)) + '</h3>'; continue; }
-    if (line.startsWith('## ')) { closeList(); html += '<h2>' + fmt(line.slice(3)) + '</h2>'; continue; }
-    if (line.startsWith('# ')) { closeList(); html += '<h1>' + fmt(line.slice(2)) + '</h1>'; continue; }
-
-    if (line.includes('|') && line.trim().startsWith('|')) {
-      if (!inTable) { inTable = true; tableHead = false; html += '<table>'; }
-      if (line.match(/^\|[\s\-:|]+\|$/)) { tableHead = true; continue; }
-      const cells = line.split('|').filter(c => c.trim());
-      if (!tableHead) {
-        html += '<thead><tr>';
-        cells.forEach(c => html += '<th>' + fmt(c.trim()) + '</th>');
-        html += '</tr></thead><tbody>';
-      } else {
-        html += '<tr>';
-        cells.forEach(c => html += '<td>' + fmt(c.trim()) + '</td>');
-        html += '</tr>';
-      }
-      continue;
-    } else if (inTable) { html += '</tbody></table>'; inTable = false; }
-
-    if (line.trim() === '---') { closeList(); html += '<hr>'; continue; }
-    if (line.match(/^\s*[-*]\s/)) {
-      if (!inList) { html += '<ul>'; inList = true; }
-      html += '<li>' + fmt(line.replace(/^\s*[-*]\s/, '')) + '</li>';
-      continue;
-    }
-    if (line.match(/^\s*>\s/)) {
-      closeList();
-      html += '<blockquote>' + fmt(line.replace(/^\s*>\s/, '')) + '</blockquote>';
-      continue;
-    }
-    if (line.trim() === '') { closeList(); continue; }
-    closeList();
-    html += '<p>' + fmt(line) + '</p>';
-  }
-  closeList();
-  if (inTable) html += '</tbody></table>';
-  return html;
-
-  function closeList() { if (inList) { html += '</ul>'; inList = false; } }
-}
-
-function fmt(t) {
-  t = esc(t);
-  t = t.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-  t = t.replace(/`(.+?)`/g, '<code>$1</code>');
-  t = t.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank">$1</a>');
-  return t;
-}
-function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-// ===== Navigation =====
-function buildNav() {
-  const navMain = document.getElementById('navMain');
-  const navArchive = document.getElementById('navArchive');
-
-  Object.keys(memoryData).forEach((key, i) => {
-    const data = memoryData[key];
-    const div = document.createElement('div');
-    div.className = 'nav-item' + (i === 0 ? ' active' : '');
-    div.dataset.key = key;
-    div.style.position = 'relative';
-
-    if (data.date) {
-      div.innerHTML = `<span class="nav-date">${data.date}</span><span>${key.replace(data.date + ' ', '')}</span>`;
-      navArchive.appendChild(div);
-    } else {
-      div.innerHTML = `<span style="font-size:14px;opacity:0.6">${data.icon}</span><span>${key}</span>`;
-      navMain.appendChild(div);
-    }
-
-    div.addEventListener('click', () => showContent(key));
-  });
-}
-
-function showContent(key) {
-  document.querySelectorAll('.nav-item').forEach(el =>
-    el.classList.toggle('active', el.dataset.key === key)
-  );
-  const data = memoryData[key];
-  document.getElementById('heroTitle').innerHTML = data.date
-    ? `${key} <span class="pretext-badge" style="background:var(--cyan-dim);color:var(--cyan)">📄 归档</span>`
-    : `${key} <span class="pretext-badge">⚡ Pretext Layout</span>`;
-  document.getElementById('heroSub').textContent = data.date
-    ? '每日记忆归档 — ' + data.sections.length + '个模块'
-    : 'AI助理豆豆的长期记忆系统 — 文本高度由 Pretext 精确计算';
-  document.getElementById('statsGrid').style.display = data.date ? 'none' : 'grid';
-  createAccordion(key, data);
-}
-
-function filterNav() {
-  const q = document.getElementById('searchBox').value.toLowerCase();
-  document.querySelectorAll('.nav-item').forEach(el =>
-    el.style.display = el.textContent.toLowerCase().includes(q) ? '' : 'none'
-  );
-}
-
-// ===== Resize handler =====
-let resizeTimer;
-window.addEventListener('resize', () => {
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => {
-    document.querySelectorAll('.acc-section').forEach((el, idx) => {
-      const isOpen = el.classList.contains('open');
-      measureAndUpdate(el, idx, isOpen);
-    });
-  }, 150);
-});
-
-// ===== Init =====
-buildNav();
-showContent(Object.keys(memoryData)[0]);
+loadWeather();
 </script>
 </body>
 </html>
