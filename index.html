@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>湘潭天气</title>
+<title>长沙天气</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -100,7 +100,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter','PingFang SC','M
 <body>
 <div class="container">
   <div class="header">
-    <div class="city">湘潭天气</div>
+    <div class="city">长沙天气</div>
     <div class="update-time" id="updateTime">数据加载中...</div>
   </div>
 
@@ -191,7 +191,7 @@ function getTips(temp, desc, humidity) {
 
 async function loadWeather() {
   try {
-    const resp = await fetch('https://wttr.in/湘潭?format=j1');
+    const resp = await fetch('https://wttr.in/长沙?format=j1');
     const data = await resp.json();
     const cur = data.current_condition[0];
     const today = data.weather[0];
