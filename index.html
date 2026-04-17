@@ -225,6 +225,7 @@ footer { position: relative; z-index: 1; }
 <!-- TOC dots -->
 <nav id="toc">
   <a href="#hero" title="首页"></a>
+  <a href="#sec-toc" title="目录"></a>
   <a href="#sec-market" title="市场概况"></a>
   <a href="#sec-price" title="价格走势"></a>
   <a href="#sec-models" title="养猪模式"></a>
@@ -232,7 +233,6 @@ footer { position: relative; z-index: 1; }
   <a href="#sec-power" title="配电体系"></a>
   <a href="#sec-compete" title="竞争格局"></a>
   <a href="#sec-supply" title="上下游"></a>
-  <a href="#sec-geo" title="地域分布"></a>
   <a href="#sec-advice" title="发展建议"></a>
   <a href="#sec-strategy" title="策略启示"></a>
 </nav>
@@ -264,6 +264,58 @@ footer { position: relative; z-index: 1; }
       <span class="text-xs font-mono tracking-wider">SCROLL</span>
     </div>
   </div>
+</section>
+
+<!-- 目录 -->
+<section id="sec-toc" class="relative py-24 px-4">
+<div class="max-w-6xl mx-auto">
+  <div class="anim-in">
+    <div class="sec-label">TABLE OF CONTENTS</div>
+    <h2 class="sec-title">目录</h2>
+  </div>
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 anim-in mt-8">
+    <a href="#sec-market" class="glass-card hover:border-accent-500/50 hover:-translate-y-1 transition-all duration-300 cursor-pointer group">
+      <div class="font-mono text-xs text-accent-400 mb-2">01</div>
+      <div class="text-steel-100 font-semibold text-sm leading-snug group-hover:text-accent-300 transition-colors">全国生猪行业市场概况</div>
+    </a>
+    <a href="#sec-price" class="glass-card hover:border-accent-500/50 hover:-translate-y-1 transition-all duration-300 cursor-pointer group">
+      <div class="font-mono text-xs text-accent-400 mb-2">02</div>
+      <div class="text-steel-100 font-semibold text-sm leading-snug group-hover:text-accent-300 transition-colors">生猪价格走势分析</div>
+    </a>
+    <a href="#sec-models" class="glass-card hover:border-accent-500/50 hover:-translate-y-1 transition-all duration-300 cursor-pointer group">
+      <div class="font-mono text-xs text-accent-400 mb-2">03</div>
+      <div class="text-steel-100 font-semibold text-sm leading-snug group-hover:text-accent-300 transition-colors">养猪模式对比分析</div>
+    </a>
+    <a href="#sec-client" class="glass-card hover:border-accent-500/50 hover:-translate-y-1 transition-all duration-300 cursor-pointer group">
+      <div class="font-mono text-xs text-accent-400 mb-2">04</div>
+      <div class="text-steel-100 font-semibold text-sm leading-snug group-hover:text-accent-300 transition-colors">核心客户双胞胎集团</div>
+    </a>
+    <a href="#sec-power" class="glass-card hover:border-accent-500/50 hover:-translate-y-1 transition-all duration-300 cursor-pointer group">
+      <div class="font-mono text-xs text-accent-400 mb-2">05</div>
+      <div class="text-steel-100 font-semibold text-sm leading-snug group-hover:text-accent-300 transition-colors">养猪场配电体系分析</div>
+    </a>
+    <a href="#sec-compete" class="glass-card hover:border-accent-500/50 hover:-translate-y-1 transition-all duration-300 cursor-pointer group">
+      <div class="font-mono text-xs text-accent-400 mb-2">06</div>
+      <div class="text-steel-100 font-semibold text-sm leading-snug group-hover:text-accent-300 transition-colors">竞争格局分析</div>
+    </a>
+    <a href="#sec-supply" class="glass-card hover:border-accent-500/50 hover:-translate-y-1 transition-all duration-300 cursor-pointer group">
+      <div class="font-mono text-xs text-accent-400 mb-2">07</div>
+      <div class="text-steel-100 font-semibold text-sm leading-snug group-hover:text-accent-300 transition-colors">上下游及配套厂商</div>
+    </a>
+    <a href="#sec-geo" class="glass-card hover:border-accent-500/50 hover:-translate-y-1 transition-all duration-300 cursor-pointer group">
+      <div class="font-mono text-xs text-accent-400 mb-2">08</div>
+      <div class="text-steel-100 font-semibold text-sm leading-snug group-hover:text-accent-300 transition-colors">江西省地域分布</div>
+    </a>
+    <a href="#sec-advice" class="glass-card hover:border-accent-500/50 hover:-translate-y-1 transition-all duration-300 cursor-pointer group">
+      <div class="font-mono text-xs text-accent-400 mb-2">09</div>
+      <div class="text-steel-100 font-semibold text-sm leading-snug group-hover:text-accent-300 transition-colors">行业发展建议</div>
+    </a>
+    <a href="#sec-strategy" class="glass-card hover:border-accent-500/50 hover:-translate-y-1 transition-all duration-300 cursor-pointer group">
+      <div class="font-mono text-xs text-accent-400 mb-2">10</div>
+      <div class="text-steel-100 font-semibold text-sm leading-snug group-hover:text-accent-300 transition-colors">行业头部效应与策略启示</div>
+    </a>
+  </div>
+</div>
 </section>
 
 <!-- SECTION 1: 全国生猪行业市场概况 -->
@@ -891,7 +943,7 @@ document.querySelectorAll('.anim-in').forEach(el => {
 
 // TOC active dot
 const tocLinks = document.querySelectorAll('#toc a');
-const sections = ['hero','sec-market','sec-price','sec-models','sec-client','sec-power','sec-compete','sec-supply','sec-geo','sec-advice','sec-strategy'];
+const sections = ['hero','sec-toc','sec-market','sec-price','sec-models','sec-client','sec-power','sec-compete','sec-supply','sec-geo','sec-advice','sec-strategy'];
 sections.forEach((id, i) => {
   ScrollTrigger.create({
     trigger: '#' + id, start: 'top center', end: 'bottom center',
