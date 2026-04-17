@@ -3,351 +3,1050 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>科华数据 — 天正电气价值客户汇报</title>
+<title>江西畜牧业（养猪）行业调研报告 | 2026年4月</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        navy: { 50:'#e8ecf4', 100:'#c5cfe3', 200:'#9eafd0', 300:'#7790bd', 400:'#5978ae', 500:'#3b619f', 600:'#305197', 700:'#203e8d', 800:'#132c83', 900:'#0a1a3f', 950:'#060e24' },
+        accent: { 50:'#fff7ed', 100:'#ffedd5', 200:'#fed7aa', 300:'#fdba74', 400:'#fb923c', 500:'#f97316', 600:'#ea580c', 700:'#c2410c', 800:'#9a3412', 900:'#7c2d12' },
+        steel: { 50:'#f0f4f8', 100:'#d9e2ec', 200:'#bcccdc', 300:'#9fb3c8', 400:'#829ab1', 500:'#627d98', 600:'#486581', 700:'#334e68', 800:'#243b53', 900:'#102a43' }
+      },
+      fontFamily: {
+        serif: ['"Noto Serif SC"', 'serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace']
+      }
+    }
+  }
+}
+</script>
 <style>
-:root {
-  --bg: #ffffff;
-  --surface: #f7f8fa;
-  --card: #ffffff;
-  --border: #e2e5ea;
-  --border-l: #eef0f3;
-  --text: #1a1d26;
-  --text2: #5a6070;
-  --text3: #8c92a4;
-  --blue: #2563eb;
-  --blue-l: #dbeafe;
-  --cyan: #0891b2;
-  --amber: #d97706;
-  --amber-l: #fef3c7;
-  --emerald: #059669;
-  --emerald-l: #d1fae5;
-  --rose: #dc2626;
-  --rose-l: #fee2e2;
-  --violet: #7c3aed;
-  --accent: #1e40af;
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: #060e24; }
+body::before {
+  content: '';
+  position: fixed; top:0; left:0; width:100%; height:100%;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(59,97,159,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 90%, rgba(249,115,22,0.06) 0%, transparent 60%);
+  pointer-events: none; z-index: 0;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6}
-
-/* HEADER */
-.header{background:linear-gradient(135deg,#1e3a5f 0%,#1e40af 50%,#2563eb 100%);color:#fff;padding:56px 0 48px;position:relative;overflow:hidden}
-.header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat}
-.header-inner{max-width:1040px;margin:0 auto;padding:0 40px;position:relative;z-index:1}
-.header .kicker{font-size:.72rem;letter-spacing:5px;color:rgba(255,255,255,.65);font-weight:500;text-transform:uppercase;margin-bottom:16px}
-.header h1{font-family:'Noto Serif SC',serif;font-size:2.6rem;font-weight:900;line-height:1.25;margin-bottom:8px}
-.header .sub{font-size:1rem;color:rgba(255,255,255,.72);font-weight:300;max-width:680px;line-height:1.7;margin-bottom:28px}
-.header .meta{display:flex;gap:28px;flex-wrap:wrap}
-.header .meta-item{font-size:.82rem;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:6px}
-.header .meta-item svg{width:13px;height:13px;opacity:.6}
-.header .divider{width:50px;height:2px;background:rgba(255,255,255,.25);margin:20px 0}
-
-/* LAYOUT */
-.container{max-width:1040px;margin:0 auto;padding:0 40px}
-
-/* SECTION */
-.section{padding:40px 0 0}
-.section:last-of-type{padding-bottom:48px}
-.sec-head{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid var(--border-l)}
-.sec-num{width:30px;height:30px;border-radius:7px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-family:'Noto Serif SC',serif;font-size:.7rem;font-weight:700;color:#fff;flex-shrink:0}
-.sec-title{font-family:'Noto Serif SC',serif;font-size:1.3rem;font-weight:700;color:var(--text)}
-
-/* STAT ROW */
-.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
-.s-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;position:relative;overflow:hidden}
-.s-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
-.s-card:nth-child(1)::before{background:var(--blue)}.s-card:nth-child(2)::before{background:var(--emerald)}.s-card:nth-child(3)::before{background:var(--amber)}.s-card:nth-child(4)::before{background:var(--rose)}
-.s-card .lbl{font-size:.78rem;color:var(--text3);letter-spacing:.5px;margin-bottom:6px;font-weight:500}
-.s-card .val{font-family:'Noto Serif SC',serif;font-size:2rem;font-weight:900;line-height:1.1}
-.s-card:nth-child(1) .val{color:var(--blue)}.s-card:nth-child(2) .val{color:var(--emerald)}.s-card:nth-child(3) .val{color:var(--amber)}.s-card:nth-child(4) .val{color:var(--rose)}
-.s-card .val small{font-size:.85rem;font-weight:400}
-.s-card .desc{font-size:.78rem;color:var(--text2);margin-top:3px}
-
-/* ALERT */
-.alert{display:flex;align-items:center;gap:10px;background:var(--rose-l);border:1px solid #fca5a5;border-radius:8px;padding:12px 18px;margin-bottom:20px;font-size:.88rem;color:var(--rose)}
-.alert svg{width:15px;height:15px;flex-shrink:0}
-
-/* REL GRID */
-.rel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.rel-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px}
-.rel-card .badge{display:inline-flex;align-items:center;gap:5px;font-size:.74rem;font-weight:600;padding:3px 10px;border-radius:4px;margin-bottom:8px}
-.badge.on{background:var(--emerald-l);color:var(--emerald);border:1px solid #6ee7b7}
-.badge.off{background:#f1f5f9;color:var(--text3);border:1px solid #cbd5e1}
-.badge.wip{background:var(--amber-l);color:var(--amber);border:1px solid #fcd34d}
-.badge .dot{width:5px;height:5px;border-radius:50%;background:currentColor}
-.rel-card .name{font-weight:600;font-size:.98rem;margin-bottom:3px}
-.rel-card .info{font-size:.82rem;color:var(--text2);line-height:1.6}
-
-/* COMPETE */
-.compete-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.comp-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:22px}
-.comp-box h4{font-size:.75rem;color:var(--text3);letter-spacing:1px;margin-bottom:16px;font-weight:600;text-transform:uppercase}
-.bar-row{margin-bottom:12px}.bar-row:last-child{margin-bottom:0}
-.bar-top{display:flex;justify-content:space-between;font-size:.88rem;margin-bottom:4px}
-.bar-top .n{font-weight:500;color:var(--text)}.bar-top .t{font-size:.74rem;color:var(--text3);background:var(--border-l);padding:1px 8px;border-radius:3px}
-.bar-bg{height:7px;background:var(--border-l);border-radius:4px;overflow:hidden}
-.bar-fg{height:100%;border-radius:3px}
-.bar-fg.c-blue{background:linear-gradient(90deg,var(--blue),#60a5fa)}
-.bar-fg.c-amber{background:linear-gradient(90deg,var(--amber),#fbbf24)}
-.bar-fg.c-violet{background:linear-gradient(90deg,var(--violet),#a78bfa)}
-.bar-fg.c-rose{background:linear-gradient(90deg,var(--rose),#f87171)}
-.bar-fg.c-emerald{background:linear-gradient(90deg,var(--emerald),#34d399)}
-.bar-fg.c-slate{background:linear-gradient(90deg,#64748b,#94a3b8)}
-.comp-note{margin-top:14px;font-size:.78rem;color:var(--text3);line-height:1.7}
-.comp-note b{color:var(--text);font-weight:600}
-
-/* TWO-TRACK */
-.track-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.track-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:22px;position:relative;overflow:hidden}
-.track-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
-.track-card.t-blue::before{background:var(--blue)}
-.track-card.t-amber::before{background:var(--amber)}
-.track-card .track-title{font-family:'Noto Serif SC',serif;font-weight:700;font-size:1.05rem;margin-bottom:4px;display:flex;align-items:center;gap:8px}
-.track-card .track-title .ico{width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.track-card.t-blue .track-title .ico{background:var(--blue-l);color:var(--blue)}
-.track-card.t-amber .track-title .ico{background:var(--amber-l);color:var(--amber)}
-.track-card .track-title .ico svg{width:12px;height:12px}
-.track-sub{font-size:.78rem;color:var(--text3);margin-bottom:12px;letter-spacing:.5px;font-weight:500}
-.track-list{list-style:none}
-.track-list li{font-size:.88rem;color:var(--text2);line-height:1.7;padding-left:14px;position:relative;margin-bottom:4px}
-.track-list li::before{content:'';position:absolute;left:0;top:9px;width:5px;height:5px;border-radius:50%}
-.t-blue .track-list li::before{background:var(--blue)}
-.t-amber .track-list li::before{background:var(--amber)}
-.track-list li b{color:var(--text);font-weight:600}
-.track-status{display:inline-flex;align-items:center;gap:5px;font-size:.74rem;font-weight:600;padding:4px 12px;border-radius:4px;margin-top:10px}
-.track-status.testing{background:var(--amber-l);color:var(--amber);border:1px solid #fcd34d}
-.track-status.pushing{background:var(--blue-l);color:var(--blue);border:1px solid #93c5fd}
-
-/* TIMELINE */
-.card-wrap{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;overflow-x:auto}
-.tl{position:relative;padding-left:28px}
-.tl::before{content:'';position:absolute;left:6px;top:6px;bottom:6px;width:1.5px;background:linear-gradient(to bottom,var(--blue),var(--border))}
-.tl-row{position:relative;margin-bottom:20px}.tl-row:last-child{margin-bottom:0}
-.tl-dot{position:absolute;left:-25px;top:5px;width:9px;height:9px;border-radius:50%;border:2px solid var(--blue);background:var(--bg)}
-.tl-row.hi .tl-dot{background:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,0.15)}
-.tl-time{font-size:.75rem;color:var(--blue);font-weight:600;letter-spacing:1px;margin-bottom:2px}
-.tl-ttl{font-weight:600;font-size:1rem;margin-bottom:2px;color:var(--text)}
-.tl-txt{font-size:.85rem;color:var(--text2);line-height:1.65}
-
-/* OPP CARD */
-.opp{background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1px solid #bfdbfe;border-radius:12px;padding:26px;position:relative;overflow:hidden}
-.opp::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;background:radial-gradient(circle,rgba(37,99,235,0.06),transparent 70%);pointer-events:none}
-.opp-head{display:flex;align-items:center;gap:10px;margin-bottom:18px}
-.opp-icon{width:30px;height:30px;background:var(--blue-l);border-radius:7px;display:flex;align-items:center;justify-content:center}
-.opp-icon svg{width:15px;height:15px;color:var(--blue)}
-.opp-head h3{font-family:'Noto Serif SC',serif;font-size:1.08rem;font-weight:700;color:var(--text)}
-.opp-nums{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
-.opp-n{background:rgba(255,255,255,.7);border:1px solid var(--border);border-radius:7px;padding:14px;text-align:center}
-.opp-n .v{font-family:'Noto Serif SC',serif;font-size:1.5rem;font-weight:900;color:var(--blue)}
-.opp-n .l{font-size:.74rem;color:var(--text3);margin-top:2px}
-.opp-pts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.opp-pt{display:flex;gap:8px;align-items:flex-start}
-.opp-pt .bul{width:5px;height:5px;border-radius:50%;background:var(--blue);margin-top:6px;flex-shrink:0}
-.opp-pt .tx{font-size:.85rem;color:var(--text2);line-height:1.55}
-.opp-pt .tx b{color:var(--text);font-weight:600}
-
-/* TABLE */
-.tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:.88rem}
-.tbl thead th{background:var(--surface);padding:10px 14px;text-align:left;font-weight:600;color:var(--text3);font-size:.76rem;letter-spacing:1px;border-bottom:2px solid var(--border)}
-.tbl thead th:first-child{border-radius:8px 0 0 0}.tbl thead th:last-child{border-radius:0 8px 0 0}
-.tbl tbody td{padding:10px 14px;border-bottom:1px solid var(--border-l);color:var(--text2);vertical-align:top}
-.tbl tbody tr:last-child td{border-bottom:none}
-.tbl tbody tr:hover td{background:rgba(37,99,235,0.02)}
-.p-high{color:var(--rose);font-weight:600;font-size:.82rem}.p-mid{color:var(--amber);font-weight:600;font-size:.82rem}.p-low{color:var(--emerald);font-weight:600;font-size:.82rem}
-.td-name{color:var(--text);font-weight:500}
-
-/* FOOTER */
-.footer{background:var(--surface);border-top:1px solid var(--border);padding:28px 0;text-align:center;margin-top:40px}
-.footer p{font-size:.78rem;color:var(--text3);letter-spacing:1px}
-.footer .brand{font-family:'Noto Serif SC',serif;font-weight:700;color:var(--text2);font-size:.88rem;margin-bottom:4px}
-
-/* PRINT */
-@media print{
-  .header{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .s-card::before,.track-card::before,.bar-fg,.sec-num,.badge,.track-status,.alert,.opp{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  body{font-size:13px}
+/* Noise texture overlay */
+body::after {
+  content: '';
+  position: fixed; top:0; left:0; width:100%; height:100%;
+  opacity: 0.025; pointer-events: none; z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
-@media (max-width:768px){
-  .stat-row,.rel-grid,.compete-grid,.track-grid,.opp-nums,.opp-pts{grid-template-columns:1fr}
-  .header h1{font-size:1.8rem}
-  .container,.header-inner{padding:0 20px}
+section { position: relative; z-index: 1; }
+footer { position: relative; z-index: 1; }
+
+/* Section heading style */
+.sec-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #fb923c;
+  margin-bottom: 0.5rem;
 }
+.sec-title {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  line-height: 1.3;
+  color: #f0f4f8;
+  margin-bottom: 1rem;
+}
+.sec-title span { color: #fb923c; }
+.sec-desc {
+  color: #9fb3c8;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  max-width: 48rem;
+}
+/* Stat cards */
+.stat-card {
+  background: linear-gradient(135deg, rgba(16,42,67,0.7), rgba(6,14,36,0.9));
+  border: 1px solid rgba(98,125,152,0.15);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  backdrop-filter: blur(8px);
+  transition: border-color 0.3s, transform 0.3s;
+}
+.stat-card:hover {
+  border-color: rgba(249,115,22,0.4);
+  transform: translateY(-2px);
+}
+.stat-card .stat-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fb923c;
+  line-height: 1.1;
+}
+.stat-card .stat-label {
+  color: #9fb3c8;
+  font-size: 0.85rem;
+  margin-top: 0.35rem;
+}
+/* Glass card */
+.glass-card {
+  background: linear-gradient(135deg, rgba(16,42,67,0.6), rgba(6,14,36,0.8));
+  border: 1px solid rgba(98,125,152,0.12);
+  border-radius: 1rem;
+  padding: 2rem;
+  backdrop-filter: blur(6px);
+}
+/* Project progress cards */
+.proj-card {
+  background: linear-gradient(160deg, rgba(16,42,67,0.65), rgba(6,14,36,0.85));
+  border: 1px solid rgba(98,125,152,0.12);
+  border-radius: 1rem;
+  padding: 1.75rem;
+  position: relative;
+  overflow: hidden;
+}
+.proj-card::before {
+  content: '';
+  position: absolute; top:0; left:0; width: 4px; height:100%;
+  border-radius: 4px 0 0 4px;
+}
+.proj-card.status-paused::before { background: #ef4444; }
+.proj-card.status-ready::before { background: #fb923c; }
+.proj-card.status-testing::before { background: #3b82f6; }
+.proj-card.status-delayed::before { background: #eab308; }
+.proj-card.status-new::before { background: #22c55e; }
+
+.status-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  letter-spacing: 0.05em;
+}
+.badge-paused { background: rgba(239,68,68,0.15); color: #f87171; }
+.badge-ready { background: rgba(251,146,60,0.15); color: #fb923c; }
+.badge-testing { background: rgba(59,130,246,0.15); color: #60a5fa; }
+.badge-delayed { background: rgba(234,179,8,0.15); color: #facc15; }
+.badge-new { background: rgba(34,197,94,0.15); color: #4ade80; }
+
+/* Pain-point table */
+.pain-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+.pain-table th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fb923c;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(98,125,152,0.2);
+}
+.pain-table td {
+  padding: 0.85rem 1rem;
+  font-size: 0.9rem;
+  color: #bcccdc;
+  border-bottom: 1px solid rgba(98,125,152,0.08);
+  vertical-align: top;
+}
+.pain-table tr:last-child td { border-bottom: none; }
+.pain-table td:first-child { color: #f0f4f8; font-weight: 500; }
+
+/* Advice cards */
+.advice-card {
+  background: linear-gradient(135deg, rgba(249,115,22,0.08), rgba(16,42,67,0.5));
+  border: 1px solid rgba(249,115,22,0.2);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: all 0.3s;
+}
+.advice-card:hover {
+  border-color: rgba(249,115,22,0.5);
+  background: linear-gradient(135deg, rgba(249,115,22,0.12), rgba(16,42,67,0.6));
+}
+.advice-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: rgba(249,115,22,0.2);
+  line-height: 1;
+}
+
+/* Chart containers */
+.chart-wrap {
+  background: linear-gradient(135deg, rgba(16,42,67,0.5), rgba(6,14,36,0.7));
+  border: 1px solid rgba(98,125,152,0.1);
+  border-radius: 1rem;
+  padding: 1.5rem;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #060e24; }
+::-webkit-scrollbar-thumb { background: #334e68; border-radius: 3px; }
+
+/* Animate-in helper */
+.anim-in { opacity: 0; transform: translateY(40px); }
+
+/* TOC sidebar */
+#toc {
+  position: fixed; right: 1.5rem; top: 50%; transform: translateY(-50%);
+  z-index: 100; display: none;
+}
+@media(min-width:1280px) { #toc { display: block; } }
+#toc a {
+  display: block; width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(98,125,152,0.3); margin: 0.7rem 0;
+  transition: all 0.3s;
+}
+#toc a.active { background: #fb923c; box-shadow: 0 0 8px rgba(249,115,22,0.5); transform: scale(1.5); }
+
+/* Responsive chart height */
+.chart-h { height: 420px; }
+@media(max-width:768px) { .chart-h { height: 320px; } }
 </style>
 </head>
-<body>
+<body class="bg-navy-950 text-steel-100 font-sans antialiased">
 
-<!-- HEADER -->
-<div class="header">
-  <div class="header-inner">
-    <div class="kicker">Strategic Account Review · 2026.04</div>
-    <h1>科华数据股份有限公司</h1>
-    <div class="divider"></div>
-    <p class="sub">数据中心及新能源领域公司级价值客户 — 侧面了解到的业务现状、竞争格局、配电替换推进与快熔突破机会全景汇报</p>
-    <div class="meta">
-      <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2026年4月</div>
-      <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>鲁三江 · SR汇报</div>
-      <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>厦门</div>
-      <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>销售负责人：朱雷</div>
+<!-- Reading Progress Bar -->
+<div id="progress-bar" class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-accent-500 to-accent-300 z-[9999] transition-none" style="width:0%"></div>
+
+<!-- TOC dots -->
+<nav id="toc">
+  <a href="#hero" title="首页"></a>
+  <a href="#sec-market" title="市场概况"></a>
+  <a href="#sec-price" title="价格走势"></a>
+  <a href="#sec-models" title="养猪模式"></a>
+  <a href="#sec-client" title="双胞胎集团"></a>
+  <a href="#sec-power" title="配电体系"></a>
+  <a href="#sec-compete" title="竞争格局"></a>
+  <a href="#sec-supply" title="上下游"></a>
+  <a href="#sec-geo" title="地域分布"></a>
+  <a href="#sec-advice" title="发展建议"></a>
+  <a href="#sec-strategy" title="策略启示"></a>
+</nav>
+
+<!-- HERO SECTION -->
+<section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+  <div class="absolute inset-0">
+    <div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-accent-500/[0.04] blur-[120px]"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-navy-500/[0.08] blur-[100px]"></div>
+  </div>
+  <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+    <div class="inline-block mb-6">
+      <span class="font-mono text-xs tracking-[0.2em] text-accent-400 bg-accent-500/10 px-4 py-1.5 rounded-full border border-accent-500/20">INDUSTRY RESEARCH REPORT · 2026.04</span>
+    </div>
+    <h1 class="font-serif font-black text-4xl md:text-6xl lg:text-7xl leading-tight text-steel-50 mb-6">
+      江西畜牧业<br><span class="text-accent-400">养猪行业</span>调研报告
+    </h1>
+    <p class="text-steel-300 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed mb-10">
+      深入剖析全国生猪产业格局、价格周期、配电体系需求与竞争态势，<br class="hidden md:block">聚焦江西市场机遇与核心客户突破路径
+    </p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-12">
+      <div class="stat-card text-center"><div class="stat-num">7.2<span class="text-xl">亿</span></div><div class="stat-label">全国年出栏量</div></div>
+      <div class="stat-card text-center"><div class="stat-num">9.71<span class="text-lg">元/kg</span></div><div class="stat-label">历史最低猪价</div></div>
+      <div class="stat-card text-center"><div class="stat-num">2643<span class="text-lg">万头</span></div><div class="stat-label">双胞胎年出栏</div></div>
+      <div class="stat-card text-center"><div class="stat-num">32<span class="text-lg">个</span></div><div class="stat-label">江西养殖大县</div></div>
+    </div>
+    <div class="animate-bounce text-steel-500">
+      <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+      <span class="text-xs font-mono tracking-wider">SCROLL</span>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 1: 全国生猪行业市场概况 -->
+<section id="sec-market" class="relative py-24 px-4">
+<div class="max-w-6xl mx-auto">
+  <div class="anim-in">
+    <div class="sec-label">01 / MARKET OVERVIEW</div>
+    <h2 class="sec-title">全国生猪行业<span>市场概况</span></h2>
+    <p class="sec-desc mb-8">2025年中国养猪业持续加速集中化，39家猪企进入"百万头俱乐部"，较上年增加7家，合计出栏2.95亿头，占全国7.2亿头总出栏量的41%。</p>
+  </div>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10 anim-in">
+    <div class="stat-card"><div class="stat-num">39<span class="text-lg">家</span></div><div class="stat-label">百万头俱乐部成员</div></div>
+    <div class="stat-card"><div class="stat-num">41<span class="text-lg">%</span></div><div class="stat-label">TOP10市场占比</div></div>
+    <div class="stat-card"><div class="stat-num">6<span class="text-lg">家</span></div><div class="stat-label">千万头俱乐部</div></div>
+    <div class="stat-card"><div class="stat-num">320<span class="text-lg">万头</span></div><div class="stat-label">TOP20入围门槛</div></div>
+  </div>
+  <div class="chart-wrap anim-in">
+    <div class="flex items-center justify-between mb-2">
+      <h3 class="text-steel-200 font-semibold text-sm">2025年中国养猪企业TOP10出栏量（万头）</h3>
+      <span class="font-mono text-xs text-steel-500">数据来源：中国猪业高层交流论坛</span>
+    </div>
+    <div id="chart-top10" class="chart-h"></div>
+  </div>
+</div>
+</section>
+
+<!-- SECTION 2: 生猪价格走势 -->
+<section id="sec-price" class="relative py-24 px-4">
+<div class="max-w-6xl mx-auto">
+  <div class="anim-in">
+    <div class="sec-label">02 / PRICE ANALYSIS</div>
+    <h2 class="sec-title">2026年生猪价格<span>走势分析</span></h2>
+    <p class="sec-desc mb-8">2026年3月全国瘦肉型生猪交易均价跌至9.71元/公斤（跌破5元/斤），创历史新低。生猪期货主力合约跌至9815元/吨，为2021年上市以来最低。已进入过度下跌一级预警区间。</p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 anim-in">
+    <div class="stat-card border-l-4 border-l-red-500">
+      <div class="stat-num text-red-400">9.71</div>
+      <div class="stat-label">元/公斤 · 交易均价</div>
+      <div class="text-xs text-red-400/70 mt-1">创历史新低</div>
+    </div>
+    <div class="stat-card border-l-4 border-l-red-500">
+      <div class="stat-num text-red-400">-28%</div>
+      <div class="stat-label">同比跌幅</div>
+      <div class="text-xs text-red-400/70 mt-1">2018年6月以来新低</div>
+    </div>
+    <div class="stat-card border-l-4 border-l-red-500">
+      <div class="stat-num text-red-400">9815</div>
+      <div class="stat-label">元/吨 · 期货主力</div>
+      <div class="text-xs text-red-400/70 mt-1">上市以来最低</div>
+    </div>
+  </div>
+  <div class="chart-wrap anim-in">
+    <div class="flex items-center justify-between mb-2">
+      <h3 class="text-steel-200 font-semibold text-sm">全国生猪均价走势（2020-2026）</h3>
+      <span class="font-mono text-xs text-steel-500">单位：元/公斤</span>
+    </div>
+    <div id="chart-price" class="chart-h"></div>
+  </div>
+  <div class="glass-card mt-6 anim-in">
+    <h4 class="text-accent-400 font-mono text-xs tracking-wider mb-3">▎下跌原因分析</h4>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-steel-300">
+      <div class="flex gap-3"><span class="text-accent-500 font-bold text-lg">01</span><div><strong class="text-steel-100">供应高企</strong><br>能繁母猪存栏处于高位，产能传导周期约10个月</div></div>
+      <div class="flex gap-3"><span class="text-accent-500 font-bold text-lg">02</span><div><strong class="text-steel-100">需求回落</strong><br>节后消费需求季节性回落，终端消费疲软</div></div>
+      <div class="flex gap-3"><span class="text-accent-500 font-bold text-lg">03</span><div><strong class="text-steel-100">效率提升</strong><br>非洲猪瘟后企业种猪改良、圈舍升级，生产效率大幅提高</div></div>
     </div>
   </div>
 </div>
+</section>
 
-<div class="container">
+<!-- SECTION 3: 养猪模式分析 -->
+<section id="sec-models" class="relative py-24 px-4">
+<div class="max-w-6xl mx-auto">
+  <div class="anim-in">
+    <div class="sec-label">03 / BUSINESS MODELS</div>
+    <h2 class="sec-title">养猪模式<span>对比分析</span></h2>
+    <p class="sec-desc mb-10">中国规模化养猪主要分为两大模式，代表企业在经营策略、资产结构和规模扩张路径上存在显著差异。</p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 anim-in">
+    <!-- 模式一 -->
+    <div class="glass-card relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-accent-500/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+      <span class="font-mono text-xs tracking-wider text-accent-400 bg-accent-500/10 px-3 py-1 rounded-full">模式一</span>
+      <h3 class="text-xl font-serif font-bold text-steel-50 mt-4 mb-1">养肉猪模式（全产业链自营）</h3>
+      <p class="text-accent-400 font-mono text-sm mb-4">代表企业：牧原股份</p>
+      <table class="w-full text-sm">
+        <tr class="border-b border-navy-800"><td class="py-2 text-steel-400 w-28">资产模式</td><td class="py-2 text-steel-200 font-medium">重资产投入</td></tr>
+        <tr class="border-b border-navy-800"><td class="py-2 text-steel-400">出栏规模</td><td class="py-2 text-steel-200 font-medium">7,798万头/年（2025）</td></tr>
+        <tr class="border-b border-navy-800"><td class="py-2 text-steel-400">经营特点</td><td class="py-2 text-steel-200">全产业链自营：饲料→育种→养殖→屠宰</td></tr>
+        <tr class="border-b border-navy-800"><td class="py-2 text-steel-400">技术投入</td><td class="py-2 text-steel-200">AI大模型+智慧养殖，高度自动化</td></tr>
+        <tr><td class="py-2 text-steel-400">增长率</td><td class="py-2 text-steel-200">+8.91% YoY</td></tr>
+      </table>
+    </div>
+    <!-- 模式二 -->
+    <div class="glass-card relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-navy-500/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+      <span class="font-mono text-xs tracking-wider text-blue-400 bg-blue-500/10 px-3 py-1 rounded-full">模式二</span>
+      <h3 class="text-xl font-serif font-bold text-steel-50 mt-4 mb-1">养母猪+孵化模式（合作养殖）</h3>
+      <p class="text-blue-400 font-mono text-sm mb-4">代表企业：双胞胎集团</p>
+      <table class="w-full text-sm">
+        <tr class="border-b border-navy-800"><td class="py-2 text-steel-400 w-28">资产模式</td><td class="py-2 text-steel-200 font-medium">轻资产+合作养殖</td></tr>
+        <tr class="border-b border-navy-800"><td class="py-2 text-steel-400">出栏规模</td><td class="py-2 text-steel-200 font-medium">2,643万头/年（2025）</td></tr>
+        <tr class="border-b border-navy-800"><td class="py-2 text-steel-400">经营特点</td><td class="py-2 text-steel-200">以母猪繁育+仔猪孵化为核心，合作农户育肥</td></tr>
+        <tr class="border-b border-navy-800"><td class="py-2 text-steel-400">扩张速度</td><td class="py-2 text-steel-200">增速行业最快（+49.32% YoY）</td></tr>
+        <tr><td class="py-2 text-steel-400">总部</td><td class="py-2 text-steel-200">南昌，养殖场遍布全国</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+</section>
 
-  <!-- 01 业务概览 -->
-  <div class="section">
-    <div class="sec-head">
-      <span class="sec-num">01</span>
-      <h2 class="sec-title">业务概览与关键数据</h2>
-    </div>
-    <div class="stat-row">
-      <div class="s-card"><div class="lbl">去年业绩（腾讯项目）</div><div class="val">100<small>万+</small></div><div class="desc">项目指定采购</div></div>
-      <div class="s-card"><div class="lbl">Q1 发运金额</div><div class="val">28<small>万</small></div><div class="desc">1月7万 / 2月4万 / 3月17万</div></div>
-    </div>
-    <div class="rel-grid">
-      <div class="rel-card"><span class="badge on"><span class="dot"></span>已合作</span><div class="name">数通部门</div><div class="info">主要合作部门，当前业务订单来源</div></div>
-      <div class="rel-card"><span class="badge off"><span class="dot"></span>未合作</span><div class="name">数能部门</div><div class="info">尚未建立合作关系，存在拓展空间</div></div>
-      <div class="rel-card"><span class="badge wip"><span class="dot"></span>送样中</span><div class="name">科华恒盛科技（深圳子公司）</div><div class="info">充电桩产品已送样，品牌已写入</div></div>
-      <div class="rel-card"><span class="badge off"><span class="dot"></span>未建立</span><div class="name">高层关系</div><div class="info">尚未建立高层对接，建议推动高层拜访</div></div>
+<!-- SECTION 4: 双胞胎集团业务 -->
+<section id="sec-client" class="relative py-24 px-4">
+<div class="max-w-6xl mx-auto">
+  <div class="anim-in">
+    <div class="sec-label">04 / KEY CLIENT</div>
+    <h2 class="sec-title">核心客户<span>双胞胎集团</span>业务进展</h2>
+  </div>
+
+  <!-- 4.1 客户概况 -->
+  <div class="glass-card mb-8 anim-in">
+    <h3 class="font-serif font-bold text-lg text-steel-50 mb-4">4.1 客户概况与当前困境</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div>
+        <div class="text-steel-400 text-xs font-mono mb-1">企业排名</div>
+        <div class="text-steel-100 font-semibold">全国第三 · 出栏2,643万头</div>
+        <div class="text-accent-400 text-sm">同比增长 +49.32%</div>
+      </div>
+      <div>
+        <div class="text-steel-400 text-xs font-mono mb-1">当前猪价</div>
+        <div class="text-red-400 font-semibold">3.2元/斤（20年来最低）</div>
+        <div class="text-red-400/70 text-sm">月亏损 2,000万+ 元</div>
+      </div>
+      <div>
+        <div class="text-steel-400 text-xs font-mono mb-1">影响</div>
+        <div class="text-steel-100 font-semibold">内部资金紧张</div>
+        <div class="text-yellow-400/70 text-sm">改造项目全面暂停</div>
+      </div>
     </div>
   </div>
 
-  <!-- 02 竞争格局 -->
-  <div class="section">
-    <div class="sec-head">
-      <span class="sec-num">02</span>
-      <h2 class="sec-title">竞争格局分析</h2>
-    </div>
-    <div class="compete-grid">
-      <div class="comp-box">
-        <h4>UPS 配电领域</h4>
-        <div class="bar-row"><div class="bar-top"><span class="n">良信</span><span class="t">主供应商</span></div><div class="bar-bg"><div class="bar-fg c-blue" style="width:85%"></div></div></div>
-        <div class="bar-row"><div class="bar-top"><span class="n">正泰</span><span class="t">持续使用</span></div><div class="bar-bg"><div class="bar-fg c-amber" style="width:55%"></div></div></div>
-        <div class="bar-row"><div class="bar-top"><span class="n">德力西</span><span class="t">少量</span></div><div class="bar-bg"><div class="bar-fg c-slate" style="width:20%"></div></div></div>
-        <div class="bar-row"><div class="bar-top"><span class="n">我司</span><span class="t">少量 · 与德力西相当</span></div><div class="bar-bg"><div class="bar-fg c-emerald" style="width:18%"></div></div></div>
+  <!-- 4.2 一季度复盘 -->
+  <div class="glass-card mb-8 anim-in">
+    <h3 class="font-serif font-bold text-lg text-steel-50 mb-4">4.2 一季度业务复盘</h3>
+    <div class="space-y-3 text-sm text-steel-300">
+      <div class="flex gap-3 items-start">
+        <span class="inline-block w-5 h-5 rounded bg-red-500/20 text-red-400 text-xs flex-shrink-0 flex items-center justify-center font-bold">!</span>
+        <p><strong class="text-steel-100">一季度无产出</strong>：核心技术人员遍布全国各养殖场，4月初方返回南昌总部</p>
       </div>
-      <div class="comp-box">
-        <h4>熔断器领域</h4>
-        <div class="bar-row"><div class="bar-top"><span class="n">西熔</span><span class="t">主力供应</span></div><div class="bar-bg"><div class="bar-fg c-rose" style="width:75%"></div></div></div>
-        <div class="bar-row"><div class="bar-top"><span class="n">中熔</span><span class="t">主力供应</span></div><div class="bar-bg"><div class="bar-fg c-violet" style="width:70%"></div></div></div>
-        <div class="bar-row"><div class="bar-top"><span class="n">中贝</span><span class="t">主力供应</span></div><div class="bar-bg"><div class="bar-fg c-amber" style="width:65%"></div></div></div>
-        <div class="bar-row"><div class="bar-top"><span class="n">库柏</span><span class="t">参与供应</span></div><div class="bar-bg"><div class="bar-fg c-slate" style="width:40%"></div></div></div>
-        <div class="bar-row"><div class="bar-top"><span class="n">我司</span><span class="t">参与供应</span></div><div class="bar-bg"><div class="bar-fg c-emerald" style="width:25%"></div></div></div>
+      <div class="flex gap-3 items-start">
+        <span class="inline-block w-5 h-5 rounded bg-red-500/20 text-red-400 text-xs flex-shrink-0 flex items-center justify-center font-bold">!</span>
+        <p><strong class="text-steel-100">方案被竞对模仿</strong>：去年定制的双电源柜方案被正泰获取并模仿，正泰深耕触动较大</p>
       </div>
-    </div>
-    <div class="comp-note">
-      <b>备注：</b>配电以良信为主，正泰一直在用，德力西和我司用量接近。熔断器由西熔、中熔、中贝、库柏、我司等厂家供应，已有部分机型设计定型使用，但3000A以上暂无产品覆盖，目前我司适配机型市场销量不高。
     </div>
   </div>
 
-  <!-- 03 双线推进 -->
-  <div class="section">
-    <div class="sec-head">
-      <span class="sec-num">03</span>
-      <h2 class="sec-title">双线推进 — 配电替换 & 快熔突破</h2>
+  <!-- 4.3 四大项目 -->
+  <div class="anim-in mb-6">
+    <h3 class="font-serif font-bold text-lg text-steel-50 mb-6">4.3 四大在推项目</h3>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+    <!-- P1 -->
+    <div class="proj-card status-paused anim-in">
+      <div class="flex items-center justify-between mb-3">
+        <span class="font-mono text-xs text-steel-400">PROJECT 01</span>
+        <span class="status-badge badge-paused">暂停</span>
+      </div>
+      <h4 class="text-steel-50 font-bold mb-2">高压计量柜（高压成套）</h4>
+      <div class="text-sm text-steel-300 space-y-1.5">
+        <p><span class="text-steel-400">构成：</span>3个电流互感器 + 2个电压互感器 + 天e智慧仪表 + 系统后台</p>
+        <p><span class="text-steel-400">进度：</span>多次交流沟通、方案输出和报价均已完成</p>
+        <p><span class="text-steel-400">需求：</span><strong class="text-accent-400">70台</strong>计量柜体</p>
+        <p><span class="text-steel-400">阻碍：</span>客户资金紧张，项目暂停</p>
+      </div>
     </div>
-    <div class="track-grid">
-      <div class="track-card t-blue">
-        <div class="track-title">
-          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
-          配电产品替换良信
+    <!-- P2 -->
+    <div class="proj-card status-ready anim-in">
+      <div class="flex items-center justify-between mb-3">
+        <span class="font-mono text-xs text-steel-400">PROJECT 02</span>
+        <span class="status-badge badge-ready">待启动</span>
+      </div>
+      <h4 class="text-steel-50 font-bold mb-2">养猪场内部补偿柜改造</h4>
+      <div class="text-sm text-steel-300 space-y-1.5">
+        <p><span class="text-steel-400">需求金额：</span><strong class="text-accent-400">~300万</strong></p>
+        <p><span class="text-steel-400">进度：</span>已拉通产品经理，初步方案就绪</p>
+        <p><span class="text-steel-400">机会点：</span>正泰电容反复出现质量问题（环境潮湿恶劣）</p>
+        <p><span class="text-steel-400">状态：</span>方案已就绪，待客户资金恢复</p>
+      </div>
+    </div>
+    <!-- P3 -->
+    <div class="proj-card status-testing anim-in">
+      <div class="flex items-center justify-between mb-3">
+        <span class="font-mono text-xs text-steel-400">PROJECT 03</span>
+        <span class="status-badge badge-testing">试用中</span>
+      </div>
+      <h4 class="text-steel-50 font-bold mb-2">无线测温板块</h4>
+      <div class="text-sm text-steel-300 space-y-1.5">
+        <p><span class="text-steel-400">进度：</span>2月已开始试用天e无线测温传感器</p>
+        <p><span class="text-steel-400">条件：</span>需产品测试稳定 <strong class="text-blue-400">4个月+</strong> 且效果良好</p>
+        <p><span class="text-steel-400">预期：</span>Q3-Q4可能批量采购</p>
+      </div>
+    </div>
+    <!-- P4 -->
+    <div class="proj-card status-delayed anim-in">
+      <div class="flex items-center justify-between mb-3">
+        <span class="font-mono text-xs text-steel-400">PROJECT 04</span>
+        <span class="status-badge badge-delayed">暂缓</span>
+      </div>
+      <h4 class="text-steel-50 font-bold mb-2">天e智慧微断</h4>
+      <div class="text-sm text-steel-300 space-y-1.5">
+        <p><span class="text-steel-400">进度：</span>去年已试用，出具有益测试报告，试用期4-6个月</p>
+        <p><span class="text-steel-400">背景：</span>双胞胎智慧化改造，正泰仪表方案混乱、接线杂乱</p>
+        <p><span class="text-steel-400">阻碍：</span>公司持续亏损，改造预算推后</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4.4 新机会 -->
+  <div class="proj-card status-new anim-in">
+    <div class="flex items-center justify-between mb-3">
+      <span class="font-mono text-xs text-steel-400">NEW OPPORTUNITY</span>
+      <span class="status-badge badge-new">新发现</span>
+    </div>
+    <h4 class="text-steel-50 font-bold mb-2">恒温控制智慧项目</h4>
+    <div class="text-sm text-steel-300 space-y-1.5">
+      <p>刚出生小猪需恒定温度保证存活率，通过<strong class="text-green-400">智慧开关 + 温度传感器 + 后台软件</strong>配合实现自动恒温控制。</p>
+      <p>Q1已有相关使用案例，可作为切入点持续推动。</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- SECTION 5: 配电体系分析 -->
+<section id="sec-power" class="relative py-24 px-4">
+<div class="max-w-6xl mx-auto">
+  <div class="anim-in">
+    <div class="sec-label">05 / POWER DISTRIBUTION</div>
+    <h2 class="sec-title">养猪场配电体系<span>深度分析</span></h2>
+  </div>
+
+  <!-- 5.1 采购特点 & 场区管理 -->
+  <div class="glass-card mb-8 anim-in">
+    <h3 class="font-serif font-bold text-lg text-steel-50 mb-4">5.1 采购决策特点</h3>
+    <div class="text-sm text-steel-300">
+      <div class="flex gap-3">
+        <div class="w-10 h-10 rounded-lg bg-accent-500/10 flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+        <div><strong class="text-steel-100">采购话语权极大</strong><br>推广会都必须采购牵头，技术侧影响力有限</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="glass-card mb-8 anim-in">
+    <h3 class="font-serif font-bold text-lg text-steel-50 mb-4">5.2 场区管理特点</h3>
+    <div class="text-sm text-steel-300">
+      <div class="flex gap-3">
+        <div class="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></div>
+        <div>
+          <strong class="text-steel-100">极其严苛的封闭式管理</strong><br>
+          大型养殖场实行全封闭管理，对外来人员和物品有严格的生物安全管控：
+          <ul class="mt-2 space-y-1 text-steel-400 list-none">
+            <li>&#x2022; 进入厂区需进行核酸检测</li>
+            <li>&#x2022; 食物必须煮熟后才能带入</li>
+            <li>&#x2022; 外来人员须经过 3-4 次消毒清洗</li>
+            <li>&#x2022; 禁止携带任何首饰，香烟须泡消毒水</li>
+          </ul>
+          <p class="mt-2 text-accent-300/80">影响：现场勘察、设备安装和售后服务的沟通成本与准入门槛较高，需提前规划拜访流程。</p>
         </div>
-        <div class="track-sub">UPS配电领域 · 推进中</div>
-        <ul class="track-list">
-          <li>目标替换良信作为主供应商的配电产品份额</li>
-          <li>目前正在推动客户切换流程</li>
-          <li>预计替换周期 <b>预计到下半年</b></li>
-          <li>替换完成后可显著提升我司在配电领域份额</li>
-        </ul>
-        <span class="track-status pushing"><span class="dot" style="width:5px;height:5px;border-radius:50%;background:currentColor"></span>推进中 · 预计到下半年</span>
       </div>
-      <div class="track-card t-amber">
-        <div class="track-title">
-          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
-          快熔产品替换导入
+    </div>
+  </div>
+
+  <!-- 5.2 配电板块构成 -->
+  <div class="glass-card mb-8 anim-in">
+    <h3 class="font-serif font-bold text-lg text-steel-50 mb-5">5.3 配电板块构成</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-navy-900/50 rounded-lg p-5 border border-navy-800">
+        <div class="font-mono text-xs text-accent-400 mb-2">RESIDENTIAL / 居民用电</div>
+        <p class="text-sm text-steel-300">单批次5,000头养猪场内部约<strong class="text-steel-100">100人</strong>，年出栏2-3批次生猪</p>
+      </div>
+      <div class="bg-navy-900/50 rounded-lg p-5 border border-navy-800">
+        <div class="font-mono text-xs text-accent-400 mb-2">PRODUCTION / 养猪用电</div>
+        <div class="text-sm text-steel-300 space-y-2">
+          <p>配电房：<span class="text-steel-100">柴发、补偿、双电源切换</span></p>
+          <p>核心设备：<span class="text-steel-100">箱变、柴发、补偿柜</span></p>
+          <p>环控箱：<span class="text-steel-100">温控、风机保护（核心）</span></p>
+          <p>核心元器件：<span class="text-accent-300">环控控制器 + 变频器（西门子）</span></p>
         </div>
-        <div class="track-sub">熔断器领域 · 测试中</div>
-        <ul class="track-list">
-          <li>中熔、中贝快熔因银价上涨<b>大幅涨价（部分翻倍）</b></li>
-        </ul>
-        <span class="track-status testing"><span class="dot" style="width:5px;height:5px;border-radius:50%;background:currentColor"></span>客户测试中 · 暂无结果</span>
       </div>
     </div>
   </div>
 
-  <!-- 04 时间线 -->
-  <div class="section">
-    <div class="sec-head">
-      <span class="sec-num">04</span>
-      <h2 class="sec-title">业务推进时间线</h2>
-    </div>
-    <div class="card-wrap">
-      <div class="tl">
-        <div class="tl-row"><div class="tl-dot"></div><div class="tl-time">2025年</div><div class="tl-ttl">腾讯项目指定采购</div><div class="tl-txt">通过腾讯项目指定，实现科华数据约100万+订单，建立初步合作关系。</div></div>
-        <div class="tl-row"><div class="tl-dot"></div><div class="tl-time">2026年 Q1</div><div class="tl-ttl">常规产品持续供货</div><div class="tl-txt">一季度发运28万（1月7万、2月4万、3月17万），主要供货 RT16Z (630A为主)、TGM3DC、TGHG。部分机型已设计定型使用我司产品，设计定型后不会更换。</div></div>
-        <div class="tl-row"><div class="tl-dot"></div><div class="tl-time">2026年 Q1</div><div class="tl-ttl">子公司充电桩送样</div><div class="tl-txt">深圳科华恒盛科技有限公司，充电桩产品完成送样，品牌已写入客户体系。</div></div>
-        <div class="tl-row hi"><div class="tl-dot"></div><div class="tl-time">2026年 3月</div><div class="tl-ttl">RT16Z 涨价沟通 & 快熔机会发现</div><div class="tl-txt">带产品经理谢伟赴科华沟通 RT16Z 涨价事宜。中熔、中贝常规熔断器未涨价，但快熔因银价上涨大幅提价（部分翻倍）。我司策略：常规不涨价，推动快熔导入。</div></div>
-        <div class="tl-row hi"><div class="tl-dot"></div><div class="tl-time">当前推进中</div><div class="tl-ttl">双线并行：配电替换 + 快熔送样</div><div class="tl-txt">配电产品推动替换良信（周期预计到下半年）；快熔 TGRS3Z / TGR3Z 已送样客户测试中，暂无结果。同时关注中熔、中贝等竞品出新方案降本动态。</div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 05 核心机会 -->
-  <div class="section">
-    <div class="sec-head">
-      <span class="sec-num">05</span>
-      <h2 class="sec-title">核心机会 — 快熔产品突破</h2>
-    </div>
-    <div class="opp">
-      <div class="opp-head">
-        <div class="opp-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-        <h3>快熔市场窗口期 — 竞品涨价带来的战略性机会</h3>
-      </div>
-      <div class="opp-nums">
-        <div class="opp-n"><div class="v">4000万</div><div class="l">快熔年度市场金额</div></div>
-        <div class="opp-n"><div class="v">36万套</div><div class="l">送样目标年用量</div></div>
-        <div class="opp-n"><div class="v">~400万</div><div class="l">对应年金额</div></div>
-      </div>
-      <div class="opp-pts">
-        <div class="opp-pt"><span class="bul"></span><div class="tx"><b>窗口期：</b>竞品因银价上涨大幅提价，我司常规产品保持不涨价，以此推动快熔导入</div></div>
-        <div class="opp-pt"><span class="bul"></span><div class="tx"><b>切入策略：</b>先从数据中心和电源板块验证，储能板块暂不涉及</div></div>
-        <div class="opp-pt"><span class="bul"></span><div class="tx"><b>竞品动态：</b>中熔、中贝正出新方案降本，需加速推进</div></div>
-      </div>
-      </div>
-    </div>
-
-  <!-- 06 产品明细 -->
-  <div class="section">
-    <div class="sec-head">
-      <span class="sec-num">06</span>
-      <h2 class="sec-title">产品明细</h2>
-    </div>
-    <div class="card-wrap">
-      <table class="tbl">
-        <thead><tr><th>产品型号</th><th>类别</th><th>状态</th><th>备注</th></tr></thead>
+  <!-- 5.3 痛点与机会矩阵 -->
+  <div class="anim-in">
+    <h3 class="font-serif font-bold text-lg text-steel-50 mb-5">5.4 八大痛点与机会矩阵</h3>
+    <div class="chart-wrap overflow-x-auto">
+      <table class="pain-table min-w-[700px]">
+        <thead>
+          <tr>
+            <th style="width:5%">#</th>
+            <th style="width:28%">行业痛点</th>
+            <th style="width:35%">机会分析</th>
+            <th style="width:32%">我方方案 / 状态</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr><td class="td-name">RT16Z（630A为主）</td><td>常规熔断器</td><td><span class="p-mid">供货中</span></td><td>Q1 主要供货，涨价沟通中</td></tr>
-          <tr><td class="td-name">TGM3DC</td><td>常规产品</td><td><span class="p-mid">供货中</span></td><td>设计定型机型，持续出货</td></tr>
-          <tr><td class="td-name">TGHG</td><td>常规产品</td><td><span class="p-mid">供货中</span></td><td>设计定型机型，持续出货</td></tr>
-          <tr><td class="td-name">TGRS3Z-100 CQ 100A</td><td>快熔</td><td><span class="p-high">测试中</span></td><td>数据中心电源模块，暂无结果</td></tr>
-          <tr><td class="td-name">TGR3Z-200CQ 160A</td><td>快熔</td><td><span class="p-high">测试中</span></td><td>数据中心电源模块，暂无结果</td></tr>
-          <tr><td class="td-name">配电产品</td><td>UPS配电</td><td><span class="p-high">替换推进中</span></td><td>替换良信，周期预计到下半年</td></tr>
-          <tr><td class="td-name">充电桩产品</td><td>充电桩配套</td><td><span class="p-low">品牌写入</span></td><td>子公司科华恒盛，已完成送样</td></tr>
+          <tr>
+            <td class="font-mono text-accent-400">01</td>
+            <td>全国养猪场设备偏老旧，急需改造升级</td>
+            <td>全面改造升级机会，存量市场巨大</td>
+            <td><span class="status-badge badge-new">高潜力</span> 全产品线机会</td>
+          </tr>
+          <tr>
+            <td class="font-mono text-accent-400">02</td>
+            <td>变频器要求极高（西门子级别）</td>
+            <td>环控核心，技术门槛高</td>
+            <td><span class="status-badge badge-paused">暂无替代</span> 需合作伙伴</td>
+          </tr>
+          <tr>
+            <td class="font-mono text-accent-400">03</td>
+            <td>电机故障率较高</td>
+            <td>智慧产品监控电机需求</td>
+            <td><span class="status-badge badge-paused">暂无法满足</span> 需研发</td>
+          </tr>
+          <tr>
+            <td class="font-mono text-accent-400">04</td>
+            <td>补偿类产品故障率高（环境恶劣）</td>
+            <td>智能电容替代机会</td>
+            <td><span class="status-badge badge-ready">重点推动</span> 解决恶劣环境寿命</td>
+          </tr>
+          <tr>
+            <td class="font-mono text-accent-400">05</td>
+            <td>电费消耗大，错收乱收（年损数百万）</td>
+            <td>高压计量成套机会</td>
+            <td><span class="status-badge badge-ready">方案就绪</span> 70台计量柜</td>
+          </tr>
+          <tr>
+            <td class="font-mono text-accent-400">06</td>
+            <td>运维难度大（手动分合闸）</td>
+            <td>双电源柜+延时重合闸</td>
+            <td><span class="status-badge badge-ready">方案就绪</span> 正泰德力西已有样板房</td>
+          </tr>
+          <tr>
+            <td class="font-mono text-accent-400">07</td>
+            <td>系统混乱多且杂（安科瑞/正泰/测温）</td>
+            <td>智慧微断统一方案</td>
+            <td><span class="status-badge badge-delayed">待解决</span> 需对接报警点</td>
+          </tr>
+          <tr>
+            <td class="font-mono text-accent-400">08</td>
+            <td>谐波大（变频器+补偿无电抗）</td>
+            <td>谐波治理市场</td>
+            <td><span class="status-badge badge-testing">调研中</span> 端子发热严重</td>
+          </tr>
         </tbody>
       </table>
     </div>
   </div>
-
 </div>
+</section>
+
+<!-- SECTION 6: 竞争格局 -->
+<section id="sec-compete" class="relative py-24 px-4">
+<div class="max-w-6xl mx-auto">
+  <div class="anim-in">
+    <div class="sec-label">06 / COMPETITIVE LANDSCAPE</div>
+    <h2 class="sec-title">竞争格局<span>分析</span></h2>
+  </div>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <!-- 饼图 -->
+    <div class="chart-wrap anim-in">
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="text-steel-200 font-semibold text-sm">双胞胎集团配电供应商份额</h3>
+        <span class="font-mono text-xs text-steel-500">单位：万元</span>
+      </div>
+      <div id="chart-compete" style="height:340px"></div>
+    </div>
+    <!-- 正泰核心产品 -->
+    <div class="glass-card anim-in">
+      <h3 class="font-serif font-bold text-lg text-steel-50 mb-4">正泰核心产品型号</h3>
+      <div class="flex flex-wrap gap-2 mb-6">
+        <span class="bg-navy-800 text-steel-200 px-3 py-1.5 rounded-lg font-mono text-sm">NXM</span>
+        <span class="bg-navy-800 text-steel-200 px-3 py-1.5 rounded-lg font-mono text-sm">NXC</span>
+        <span class="bg-navy-800 text-steel-200 px-3 py-1.5 rounded-lg font-mono text-sm">NXB</span>
+        <span class="bg-navy-800 text-steel-200 px-3 py-1.5 rounded-lg font-mono text-sm">NCH8</span>
+        <span class="bg-navy-800 text-steel-200 px-3 py-1.5 rounded-lg font-mono text-sm">NXJ</span>
+      </div>
+      <div class="text-sm text-steel-300 space-y-2">
+        <p class="text-steel-400 font-mono text-xs mb-2">产品参数要求</p>
+        <p>无特殊参数要求，均为<strong class="text-steel-100">常规产品</strong></p>
+        <p>价格内卷程度一般，正泰德力西<strong class="text-steel-100">价格体系维护较好</strong></p>
+        <p>近几年<strong class="text-accent-300">降本需求明显</strong>，需入品牌库方可供货</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 友商策略 -->
+  <div class="anim-in">
+    <h3 class="font-serif font-bold text-lg text-steel-50 mb-5">友商策略对比</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div class="glass-card border-l-4 border-l-red-500">
+        <h4 class="text-red-400 font-bold mb-3">正泰电器</h4>
+        <ul class="text-sm text-steel-300 space-y-2 list-none">
+          <li>&#x2022; 多年前即开始重点推动养猪行业</li>
+          <li>&#x2022; 在南昌举行过超大型推广会，邀约当地所有相关公司</li>
+          <li>&#x2022; <strong class="text-steel-100">与牧原联合成立成套厂</strong>，高度绑定</li>
+          <li>&#x2022; 在养猪芯片领域有相关产品布局</li>
+          <li>&#x2022; 双胞胎内部单元器件份额约<strong class="text-accent-400">4,000万/年</strong></li>
+        </ul>
+      </div>
+      <div class="glass-card border-l-4 border-l-blue-500">
+        <h4 class="text-blue-400 font-bold mb-3">德力西</h4>
+        <ul class="text-sm text-steel-300 space-y-2 list-none">
+          <li>&#x2022; 设有<strong class="text-steel-100">专攻畜牧业部门</strong></li>
+          <li>&#x2022; 每次山东畜牧业展会均有参展</li>
+          <li>&#x2022; 以<strong class="text-accent-300">价格优势</strong>切入市场</li>
+          <li>&#x2022; 双胞胎内部份额约<strong class="text-accent-400">1,000万/年</strong></li>
+          <li>&#x2022; 已在增鑫科技低价抢走风机配套市场</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- SECTION 7: 上下游厂商 -->
+<section id="sec-supply" class="relative py-24 px-4">
+<div class="max-w-6xl mx-auto">
+  <div class="anim-in">
+    <div class="sec-label">07 / SUPPLY CHAIN</div>
+    <h2 class="sec-title">上下游及<span>配套厂商</span></h2>
+    <p class="sec-desc mb-8">畜牧业机械设备以新建厂房配套为核心，技术要求较高。以下为已接触的关键配套厂商。</p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-5 anim-in">
+    <div class="glass-card">
+      <div class="font-mono text-xs text-accent-400 mb-3">成套配套</div>
+      <h4 class="text-steel-50 font-bold text-lg mb-2">江西增鑫科技</h4>
+      <p class="text-sm text-steel-300 mb-3">双胞胎风机部分控制成套厂，也提供风机相关配套</p>
+      <div class="text-sm text-steel-400 space-y-1">
+        <p>&#x2714; 去年邀约进厂参观</p>
+        <p class="text-red-400/80">&#x2718; 德力西低价抢走相关市场</p>
+      </div>
+    </div>
+    <div class="glass-card">
+      <div class="font-mono text-xs text-accent-400 mb-3">饲料设备</div>
+      <h4 class="text-steel-50 font-bold text-lg mb-2">江西联大高科</h4>
+      <p class="text-sm text-steel-300 mb-3">饲料设备厂商，甲方话语权较大</p>
+      <div class="text-sm text-steel-400 space-y-1">
+        <p>&#x2714; 已供货TGW45产品</p>
+        <p>&#x2714; 设备以施耐德高端系列为主</p>
+        <p>国产核心：正泰、德力西</p>
+      </div>
+    </div>
+    <div class="glass-card">
+      <div class="font-mono text-xs text-green-400 mb-3">新发现机会</div>
+      <h4 class="text-steel-50 font-bold text-lg mb-2">福州傲龙生物科技</h4>
+      <p class="text-sm text-steel-300 mb-3">已传递福建销售何超阳报备客户情况</p>
+      <div class="text-sm text-steel-400 space-y-1">
+        <p>&#x2714; 已获取相关资源</p>
+        <p>&#x2714; 通过傲龙指定可提升联大机会</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- SECTION 8: 江西地域分布 -->
+<section id="sec-geo" class="relative py-24 px-4">
+<div class="max-w-6xl mx-auto">
+  <div class="anim-in">
+    <div class="sec-label">08 / GEOGRAPHY</div>
+    <h2 class="sec-title">江西省畜牧业<span>地域分布</span></h2>
+    <p class="sec-desc mb-8">江西省拥有32个生猪养殖大县，全省生猪屠宰企业226家（2022年），年屠宰产能2,811万头。产业集中度持续提升。</p>
+  </div>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10 anim-in">
+    <div class="stat-card"><div class="stat-num">226<span class="text-lg">家</span></div><div class="stat-label">屠宰企业（2022）</div></div>
+    <div class="stat-card"><div class="stat-num">2811<span class="text-lg">万头</span></div><div class="stat-label">年屠宰产能</div></div>
+    <div class="stat-card"><div class="stat-num">70<span class="text-lg">%</span></div><div class="stat-label">15万头+企业产能占比</div></div>
+    <div class="stat-card"><div class="stat-num">5<span class="text-lg">家</span></div><div class="stat-label">百万头级屠宰企业</div></div>
+  </div>
+  <div class="chart-wrap anim-in">
+    <div class="flex items-center justify-between mb-2">
+      <h3 class="text-steel-200 font-semibold text-sm">江西省各地市生猪产业规模分布（估算）</h3>
+      <span class="font-mono text-xs text-steel-500">数据来源：江西省农业农村厅</span>
+    </div>
+    <div id="chart-geo" class="chart-h"></div>
+  </div>
+  <div class="glass-card mt-6 anim-in">
+    <h4 class="text-accent-400 font-mono text-xs tracking-wider mb-3">▎屠宰产业集中度</h4>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-steel-300">
+      <div><strong class="text-steel-100">年屠宰15万头+</strong><br>57家企业，占产能70%</div>
+      <div><strong class="text-steel-100">年屠宰50万头+</strong><br>15家企业，占产能40%</div>
+      <div><strong class="text-steel-100">年屠宰100万头+</strong><br>5家企业，占产能18%</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- SECTION 9: 行业建议 -->
+<section id="sec-advice" class="relative py-24 px-4">
+<div class="max-w-6xl mx-auto">
+  <div class="anim-in">
+    <div class="sec-label">09 / RECOMMENDATIONS</div>
+    <h2 class="sec-title">行业发展<span>建议</span></h2>
+    <p class="sec-desc mb-10">基于本次调研分析，提出以下七项核心建议，助力公司在养猪行业配电市场实现突破。</p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 anim-in">
+    <div class="advice-card">
+      <div class="advice-num">01</div>
+      <h4 class="text-steel-50 font-bold mt-2 mb-2">重点关注养猪行业</h4>
+      <p class="text-sm text-steel-300">市场体量巨大，与天正现有产品高度匹配，是公司中长期增长的重要行业方向。</p>
+    </div>
+    <div class="advice-card">
+      <div class="advice-num">02</div>
+      <h4 class="text-steel-50 font-bold mt-2 mb-2">增加行业展会参与</h4>
+      <p class="text-sm text-steel-300">积极参与山东畜牧业展会等行业盛会，提升品牌在畜牧行业的知名度和影响力。</p>
+    </div>
+    <div class="advice-card">
+      <div class="advice-num">03</div>
+      <h4 class="text-steel-50 font-bold mt-2 mb-2">重点开拓改造市场</h4>
+      <p class="text-sm text-steel-300">市场价格维护较好，存量改造需求大，正泰德力西价格体系稳定，竞争环境可控。</p>
+    </div>
+    <div class="advice-card">
+      <div class="advice-num">04</div>
+      <h4 class="text-steel-50 font-bold mt-2 mb-2">邀约行业专家</h4>
+      <p class="text-sm text-steel-300">邀请养殖行业专家入公司讲解行业特性，帮助团队深入理解行业需求与痛点。</p>
+    </div>
+    <div class="advice-card">
+      <div class="advice-num">05</div>
+      <h4 class="text-steel-50 font-bold mt-2 mb-2">研发环控控制器产品</h4>
+      <p class="text-sm text-steel-300">环控控制器是养猪场配电的核心，填补此空白将大幅增强行业竞争力。</p>
+    </div>
+    <div class="advice-card">
+      <div class="advice-num">06</div>
+      <h4 class="text-steel-50 font-bold mt-2 mb-2">聚焦稳定增长</h4>
+      <p class="text-sm text-steel-300">猪肉需求刚性稳定，养猪行业具备持续性，符合公司稳定发展战略需求。</p>
+    </div>
+    <div class="advice-card md:col-span-2 lg:col-span-1">
+      <div class="advice-num">07</div>
+      <h4 class="text-steel-50 font-bold mt-2 mb-2">开展地域专项调研</h4>
+      <p class="text-sm text-steel-300">增加江西省畜牧业市场和地域分布的深度调研，建立区域客户画像和市场地图。</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- SECTION 10: 策略启示 -->
+<section id="sec-strategy" class="relative py-24 px-4">
+<div class="max-w-6xl mx-auto">
+  <div class="anim-in">
+    <div class="sec-label">10 / STRATEGIC INSIGHTS</div>
+    <h2 class="sec-title">行业头部效应与<span>策略启示</span></h2>
+  </div>
+  <div class="glass-card mb-8 anim-in">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div>
+        <h3 class="font-serif font-bold text-lg text-steel-50 mb-4">头部效应分析</h3>
+        <div class="text-sm text-steel-300 space-y-3">
+          <div class="flex gap-3">
+            <span class="text-accent-400 font-mono font-bold">1</span>
+            <p>双胞胎大量技术人员来自牧原，方案体系借鉴牧原模式，<strong class="text-steel-100">头部效应极为明显</strong></p>
+          </div>
+          <div class="flex gap-3">
+            <span class="text-accent-400 font-mono font-bold">2</span>
+            <p>养猪行业各企业<strong class="text-steel-100">高度追随头部企业做法</strong>，突破一家标杆即可辐射全行业</p>
+          </div>
+          <div class="flex gap-3">
+            <span class="text-accent-400 font-mono font-bold">3</span>
+            <p>正泰已与牧原联合成立成套厂实现深度绑定，<strong class="text-red-400">值得高度警惕</strong></p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3 class="font-serif font-bold text-lg text-steel-50 mb-4">战略路径建议</h3>
+        <div class="relative pl-6 border-l-2 border-accent-500/30 text-sm text-steel-300 space-y-6">
+          <div class="relative">
+            <div class="absolute -left-[1.65rem] top-0 w-3 h-3 rounded-full bg-accent-500 border-2 border-navy-950"></div>
+            <p class="font-semibold text-steel-100">第一步：稳固双胞胎</p>
+            <p class="text-steel-400 mt-1">利用4月技术人员返回南昌的窗口期，集中推进四大项目，尤其是补偿柜和测温板块</p>
+          </div>
+          <div class="relative">
+            <div class="absolute -left-[1.65rem] top-0 w-3 h-3 rounded-full bg-accent-400 border-2 border-navy-950"></div>
+            <p class="font-semibold text-steel-100">第二步：建立标杆案例</p>
+            <p class="text-steel-400 mt-1">在双胞胎内部形成标杆项目和测试数据，为行业推广奠定基础</p>
+          </div>
+          <div class="relative">
+            <div class="absolute -left-[1.65rem] top-0 w-3 h-3 rounded-full bg-accent-300 border-2 border-navy-950"></div>
+            <p class="font-semibold text-steel-100">第三步：行业辐射</p>
+            <p class="text-steel-400 mt-1">以双胞胎为标杆，借助行业展会和技术交流，向其他养殖企业快速复制推广</p>
+          </div>
+          <div class="relative">
+            <div class="absolute -left-[1.65rem] top-0 w-3 h-3 rounded-full bg-accent-200 border-2 border-navy-950"></div>
+            <p class="font-semibold text-steel-100">第四步：生态布局</p>
+            <p class="text-steel-400 mt-1">逐步完善环控控制器等核心产品研发，构建养殖配电完整解决方案</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
 
 <!-- FOOTER -->
-<div class="footer">
-  <div class="brand">天正电气 TENGEN</div>
-  <p>科华数据价值客户业务汇报 · 2026年4月 · 内部资料</p>
-</div>
+<footer class="py-12 text-center text-steel-500 text-sm border-t border-navy-800">
+<p class="mb-2">汇报人：闽赣区域售前技术 <strong class="text-steel-300">鲁三江</strong></p>
+<p>江西畜牧业（养猪）行业调研报告 &copy; 2026年4月 &middot; 内部资料 · 请勿外传</p>
+</footer>
 
+<script>
+// ===== GSAP & ScrollTrigger =====
+gsap.registerPlugin(ScrollTrigger);
+
+// Reading progress bar
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+});
+
+// Animate sections on scroll
+document.querySelectorAll('.anim-in').forEach(el => {
+  gsap.fromTo(el, { opacity: 0, y: 40 }, {
+    opacity: 1, y: 0, duration: 0.8, ease: 'power2.out',
+    scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+  });
+});
+
+// TOC active dot
+const tocLinks = document.querySelectorAll('#toc a');
+const sections = ['hero','sec-market','sec-price','sec-models','sec-client','sec-power','sec-compete','sec-supply','sec-geo','sec-advice','sec-strategy'];
+sections.forEach((id, i) => {
+  ScrollTrigger.create({
+    trigger: '#' + id, start: 'top center', end: 'bottom center',
+    onEnter: () => { tocLinks.forEach(a => a.classList.remove('active')); if(tocLinks[i]) tocLinks[i].classList.add('active'); },
+    onEnterBack: () => { tocLinks.forEach(a => a.classList.remove('active')); if(tocLinks[i]) tocLinks[i].classList.add('active'); }
+  });
+});
+
+// ===== ECharts Common =====
+const COLORS = { orange: '#fb923c', deepOrange: '#ea580c', blue: '#3b82f6', navy: '#1e3a5f', steel: '#9fb3c8', red: '#ef4444', green: '#22c55e', yellow: '#facc15', purple: '#a78bfa' };
+const chartFont = 'Inter, system-ui, sans-serif';
+function baseTooltip() {
+  return {
+    backgroundColor: 'rgba(6,14,36,0.92)', borderColor: 'rgba(98,125,152,0.2)', borderWidth: 1,
+    textStyle: { color: '#d9e2ec', fontFamily: chartFont, fontSize: 13 },
+    padding: [12, 16]
+  };
+}
+
+// ===== Chart 1: TOP10 Bar =====
+(function(){
+  const el = document.getElementById('chart-top10');
+  if(!el) return;
+  const chart = echarts.init(el, null, { renderer: 'svg' });
+  const names = ['牧原股份','温氏股份','双胞胎','新希望','正大集团','德康农牧','正邦科技(已被双胞胎收购)','中粮家佳康','天邦食品','海大集团'];
+  const vals = [7798, 4048, 2643, 1852, 1520, 1032, 854, 623, 580, 520];
+  const growths = ['+8.9%','+34.1%','+49.3%','+12.5%','+15.8%','+28.6%','+105.8%','+69.4%','+18.2%','+22.1%'];
+  chart.setOption({
+    tooltip: Object.assign(baseTooltip(), {
+      trigger: 'axis', axisPointer: { type: 'shadow', shadowStyle: { color: 'rgba(249,115,22,0.04)' } },
+      formatter: p => { const d = p[0]; return '<div style="font-weight:600;margin-bottom:4px">' + d.name + '</div><div style="color:#fb923c;font-size:18px;font-family:JetBrains Mono">' + d.value.toLocaleString() + ' <span style="font-size:12px;color:#9fb3c8">万头</span></div><div style="color:#4ade80;font-size:12px;margin-top:2px">同比 ' + growths[d.dataIndex] + '</div>'; }
+    }),
+    grid: { left: 100, right: 60, top: 20, bottom: 30 },
+    xAxis: { type: 'value', splitLine: { lineStyle: { color: 'rgba(98,125,152,0.08)' } }, axisLabel: { color: '#627d98', fontFamily: chartFont, fontSize: 11 } },
+    yAxis: { type: 'category', data: names.reverse(), axisLabel: { color: '#bcccdc', fontFamily: chartFont, fontSize: 12 }, axisLine: { show: false }, axisTick: { show: false } },
+    series: [{
+      type: 'bar', data: vals.reverse(), barWidth: 22,
+      itemStyle: { borderRadius: [0, 6, 6, 0], color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{ offset: 0, color: '#305197' }, { offset: 1, color: '#fb923c' }]) },
+      emphasis: { itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{ offset: 0, color: '#3b619f' }, { offset: 1, color: '#fdba74' }]) } },
+      label: { show: true, position: 'right', color: '#fb923c', fontFamily: '"JetBrains Mono"', fontSize: 12, formatter: p => p.value.toLocaleString() },
+      animationDelay: idx => idx * 80
+    }],
+    animationEasing: 'cubicOut', animationDuration: 1200
+  });
+  window.addEventListener('resize', () => chart.resize());
+})();
+
+// ===== Chart 2: Price Trend =====
+(function(){
+  const el = document.getElementById('chart-price');
+  if(!el) return;
+  const chart = echarts.init(el, null, { renderer: 'svg' });
+  const months = [];
+  const prices = [];
+  // Simulated monthly data 2020-01 to 2026-03
+  const raw = [
+    36.0,35.5,28.0,26.0,27.5,30.0,36.5,37.0,36.5,33.0,30.0,29.0, // 2020
+    27.0,25.0,23.0,22.0,18.0,15.5,14.0,14.5,12.5,12.0,14.0,16.0, // 2021
+    15.0,14.5,13.0,14.0,15.0,16.5,21.0,22.0,23.5,24.0,24.5,22.0, // 2022
+    15.5,15.0,14.0,14.5,14.5,14.0,14.2,16.0,16.5,15.5,14.5,14.0, // 2023
+    14.5,13.5,15.0,15.0,14.5,17.0,19.0,20.5,19.5,17.0,16.0,15.5, // 2024
+    15.0,14.5,14.0,14.5,15.0,17.0,18.5,17.0,16.5,15.0,13.5,12.5, // 2025
+    11.5,10.5,9.71 // 2026 Q1
+  ];
+  const startY = 2020;
+  raw.forEach((v, i) => {
+    const y = startY + Math.floor(i / 12);
+    const m = (i % 12) + 1;
+    months.push(y + '-' + String(m).padStart(2, '0'));
+    prices.push(v);
+  });
+  chart.setOption({
+    tooltip: Object.assign(baseTooltip(), {
+      trigger: 'axis',
+      formatter: p => { const d = p[0]; return '<div style="font-weight:600;margin-bottom:4px">' + d.name + '</div><div style="color:#fb923c;font-size:20px;font-family:JetBrains Mono">' + d.value.toFixed(2) + ' <span style="font-size:12px;color:#9fb3c8">元/公斤</span></div>'; }
+    }),
+    grid: { left: 55, right: 30, top: 40, bottom: 40 },
+    xAxis: { type: 'category', data: months, axisLabel: { color: '#627d98', fontFamily: chartFont, fontSize: 10, interval: 5, rotate: 30 }, axisLine: { lineStyle: { color: 'rgba(98,125,152,0.15)' } }, axisTick: { show: false } },
+    yAxis: { type: 'value', min: 8, splitLine: { lineStyle: { color: 'rgba(98,125,152,0.08)' } }, axisLabel: { color: '#627d98', fontFamily: chartFont, fontSize: 11 } },
+    series: [{
+      type: 'line', data: prices, smooth: 0.3, symbol: 'none', lineStyle: { width: 2.5, color: COLORS.orange },
+      areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(249,115,22,0.25)' }, { offset: 1, color: 'rgba(249,115,22,0)' }]) },
+      markPoint: {
+        symbol: 'circle', symbolSize: 8,
+        data: [
+          { name: '历史高点', coord: ['2020-01', 36.0], itemStyle: { color: COLORS.red } },
+          { name: '历史低点', coord: ['2026-03', 9.71], itemStyle: { color: COLORS.red } }
+        ],
+        label: { show: true, color: '#f87171', fontSize: 10, fontFamily: '"JetBrains Mono"', formatter: p => p.value + '元/kg', position: 'top' }
+      },
+      markLine: {
+        silent: true,
+        data: [{ yAxis: 14, label: { color: '#627d98', fontSize: 10, formatter: '盈亏线 ~14元/kg' }, lineStyle: { color: 'rgba(239,68,68,0.3)', type: 'dashed' } }]
+      }
+    }],
+    animationDuration: 1500, animationEasing: 'cubicOut'
+  });
+  window.addEventListener('resize', () => chart.resize());
+})();
+
+// ===== Chart 3: Competition Pie =====
+(function(){
+  const el = document.getElementById('chart-compete');
+  if(!el) return;
+  const chart = echarts.init(el, null, { renderer: 'svg' });
+  chart.setOption({
+    tooltip: Object.assign(baseTooltip(), { trigger: 'item', formatter: p => '<div style="font-weight:600">' + p.name + '</div><div style="color:#fb923c;font-size:18px;font-family:JetBrains Mono;margin-top:4px">' + p.value.toLocaleString() + ' <span style="font-size:12px;color:#9fb3c8">万元</span></div><div style="color:#9fb3c8;font-size:12px">' + p.percent + '%</div>' }),
+    series: [{
+      type: 'pie', radius: ['42%', '72%'], center: ['50%', '52%'],
+      data: [
+        { value: 4000, name: '正泰电器', itemStyle: { color: '#ef4444' } },
+        { value: 1000, name: '德力西', itemStyle: { color: '#3b82f6' } },
+        { value: 500, name: '其他品牌', itemStyle: { color: '#627d98' } }
+      ],
+      label: { color: '#bcccdc', fontFamily: chartFont, fontSize: 12, formatter: '{b}\n{d}%' },
+      labelLine: { lineStyle: { color: 'rgba(98,125,152,0.3)' } },
+      emphasis: { scaleSize: 8 },
+      animationType: 'expansion', animationDuration: 1200
+    }]
+  });
+  window.addEventListener('resize', () => chart.resize());
+})();
+
+// ===== Chart 4: Jiangxi Geo Bar =====
+(function(){
+  const el = document.getElementById('chart-geo');
+  if(!el) return;
+  const chart = echarts.init(el, null, { renderer: 'svg' });
+  const cities = ['赣州市','宜春市','吉安市','上饶市','抚州市','南昌市','九江市','萍乡市','新余市','鹰潭市','景德镇'];
+  const slaughter = [520, 450, 380, 350, 310, 280, 200, 120, 80, 65, 56];
+  const breeding = [480, 420, 360, 320, 290, 250, 180, 100, 70, 55, 48];
+  chart.setOption({
+    tooltip: Object.assign(baseTooltip(), {
+      trigger: 'axis', axisPointer: { type: 'shadow' },
+      formatter: p => '<div style="font-weight:600;margin-bottom:4px">' + p[0].name + '</div>' + p.map(d => '<div style="margin-top:2px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + d.color + ';margin-right:6px"></span>' + d.seriesName + ': <strong style="color:#fb923c">' + d.value + '</strong> 万头</div>').join('')
+    }),
+    legend: { data: ['屠宰产能','养殖规模'], textStyle: { color: '#9fb3c8', fontFamily: chartFont, fontSize: 11 }, top: 0, right: 0 },
+    grid: { left: 80, right: 30, top: 40, bottom: 30 },
+    xAxis: { type: 'value', splitLine: { lineStyle: { color: 'rgba(98,125,152,0.08)' } }, axisLabel: { color: '#627d98', fontFamily: chartFont, fontSize: 11 } },
+    yAxis: { type: 'category', data: cities.reverse(), axisLabel: { color: '#bcccdc', fontFamily: chartFont, fontSize: 12 }, axisLine: { show: false }, axisTick: { show: false } },
+    series: [
+      { name: '屠宰产能', type: 'bar', data: slaughter.reverse(), barWidth: 14, itemStyle: { borderRadius: [0,4,4,0], color: new echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:'#305197'},{offset:1,color:'#3b82f6'}]) } },
+      { name: '养殖规模', type: 'bar', data: breeding.reverse(), barWidth: 14, itemStyle: { borderRadius: [0,4,4,0], color: new echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:'#7c2d12'},{offset:1,color:'#fb923c'}]) } }
+    ],
+    animationDuration: 1200, animationEasing: 'cubicOut'
+  });
+  window.addEventListener('resize', () => chart.resize());
+})();
+
+// Hero parallax
+gsap.to('#hero', {
+  scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true },
+  opacity: 0.3, y: -80
+});
+</script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
