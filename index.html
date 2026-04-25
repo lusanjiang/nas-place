@@ -2012,6 +2012,9 @@ document.querySelectorAll('.proj-card').forEach(card => {
             el = getEl('p-ratio');
             if (el) el.innerHTML = ratio.toFixed(2) + '<span class="text-sm">:1</span>';
 
+            // update timestamp
+            updateDate();
+
             // change arrows based on value sign (not 环比%)
             // Compare with previous period if available
             var changes = [
@@ -2034,12 +2037,9 @@ document.querySelectorAll('.proj-card').forEach(card => {
   }
 
   // Initial load
-  updateDate();
   fetchAndUpdate();
   // Periodic refresh
   setInterval(fetchAndUpdate, REFRESH_MS);
-  // Update date every minute
-  setInterval(updateDate, 60000);
 })();
 
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
