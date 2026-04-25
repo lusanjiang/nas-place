@@ -2048,7 +2048,8 @@ document.querySelectorAll('.proj-card').forEach(card => {
     xhr.send();
   }
 
-  // Initial load
+  // Initial load - set time immediately, then fetch data
+  updateDate();
   fetchAndUpdate();
   // Periodic refresh
   setInterval(fetchAndUpdate, REFRESH_MS);
