@@ -261,12 +261,67 @@ footer { position: relative; z-index: 1; }
     <p class="text-steel-300 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed mb-10">
       深入剖析全国生猪产业格局、价格周期、配电体系需求与竞争态势，<br class="hidden md:block">聚焦江西市场机遇与核心客户突破路径
     </p>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-12">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-6">
       <div class="stat-card text-center"><div class="stat-num">7.2<span class="text-xl">亿</span></div><div class="stat-label">全国年出栏量</div></div>
       <div class="stat-card text-center"><div class="stat-num">8.77<span class="text-lg">元/kg</span></div><div class="stat-label">4月15日历史最低猪价</div></div>
       <div class="stat-card text-center"><div class="stat-num">2643<span class="text-lg">万头</span></div><div class="stat-label">双胞胎年出栏</div></div>
       <div class="stat-card text-center"><div class="stat-num">32<span class="text-lg">个</span></div><div class="stat-label">江西养殖大县</div></div>
     </div>
+    <!-- 动态行情数据 ticker -->
+    <div id="price-ticker" class="flex flex-wrap justify-center gap-3 mb-12 text-xs" style="display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;">
+      <div class="glass-card px-3 py-2 text-center"><div class="text-steel-400 mb-0.5">外三元猪价</div><div class="stat-num text-base" id="p-outer" style="color:#fb923c;">--</div><div class="text-xs text-steel-500" id="p-outer-chg">加载中...</div></div>
+      <div class="glass-card px-3 py-2 text-center"><div class="text-steel-400 mb-0.5">内三元猪价</div><div class="stat-num text-base" id="p-inner" style="color:#3b82f6;">--</div><div class="text-xs text-steel-500" id="p-inner-chg">加载中...</div></div>
+      <div class="glass-card px-3 py-2 text-center"><div class="text-steel-400 mb-0.5">土杂猪价</div><div class="stat-num text-base" id="p-local" style="color:#22c55e;">--</div><div class="text-xs text-steel-500" id="p-local-chg">加载中...</div></div>
+      <div class="glass-card px-3 py-2 text-center"><div class="text-steel-400 mb-0.5">玉米价格</div><div class="stat-num text-base" id="p-corn" style="color:#fb923c;">--</div><div class="text-xs text-steel-500" id="p-corn-chg">加载中...</div></div>
+      <div class="glass-card px-3 py-2 text-center"><div class="text-steel-400 mb-0.5">豆粕价格</div><div class="stat-num text-base" id="p-bean" style="color:#22c55e;">--</div><div class="text-xs text-steel-500" id="p-bean-chg">加载中...</div></div>
+      <div class="glass-card px-3 py-2 text-center border border-accent-500/30"><div class="text-steel-400 mb-0.5">猪粮比</div><div class="stat-num text-base" id="p-ratio" style="color:#fb923c;">--</div><div class="text-xs text-steel-500">生猪/玉米</div></div>
+    </div>
+    <script>
+    (function(){
+      var lastPig=[], lastCorn=[], lastBean=[];
+      function fmt(v){ return (v||0).toFixed(2); }
+      function pct(a,b){
+        if(!b) return '--';
+        return ((a-b)/b*100).toFixed(2)+'%';
+      }
+      function render(){
+        var pi=pig_in, po=pigprice, pl=pig_local, mc=maizeprice, bn=bean;
+        if(!po||!po.length) return;
+        var lp=po[0], pc=mc[0], pb=bn[0];
+        document.getElementById('p-outer').textContent=fmt(lp)+' 元/kg';
+        document.getElementById('p-inner').textContent=fmt(pi[0])+' 元/kg';
+        document.getElementById('p-local').textContent=fmt(pl[0])+' 元/kg';
+        document.getElementById('p-corn').textContent=fmt(pc)+' 元/吨';
+        document.getElementById('p-bean').textContent=fmt(pb)+' 元/吨';
+        document.getElementById('p-outer-chg').textContent=(lp>=po[1]?'↑':'↓')+pct(lp,po[1])+' 环比';
+        document.getElementById('p-inner-chg').textContent=(pi[0]>=pi[1]?'↑':'↓')+pct(pi[0],pi[1])+' 环比';
+        document.getElementById('p-local-chg').textContent=(pl[0]>=pl[1]?'↑':'↓')+pct(pl[0],pl[1])+' 环比';
+        document.getElementById('p-corn-chg').textContent=(pc>=mc[1]?'↑':'↓')+pct(pc,mc[1])+' 环比';
+        document.getElementById('p-bean-chg').textContent=(pb>=bn[1]?'↑':'↓')+pct(pb,bn[1])+' 环比';
+        var ratio=(lp*10/pc).toFixed(2);
+        document.getElementById('p-ratio').textContent=ratio+':1';
+      }
+      var xhr=new XMLHttpRequest();
+      xhr.onload=function(){
+        try{
+          var d=JSON.parse(xhr.responseText);
+          window.pigprice=d.pigprice;
+          window.pig_in=d.pig_in;
+          window.pig_local=d.pig_local;
+          window.maizeprice=d.maizeprice;
+          window.bean=d.bean;
+          render();
+          setInterval(render,300000);
+        }catch(e){console.warn('行情数据解析失败',e);}
+      };
+      xhr.onerror=function(){
+        var def={pigprice:[10.20],pig_in:[10.21],pig_local:[9.83],maizeprice:[2400],bean:[3114]};
+        window.pigprice=def.pigprice;window.pig_in=def.pig_in;window.pig_local=def.pig_local;window.maizeprice=def.maizeprice;window.bean=def.bean;render();
+      };
+      xhr.open('GET','https://www.zhuwang.com.cn/ajax_zhujia.php?m=zhujia&c=ajax&a=chartData&aa='+Date.now(),true);
+      xhr.send();
+    })();
+    </script>
     <div class="animate-bounce text-steel-500">
       <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
       <span class="text-xs font-mono tracking-wider">SCROLL</span>
