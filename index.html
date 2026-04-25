@@ -1989,10 +1989,23 @@ document.querySelectorAll('.proj-card').forEach(card => {
         if (xhr.status === 200) {
           try {
             var d = JSON.parse(xhr.responseText);
-            var arr = d.data || d;
-            if (!Array.isArray(arr) || arr.length === 0) throw new Error('No data');
-            var latest = arr[0];
-            var prev = arr.length > 1 ? arr[1] : latest;
+            // API returns {pigprice:[...], pig_in:[...], ...} - not an array!
+            var pigpriceArr = d.pigprice || [];
+            var pig_in_Arr = d.pig_in || [];
+            var pig_localArr = d.pig_local || [];
+            var maizeArr = d.maizeprice || [];
+            var beanArr = d.bean || [];
+            if (pigpriceArr.length === 0) throw new Error('No data');
+            var pigprice = parseFloat(pigpriceArr[0]);
+            var pig_in = parseFloat(pig_in_Arr[0] || pigprice);
+            var pig_local = parseFloat(pig_localArr[0] || pigprice);
+            var maizeprice = parseFloat(maizeArr[0]);
+            var bean = parseFloat(beanArr[0]);
+            var prev_pig = parseFloat(pigpriceArr[1] || pigprice);
+            var prev_pig_in = parseFloat(pig_in_Arr[1] || pig_in);
+            var prev_pig_local = parseFloat(pig_localArr[1] || pig_local);
+            var prev_maize = parseFloat(maizeArr[1] || maizeprice);
+            var prev_bean = parseFloat(beanArr[1] || bean);
 
             var pigprice = parseFloat(latest.pigprice || latest[0]);
             var pig_in = parseFloat(latest.pig_in || latest[1] || pigprice);
@@ -2016,13 +2029,12 @@ document.querySelectorAll('.proj-card').forEach(card => {
             updateDate();
 
             // change arrows based on value sign (not 环比%)
-            // Compare with previous period if available
             var changes = [
-              { id: 'p-outer-change', val: pigprice - (parseFloat(prev.pigprice || prev[0]) || pigprice) },
-              { id: 'p-inner-change', val: pig_in - (parseFloat(prev.pig_in || prev[1]) || pig_in) },
-              { id: 'p-local-change', val: pig_local - (parseFloat(prev.pig_local || prev[2]) || pig_local) },
-              { id: 'p-corn-change', val: maizeprice - (parseFloat(prev.maizeprice || prev[3]) || maizeprice) },
-              { id: 'p-bean-change', val: bean - (parseFloat(prev.bean || prev[4]) || bean) }
+              { id: 'p-outer-change', val: pigprice - prev_pig },
+              { id: 'p-inner-change', val: pig_in - prev_pig_in },
+              { id: 'p-local-change', val: pig_local - prev_pig_local },
+              { id: 'p-corn-change', val: maizeprice - prev_maize },
+              { id: 'p-bean-change', val: bean - prev_bean }
             ];
             changes.forEach(function(c) {
               var e = document.getElementById(c.id);
