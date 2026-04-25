@@ -276,35 +276,35 @@ footer { position: relative; z-index: 1; }
       <div class="glass-card px-3 py-3 text-center border border-orange-500/20 flex flex-col justify-between" style="min-width:100px;">
         <div class="text-steel-400 text-[10px] mb-1">生猪(外三元)</div>
         <div class="text-accent-400 font-bold text-lg leading-tight" id="p-outer">10.20</div>
-        <div class="text-[11px] mt-0.5"><span class="text-green-400">↑0.32元</span></div>
+        <div class="text-[11px] mt-0.5" id="p-outer-change"><span class="text-green-400">↑0.32元</span></div>
         <div class="text-[10px] text-steel-500 mt-0.5">同比 <span class="text-red-400">-31.95%</span> · 环比 <span class="text-green-400">0.39%</span></div>
       </div>
       <!-- 内三元 -->
       <div class="glass-card px-3 py-3 text-center border border-blue-500/20 flex flex-col justify-between" style="min-width:100px;">
         <div class="text-steel-400 text-[10px] mb-1">生猪(内三元)</div>
         <div class="text-blue-400 font-bold text-lg leading-tight" id="p-inner">10.21</div>
-        <div class="text-[11px] mt-0.5"><span class="text-green-400">↑0.19元</span></div>
+        <div class="text-[11px] mt-0.5" id="p-inner-change"><span class="text-green-400">↑0.19元</span></div>
         <div class="text-[10px] text-steel-500 mt-0.5">同比 <span class="text-red-400">-30.31%</span> · 环比 <span class="text-red-400">-0.68%</span></div>
       </div>
       <!-- 土杂猪 -->
       <div class="glass-card px-3 py-3 text-center border border-green-500/20 flex flex-col justify-between" style="min-width:100px;">
         <div class="text-steel-400 text-[10px] mb-1">生猪(土杂猪)</div>
         <div class="text-green-400 font-bold text-lg leading-tight" id="p-local">9.83</div>
-        <div class="text-[11px] mt-0.5"><span class="text-green-400">↑0.17元</span></div>
+        <div class="text-[11px] mt-0.5" id="p-local-change"><span class="text-green-400">↑0.17元</span></div>
         <div class="text-[10px] text-steel-500 mt-0.5">同比 <span class="text-red-400">-32.11%</span> · 环比 <span class="text-red-400">-4.66%</span></div>
       </div>
       <!-- 玉米 -->
       <div class="glass-card px-3 py-3 text-center border border-orange-500/20 flex flex-col justify-between" style="min-width:100px;">
         <div class="text-steel-400 text-[10px] mb-1">玉米(饲料原料)</div>
         <div class="text-accent-400 font-bold text-lg leading-tight" id="p-corn">2400</div>
-        <div class="text-[11px] mt-0.5"><span class="text-green-400">↑5元</span></div>
+        <div class="text-[11px] mt-0.5" id="p-corn-change"><span class="text-green-400">↑5元</span></div>
         <div class="text-[10px] text-steel-500 mt-0.5">同比 <span class="text-green-400">6.62%</span> · 环比 <span class="text-green-400">0.42%</span></div>
       </div>
       <!-- 豆粕 -->
       <div class="glass-card px-3 py-3 text-center border border-green-500/20 flex flex-col justify-between" style="min-width:100px;">
         <div class="text-steel-400 text-[10px] mb-1">豆粕(饲料原料)</div>
         <div class="text-green-400 font-bold text-lg leading-tight" id="p-bean">3114</div>
-        <div class="text-[11px] mt-0.5"><span class="text-red-400">↓36元</span></div>
+        <div class="text-[11px] mt-0.5" id="p-bean-change"><span class="text-red-400">↓36元</span></div>
         <div class="text-[10px] text-steel-500 mt-0.5">同比 <span class="text-red-400">-13.67%</span> · 环比 <span class="text-red-400">-4.42%</span></div>
       </div>
       <!-- 猪粮比 -->
@@ -1943,6 +1943,90 @@ document.querySelectorAll('.proj-card').forEach(card => {
   });
 });
 </script>
+// ===== Market Data Fetcher (猪好多网) =====
+(function(){
+  const API_URL = 'https://www.zhuwang.com.cn/ajax_zhujia.php?m=zhujia&c=ajax&a=chartData';
+  const REFRESH_MS = 5 * 60 * 1000; // 5 minutes
+
+  // Fallback static values (today's data from API)
+  const FALLBACK = {
+    pigprice: 10.20, pig_in: 10.21, pig_local: 9.83,
+    maizeprice: 2400, bean: 3114, ratio: 4.25
+  };
+
+  function getEl(id) { return document.getElementById(id); }
+
+  function applyColor(el, value) {
+    // el is the change text span, e.g. "↑0.32元" or "↓36元"
+    if (value >= 0) {
+      el.innerHTML = '<span class="text-green-400">↑' + Math.abs(value).toFixed(2) + '元</span>';
+    } else {
+      el.innerHTML = '<span class="text-red-400">↓' + Math.abs(value).toFixed(2) + '元</span>';
+    }
+  }
+
+  function formatPrice(v) { return v.toFixed(2); }
+  function formatInt(v) { return Math.round(v).toString(); }
+
+  function fetchAndUpdate() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', API_URL, true);
+    xhr.timeout = 8000;
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          try {
+            var d = JSON.parse(xhr.responseText);
+            var arr = d.data || d;
+            if (!Array.isArray(arr) || arr.length === 0) throw new Error('No data');
+            var latest = arr[0];
+            var prev = arr.length > 1 ? arr[1] : latest;
+
+            var pigprice = parseFloat(latest.pigprice || latest[0]);
+            var pig_in = parseFloat(latest.pig_in || latest[1] || pigprice);
+            var pig_local = parseFloat(latest.pig_local || latest[2] || pigprice);
+            var maizeprice = parseFloat(latest.maizeprice || latest[3]);
+            var bean = parseFloat(latest.bean || latest[4]);
+
+            // prices
+            var el = getEl('p-outer'); if (el) el.textContent = formatPrice(pigprice);
+            el = getEl('p-inner'); if (el) el.textContent = formatPrice(pig_in);
+            el = getEl('p-local'); if (el) el.textContent = formatPrice(pig_local);
+            el = getEl('p-corn'); if (el) el.textContent = formatInt(maizeprice);
+            el = getEl('p-bean'); if (el) el.textContent = formatInt(bean);
+
+            // ratio
+            var ratio = maizeprice > 0 ? (pigprice * 100 / maizeprice) : (FALLBACK.ratio);
+            el = getEl('p-ratio');
+            if (el) el.innerHTML = ratio.toFixed(2) + '<span class="text-sm">:1</span>';
+
+            // change arrows based on value sign (not 环比%)
+            // Compare with previous period if available
+            var changes = [
+              { id: 'p-outer-change', val: pigprice - (parseFloat(prev.pigprice || prev[0]) || pigprice) },
+              { id: 'p-inner-change', val: pig_in - (parseFloat(prev.pig_in || prev[1]) || pig_in) },
+              { id: 'p-local-change', val: pig_local - (parseFloat(prev.pig_local || prev[2]) || pig_local) },
+              { id: 'p-corn-change', val: maizeprice - (parseFloat(prev.maizeprice || prev[3]) || maizeprice) },
+              { id: 'p-bean-change', val: bean - (parseFloat(prev.bean || prev[4]) || bean) }
+            ];
+            changes.forEach(function(c) {
+              var e = document.getElementById(c.id);
+              if (e) applyColor(e, c.val);
+            });
+          } catch(e) { console.warn('Market data parse error:', e); }
+        } else { console.warn('Market API error:', xhr.status); }
+      }
+    };
+    xhr.ontimeout = function() { console.warn('Market API timeout'); };
+    xhr.send();
+  }
+
+  // Initial load
+  fetchAndUpdate();
+  // Periodic refresh
+  setInterval(fetchAndUpdate, REFRESH_MS);
+})();
+
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
