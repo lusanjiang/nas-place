@@ -269,7 +269,7 @@ footer { position: relative; z-index: 1; }
     </div>
     <!-- 动态行情数据 ticker -->
     <div class="text-center mb-4">
-      <span class="font-mono text-xs tracking-widest text-steel-400 bg-navy-900/60 px-4 py-1.5 rounded-full border border-steel-700/30">2026年04月25日 · 实时行情</span>
+      <span class="font-mono text-xs tracking-widest text-steel-400 bg-navy-900/60 px-4 py-1.5 rounded-full border border-steel-700/30" id="market-date">2026年04月25日 · 实时行情</span>
     </div>
     <div id="price-ticker" class="flex flex-wrap justify-center gap-3 mb-8 text-xs" style="display:flex;align-items:stretch;justify-content:center;flex-wrap:wrap;gap:8px;">
       <!-- 外三元 -->
@@ -1968,6 +1968,18 @@ document.querySelectorAll('.proj-card').forEach(card => {
   function formatPrice(v) { return v.toFixed(2); }
   function formatInt(v) { return Math.round(v).toString(); }
 
+  function updateDate() {
+    var el = document.getElementById('market-date');
+    if (!el) return;
+    var now = new Date();
+    var y = now.getFullYear();
+    var mo = String(now.getMonth() + 1).padStart(2, '0');
+    var d = String(now.getDate()).padStart(2, '0');
+    var h = String(now.getHours()).padStart(2, '0');
+    var mi = String(now.getMinutes()).padStart(2, '0');
+    el.textContent = y + '年' + mo + '月' + d + '日 ' + h + ':' + mi + ' 更新';
+  }
+
   function fetchAndUpdate() {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', API_URL, true);
@@ -2022,9 +2034,12 @@ document.querySelectorAll('.proj-card').forEach(card => {
   }
 
   // Initial load
+  updateDate();
   fetchAndUpdate();
   // Periodic refresh
   setInterval(fetchAndUpdate, REFRESH_MS);
+  // Update date every minute
+  setInterval(updateDate, 60000);
 })();
 
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
