@@ -1681,31 +1681,11 @@ footer { position: relative; z-index: 1; }
 </section>
 
       </a>
-      <a href="#sec-flipbook" class="group flex items-baseline gap-3 py-3 border-b border-navy-800 hover:border-accent-500/40 transition-colors">
-        <span class="font-mono text-xs text-accent-400 w-6 flex-shrink-0">13</span>
-        <span class="text-steel-200 group-hover:text-accent-300 transition-colors text-sm">养猪完整流程flipbook</span>
-        <span class="flex-1 border-b border-dotted border-steel-700/40 mx-2 mb-1"></span>
-      </a>
     </div>
   </div>
 </div>
 </section>
 
-<!-- FLIPBOOK SECTION -->
-<section id="sec-flipbook" class="relative py-24 px-4" style="background:#faf6f0">
-  <div class="max-w-5xl mx-auto">
-    <div class="anim-in" style="text-align:center">
-      <div class="sec-label" style="color:#5a3e2b">PIG FARMING / 养猪流程</div>
-      <h2 class="sec-title" style="color:#2c1810">养猪完整<span style="color:#c8734a">流程图</span></h2>
-    </div>
-    <div class="anim-in" style="margin-top:24px">
-      <iframe src="养猪完整流程-flipbook.html" style="width:100%;height:85vh;border:none;border-radius:16px;box-shadow:0 8px 40px rgba(44,24,16,0.15)" loading="lazy"></iframe>
-    </div>
-    <div style="text-align:center;margin-top:16px;font-size:.85rem;color:#8b6e5a">
-      🐷 大型养猪场完整养殖流程 · 全周期约154-182天 · 共10页翻页式图表
-    </div>
-  </div>
-</section>
 
 <!-- FOOTER -->
 <!-- FOOTER -->
@@ -1735,7 +1715,7 @@ document.querySelectorAll('.anim-in').forEach(el => {
 
 // TOC active dot
 const tocLinks = document.querySelectorAll('#toc a');
-const sections = ['hero','sec-toc','sec-market','sec-price','sec-models','sec-client','sec-power','sec-compete','sec-supply','sec-geo','sec-advice','sec-strategy','sec-flipbook'];
+const sections = ['hero','sec-toc','sec-market','sec-price','sec-models','sec-client','sec-power','sec-compete','sec-supply','sec-geo','sec-advice','sec-strategy',];
 sections.forEach((id, i) => {
   ScrollTrigger.create({
     trigger: '#' + id, start: 'top center', end: 'bottom center',
