@@ -1973,13 +1973,13 @@ document.querySelectorAll('.proj-card').forEach(card => {
 </script>
 <script>
 (function(){
-  const API_URL = 'https://www.zhuwang.com.cn/ajax_zhujia.php?m=zhujia&c=ajax&a=chartData';
+  const API_URL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://www.zhuwang.com.cn/ajax_zhujia.php?m=zhujia&c=ajax&a=chartData');
   const REFRESH_MS = 5 * 60 * 1000; // 5 minutes
 
   // Fallback static values (today's data from API)
   const FALLBACK = {
-    pigprice: 10.20, pig_in: 10.21, pig_local: 9.83,
-    maizeprice: 2400, bean: 3114, ratio: 4.25
+    pigprice: 14.99, pig_in: 14.65, pig_local: 14.48,
+    maizeprice: 2251, bean: 3607, ratio: 6.66  // = 14.99*1000/2251
   };
 
   function getEl(id) { return document.getElementById(id); }
@@ -2035,28 +2035,22 @@ document.querySelectorAll('.proj-card').forEach(card => {
             var prev_maize = parseFloat(maizeArr[1] || maizeprice);
             var prev_bean = parseFloat(beanArr[1] || bean);
 
-            var pigprice = parseFloat(latest.pigprice || latest[0]);
-            var pig_in = parseFloat(latest.pig_in || latest[1] || pigprice);
-            var pig_local = parseFloat(latest.pig_local || latest[2] || pigprice);
-            var maizeprice = parseFloat(latest.maizeprice || latest[3]);
-            var bean = parseFloat(latest.bean || latest[4]);
-
-            // prices
+            // prices - from API (national average)
             var el = getEl('p-outer'); if (el) el.textContent = formatPrice(pigprice);
             el = getEl('p-inner'); if (el) el.textContent = formatPrice(pig_in);
             el = getEl('p-local'); if (el) el.textContent = formatPrice(pig_local);
             el = getEl('p-corn'); if (el) el.textContent = formatInt(maizeprice);
             el = getEl('p-bean'); if (el) el.textContent = formatInt(bean);
 
-            // ratio
-            var ratio = maizeprice > 0 ? (pigprice * 100 / maizeprice) : (FALLBACK.ratio);
+            // ratio = pig price (元/kg) / corn price (元/吨) * 1000 -> correct: pigprice/maizeprice*100
+            var ratio = maizeprice > 0 ? (pigprice * 1000 / maizeprice) : (FALLBACK.ratio);
             el = getEl('p-ratio');
             if (el) el.innerHTML = ratio.toFixed(2) + '<span class="text-sm">:1</span>';
 
             // update timestamp
             updateDate();
 
-            // change arrows based on value sign (not 环比%)
+            // change arrows based on daily change (prev vs current)
             var changes = [
               { id: 'p-outer-change', val: pigprice - prev_pig },
               { id: 'p-inner-change', val: pig_in - prev_pig_in },
@@ -2084,7 +2078,6 @@ document.querySelectorAll('.proj-card').forEach(card => {
 })();
 </script>
 
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+
 </body>
 </html>
