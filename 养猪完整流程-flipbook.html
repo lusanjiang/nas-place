@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大型养猪场完整养殖流程</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root {
+  --green-900:#1a3a1a;
+  --green-700:#2d5a2d;
+  --green-500:#4a8c4a;
+  --green-300:#7bc47b;
+  --green-100:#d4edda;
+  --amber-600:#b45309;
+  --amber-400:#d97706;
+  --amber-100:#fef3c7;
+  --cream:#faf8f0;
+  --ink:#1c1c1c;
+  --muted:#5a6b5a;
+}
+html,body{height:100%;overflow:hidden;background:#1a1a1a}
+body{font-family:'Noto Sans SC',sans-serif;color:var(--ink);background:#111}
+
+/* Flipbook container */
+.flipbook-wrapper{width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;perspective:2000px}
+.flipbook{width:min(92vw,1100px);height:min(85vh,680px);position:relative;transform-style:preserve-3d}
+.page{position:absolute;inset:0;border-radius:12px;overflow:hidden;backface-visibility:hidden;cursor:pointer;transition:transform 0.7s cubic-bezier(.4,0,.2,1),box-shadow 0.4s;box-shadow:0 8px 40px rgba(0,0,0,.55);display:flex;flex-direction:column}
+.page.flipped{transform:rotateY(-180deg)}
+.page:hover{box-shadow:0 12px 60px rgba(0,0,0,.7)}
+
+/* Page fronts */
+.page-front,.page-back{position:absolute;inset:0;border-radius:12px;overflow:hidden}
+.page-front{background:var(--cream)}
+.page-back{transform:rotateY(180deg);background:var(--cream)}
+
+/* Page header stripe */
+.page-header{background:linear-gradient(135deg,var(--green-700),var(--green-500));padding:20px 28px 16px;color:#fff;flex-shrink:0}
+.page-header .section-tag{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;opacity:.75;margin-bottom:4px;font-family:'Noto Sans SC',sans-serif;font-weight:500}
+.page-header .section-title{font-family:'Noto Serif SC',serif;font-size:1.35rem;font-weight:700;line-height:1.2}
+.page-header .section-sub{font-size:.78rem;opacity:.8;margin-top:4px}
+
+/* Page content */
+.page-body{flex:1;overflow:hidden;padding:18px 26px}
+
+/* Cover page */
+.cover{background:linear-gradient(155deg,#1a3a1a 0%,#2d5a2d 40%,#3d7a3d 100%)}
+.cover-front{background:linear-gradient(155deg,#1a3a1a 0%,#2d5a2d 60%,#3d7a3d 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:40px}
+.cover-icon{font-size:4rem;margin-bottom:16px}
+.cover-badge{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;background:rgba(255,255,255,.15);padding:6px 18px;border-radius:20px;margin-bottom:20px;opacity:.8}
+.cover h1{font-family:'Noto Serif SC',serif;font-size:2.4rem;font-weight:900;line-height:1.25;margin-bottom:12px}
+.cover .subtitle{font-size:.95rem;opacity:.75;max-width:520px;line-height:1.7;margin-bottom:28px}
+.cover .meta{display:flex;gap:24px;font-size:.72rem;opacity:.6;margin-bottom:36px}
+.cover .timeline{border-top:1px solid rgba(255,255,255,.2);padding-top:24px;margin-top:8px}
+.cover .timeline-title{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;opacity:.6;margin-bottom:10px}
+.cover .timeline-flow{display:flex;align-items:center;gap:8px;font-size:.82rem;flex-wrap:wrap;justify-content:center}
+.cover .timeline-flow span{background:rgba(255,255,255,.12);padding:4px 10px;border-radius:6px}
+.cover .timeline-flow .arrow{opacity:.4;font-size:.7rem}
+
+/* Page nav */
+.page-nav{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:60px;background:rgba(0,0,0,.08);border:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:rgba(0,0,0,.4);transition:all .2s;z-index:10}
+.page-nav:hover{background:rgba(0,0,0,.15);color:rgba(0,0,0,.7)}
+.page-nav.prev{left:6px}
+.page-nav.next{right:6px}
+.page-nav.hidden{opacity:0;pointer-events:none}
+
+/* Page number */
+.page-num{position:absolute;bottom:12px;right:18px;font-size:.65rem;color:var(--muted);font-family:'Noto Sans SC',sans-serif;z-index:5}
+
+/* Section dots */
+.page-dots{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:20}
+.dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:all .3s;border:none}
+.dot.active{background:#7bc47b;transform:scale(1.3)}
+.dot:hover{background:rgba(255,255,255,.6)}
+
+/* Inner pages common styles */
+.flow-banner{display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,var(--green-100),#e8f5e8);border-left:4px solid var(--green-500);padding:10px 14px;border-radius:0 8px 8px 0;margin-bottom:14px;font-size:.82rem;color:var(--green-700)}
+.flow-banner span{font-weight:600}
+
+/* Tables */
+.data-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-bottom:10px}
+.data-table th{background:var(--green-700);color:#fff;padding:7px 10px;text-align:left;font-weight:600;font-size:.72rem}
+.data-table td{padding:6px 10px;border-bottom:1px solid #e0e8d0;vertical-align:top}
+.data-table tr:nth-child(even) td{background:#f6faf6}
+.data-table td:first-child{font-weight:600;color:var(--green-700)}
+
+/* Key stats row */
+.key-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.stat-box{background:linear-gradient(135deg,var(--green-700),var(--green-500));color:#fff;border-radius:10px;padding:10px 12px;text-align:center}
+.stat-box .val{font-family:'Noto Serif SC',serif;font-size:1.3rem;font-weight:700;line-height:1.1}
+.stat-box .lbl{font-size:.65rem;opacity:.8;margin-top:2px}
+.stat-box.amber{background:linear-gradient(135deg,var(--amber-600),var(--amber-400))}
+.stat-box.cream{background:var(--cream);color:var(--ink);border:1px solid var(--green-300)}
+
+/* Two column grid */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.full-col{}
+
+/* Cards */
+.info-card{background:#f6faf6;border:1px solid var(--green-300);border-radius:10px;padding:12px}
+.info-card h4{font-size:.78rem;font-weight:700;color:var(--green-700);margin-bottom:6px;font-family:'Noto Serif SC',serif}
+.info-card p,.info-card li{font-size:.74rem;color:#444;line-height:1.6}
+.info-card ul{padding-left:14px}
+.info-card li{margin-bottom:2px}
+.info-card.green{background:var(--green-100);border-color:var(--green-300)}
+.info-card.amber{background:var(--amber-100);border-color:var(--amber-400)}
+
+/* Phase cards */
+.phase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
+.phase-card{border-radius:10px;padding:10px 12px;text-align:center;border:2px solid}
+.phase-card h5{font-size:.75rem;font-weight:700;margin-bottom:4px;font-family:'Noto Serif SC',serif}
+.phase-card .phase-days{font-size:.65rem;opacity:.7;margin-bottom:4px}
+.phase-card .phase-val{font-family:'Noto Serif SC',serif;font-size:1.1rem;font-weight:700}
+.phase-card.green{border-color:var(--green-500);background:var(--green-100);color:var(--green-700)}
+.phase-card.amber{border-color:var(--amber-400);background:var(--amber-100);color:var(--amber-600)}
+.phase-card.blue{border-color:#3b82f6;background:#eff6ff;color:#1d4ed8}
+
+/* Bullet list */
+.bullet-list{list-style:none;padding:0}
+.bullet-list li{font-size:.78rem;padding:4px 0 4px 16px;position:relative;border-bottom:1px solid #f0f0f0;line-height:1.5}
+.bullet-list li::before{content:'▸';position:absolute;left:0;color:var(--green-500);font-size:.65rem;top:6px}
+.bullet-list li:last-child{border-bottom:none}
+.bullet-list li strong{color:var(--green-700)}
+
+/* Process flow line */
+.process-line{display:flex;align-items:center;gap:4px;margin-bottom:14px;font-size:.72rem;flex-wrap:wrap}
+.process-step{display:flex;align-items:center;gap:4px;background:#f0f5f0;border:1px solid var(--green-300);border-radius:6px;padding:5px 8px;color:#333;font-weight:500}
+.process-step .arrow{color:var(--green-400);font-size:.65rem}
+.process-step.done{background:var(--green-100);border-color:var(--green-400);color:var(--green-700)}
+.process-step .tag{font-size:.6rem;background:rgba(0,0,0,.08);padding:1px 5px;border-radius:3px}
+
+/* Tag badge */
+.badge{display:inline-block;font-size:.62rem;padding:2px 8px;border-radius:4px;font-weight:600}
+.badge-green{background:var(--green-100);color:var(--green-700)}
+.badge-amber{background:var(--amber-100);color:var(--amber-600)}
+.badge-red{background:#fee2e2;color:#991b1b}
+
+/* Temperature row */
+.temp-row{display:flex;gap:6px;flex-wrap:wrap}
+.temp-item{background:#f0f5f0;border:1px solid var(--green-200);border-radius:6px;padding:5px 10px;font-size:.72rem;text-align:center}
+.temp-item .temp-val{font-weight:700;color:var(--green-700);font-size:.82rem}
+.temp-item .temp-lbl{color:#666;font-size:.62rem}
+
+/* Feed table compact */
+.feed-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.feed-item{background:#fafdfa;border:1px solid #e0e8d0;border-radius:8px;padding:8px 10px}
+.feed-item h5{font-size:.72rem;font-weight:700;color:var(--green-700);margin-bottom:3px;font-family:'Noto Serif SC',serif}
+.feed-item p{font-size:.65rem;color:#666;margin-bottom:2px}
+.feed-item .protein{font-size:.75rem;font-weight:600;color:var(--green-600)}
+
+/* Immun record */
+.imm-record{display:flex;flex-direction:column;gap:4px}
+.imm-row{display:flex;align-items:center;gap:8px;font-size:.74rem;padding:4px 8px;background:#f6faf6;border-radius:6px}
+.imm-row .day{font-weight:700;color:var(--green-700);min-width:60px}
+.imm-row .vacc{font-weight:500}
+
+/* Biosafe 3 levels */
+.biosafe{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.biosafe-level{border-radius:8px;padding:10px;text-align:center}
+.biosafe-level h5{font-size:.75rem;font-weight:700;margin-bottom:4px}
+.biosafe-level p{font-size:.68rem;opacity:.8;line-height:1.4}
+.biosafe-level.l1{background:#eff6ff;border:2px solid #3b82f6;color:#1d4ed8}
+.biosafe-level.l2{background:#f0fdf4;border:2px solid var(--green-500);color:var(--green-700)}
+.biosafe-level.l3{background:var(--amber-100);border:2px solid var(--amber-400);color:var(--amber-600)}
+
+/* Section divider */
+.section-divider{height:1px;background:linear-gradient(90deg,transparent,var(--green-300),transparent);margin:8px 0}
+
+/* Pig emoji/labels */
+.pig-label{display:inline-flex;align-items:center;gap:4px;font-size:.72rem;background:#f6faf6;border:1px solid var(--green-200);padding:3px 8px;border-radius:20px}
+.pig-label .pig{font-size:.9rem}
+
+/* Indicator row */
+.indicator{display:flex;gap:6px;flex-wrap:wrap}
+.indi{font-size:.68rem;background:#f0f5f0;border:1px solid #d0e0d0;padding:3px 8px;border-radius:4px;color:#333}
+.indi b{color:var(--green-700)}
+
+/* Reference list */
+.ref-list{list-style:none;padding:0}
+.ref-list li{font-size:.68rem;padding:3px 0;border-bottom:1px solid #f0f5f0;color:#555;line-height:1.5}
+.ref-list li::before{content:'[';color:var(--green-400);margin-right:2px}
+.ref-list li::after{content:']';color:var(--green-400);margin-left:2px}
+
+/* Responsive */
+@media(max-width:600px){
+  .key-stats{grid-template-columns:repeat(2,1fr)}
+  .two-col{grid-template-columns:1fr}
+  .phase-grid{grid-template-columns:repeat(2,1fr)}
+  .biosafe{grid-template-columns:1fr}
+  .feed-grid{grid-template-columns:1fr 1fr}
+  .cover h1{font-size:1.6rem}
+  .page-body{padding:12px 16px}
+}
+
+/* Animation */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.page-front{animation:fadeInUp .4s ease}
+</style>
+</head>
+<body>
+<div class="flipbook-wrapper">
+<div class="flipbook" id="flipbook">
+
+<!-- PAGE 0: Cover -->
+<div class="page" style="z-index:20" data-page="0">
+  <div class="page-front cover-front">
+    <div class="cover-icon">🐷</div>
+    <div class="cover-badge">INDUSTRY DOCUMENT · 2026.04</div>
+    <h1>大型养猪场<br>完整养殖流程</h1>
+    <p class="subtitle">从配种到出栏全周期管理标准，涵盖种猪群管理、分娩哺乳、保育育肥、生物安全、饲料营养与环境控制</p>
+    <div class="meta">
+      <span>📅 整理时间：2026年4月</span>
+      <span>🏠 适用规模：万头级以上猪场</span>
+      <span>📖 来源：农业农村部 / 山西省地方标准</span>
+    </div>
+    <div class="timeline">
+      <div class="timeline-title">全周期总览 · Total Cycle</div>
+      <div class="timeline-flow">
+        <span>🐷 配种期</span><span class="arrow">→</span>
+        <span>🤰 妊娠期(114天)</span><span class="arrow">→</span>
+        <span>🐽 分娩哺乳(28-35天)</span><span class="arrow">→</span>
+        <span>🔰 保育期(28-35天)</span><span class="arrow">→</span>
+        <span>📈 育肥期(90-120天)</span><span class="arrow">→</span>
+        <span>✅ 出栏</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 1: 总览 & 关键指标 -->
+<div class="page" style="z-index:19;transform:rotateY(180deg)" data-page="1">
+  <div class="page-front">
+    <div class="page-header">
+      <div class="section-tag">PART 01 · 生产概览</div>
+      <div class="section-title">养殖流程总览 · 关键生产指标</div>
+    </div>
+    <div class="page-body">
+      <div class="flow-banner">
+        <span>📋 全周期：约154-182天（22-26周）</span>
+        <span>·</span>
+        <span>批次化生产 · 全进全出</span>
+      </div>
+      <div class="key-stats">
+        <div class="stat-box">
+          <div class="val">2.2胎</div>
+          <div class="lbl">母猪年产胎次</div>
+        </div>
+        <div class="stat-box">
+          <div class="val">≥25头</div>
+          <div class="lbl">PSY（年断奶仔猪）</div>
+        </div>
+        <div class="stat-box amber">
+          <div class="val">≥90%</div>
+          <div class="lbl">哺乳成活率目标</div>
+        </div>
+        <div class="stat-box">
+          <div class="val">≤2.7:1</div>
+          <div class="lbl">育肥料肉比</div>
+        </div>
+      </div>
+      <div class="two-col" style="gap:10px">
+        <div>
+          <div style="font-size:.72rem;font-weight:700;color:var(--green-700);margin-bottom:6px">📊 核心生产指标</div>
+          <table class="data-table">
+            <tr><th>指标</th><th>目标值</th></tr>
+            <tr><td>窝均产活仔</td><td>10头</td></tr>
+            <tr><td>窝均断奶仔</td><td>9头</td></tr>
+            <tr><td>配种受胎率</td><td>≥90%</td></tr>
+            <tr><td>分娩率</td><td>≥90%</td></tr>
+            <tr><td>育肥日增重</td><td>≥650g</td></tr>
+            <tr><td>出栏体重</td><td>100-120kg</td></tr>
+            <tr><td>出栏日龄</td><td>≤175天</td></tr>
+          </table>
+        </div>
+        <div>
+          <div style="font-size:.72rem;font-weight:700;color:var(--green-700);margin-bottom:6px">🐷 母猪群结构</div>
+          <table class="data-table">
+            <tr><th>胎次</th><th>占比</th></tr>
+            <tr><td>1-2胎（初产）</td><td>30-40%</td></tr>
+            <tr><td>3-6胎（黄金胎次）</td><td>50-60%</td></tr>
+            <tr><td>7胎及以上</td><td>尽量不留</td></tr>
+          </table>
+          <div class="section-divider"></div>
+          <div style="font-size:.72rem;font-weight:700;color:var(--green-700);margin-bottom:6px">📈 批次节律</div>
+          <table class="data-table">
+            <tr><th>规模（万头/年）</th><th>批次节律</th></tr>
+            <tr><td>5-10</td><td>1-2日制</td></tr>
+            <tr><td>1-3</td><td>7日制</td></tr>
+            <tr><td>&lt;1</td><td>12/28/56日制</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="page-num">1 / 18</div>
+  </div>
+</div>
+
+<!-- PAGE 2: 种猪群管理 - 后备母猪 -->
+<div class="page" style="z-index:18;transform:rotateY(180deg)" data-page="2">
+  <div class="page-front">
+    <div class="page-header">
+      <div class="section-tag">PART 02 · 种猪群管理</div>
+      <div class="section-title">后备母猪培育 · 配种期管理</div>
+    </div>
+    <div class="page-body">
+      <div class="two-col" style="gap:12px">
+        <div>
+          <div class="info-card green" style="margin-bottom:10px">
+            <h4>🐷 后备母猪培育（6-8月龄）</h4>
+            <ul class="bullet-list">
+              <li><strong>初配年龄：</strong>7-8月龄（220-270天）</li>
+              <li><strong>初配体重：</strong>135-170kg</li>
+              <li><strong>背膘厚度：</strong>12-18mm</li>
+              <li><strong>饲喂量：</strong>6-7月龄2.0-2.2kg/天；7-8月龄2.3-2.5kg/天</li>
+              <li><strong>饲料蛋白：</strong>16-17%</li>
+              <li><strong>环境温度：</strong>16-23℃</li>
+              <li><strong>配种时机：</strong>第2或第3个情期配种</li>
+            </ul>
+          </div>
+          <div class="info-card amber">
+            <h4>⚠️ 配种前关键动作</h4>
+            <ul class="bullet-list">
+              <li>配种前1-2周<strong>短期优饲</strong>（高能高蛋白日粮）</li>
+              <li>配种前1个月免疫：<strong>细小病毒+乙脑</strong>（间隔14天二免）</li>
+              <li>配种前7天完成：猪瘟、蓝耳、伪狂犬加强免疫</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="info-card" style="margin-bottom:10px">
+            <h4>💉 配种期管理标准</h4>
+            <table class="data-table" style="font-size:.72rem">
+              <tr><th>项目</th><th>标准</th></tr>
+              <tr><td>查情频率</td><td>每天2次（早6点、晚6点）</td></tr>
+              <tr><td>发情周期</td><td>21天</td></tr>
+              <tr><td>经产母猪静立后配种时间</td><td>8-12小时</td></tr>
+              <tr><td>初产母猪静立后配种时间</td><td>12-24小时</td></tr>
+              <tr><td>配种方式</td><td>人工授精（推荐）</td></tr>
+              <tr><td>输精剂量</td><td>80ml/次</td></tr>
+              <tr><td>精液活力</td><td>≥0.7（70%）</td></tr>
+              <tr><td>输精次数</td><td>间隔10小时复配，共2次</td></tr>
+              <tr><td>配种受胎率目标</td><td><strong style="color:#b45309">≥90%</strong></td></tr>
+            </table>
+          </div>
+          <div class="info-card amber">
+            <h4>🕐 配种时间判定</h4>
+            <ul class="bullet-list">
+              <li>上午发现静立反应 → <strong>当天下午</strong>输精一次 → <strong>次日下午</strong>第二次</li>
+              <li>下午发现静立反应 → <strong>次日上午</strong>输精一次 → <strong>第三天上午</strong>第二次</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-num">2 / 18</div>
+  </div>
+</div>
+
+<!-- PAGE 3: 妊娠期管理 -->
+<div class="page" style="z-index:17;transform:rotateY(180deg)" data-page="3">
+  <div class="page-front">
+    <div class="page-header">
+      <div class="section-tag">PART 02 · 种猪群管理</div>
+      <div class="section-title">妊娠期管理（114天）</div>
+    </div>
+    <div class="page-body">
+      <div class="flow-banner" style="margin-bottom:12px">
+        <span>🤰 妊娠期共114天，分三阶段精细饲喂</span>
+        <span>·</span>
+        <span>饲料蛋白 14-15%</span>
+      </div>
+      <div class="phase-grid">
+        <div class="phase-card green">
+          <h5>着床期</h5>
+          <div class="phase-days">1-30天</div>
+          <div class="phase-val">1.8kg/天</div>
+          <div class="phase-days">配种后5天内减饲1/3，保胎</div>
+        </div>
+        <div class="phase-card amber">
+          <h5>胎儿生长期</h5>
+          <div class="phase-days">31-90天</div>
+          <div class="phase-val">2.3-2.5kg/天</div>
+          <div class="phase-days">控制膘情，避免便秘</div>
+        </div>
+        <div class="phase-card blue">
+          <h5>产前期</h5>
+          <div class="phase-days">91-114天</div>
+          <div class="phase-val">2.9-3.2kg/天</div>
+          <div class="phase-days">增加营养，胎儿快速发育</div>
+        </div>
+      </div>
+      <div class="two-col" style="gap:10px">
+        <div>
+          <div class="info-card" style="margin-bottom:8px">
+            <h4>🌡️ 环境要求</h4>
+            <div class="indicator" style="margin-top:6px">
+              <span class="indi"><b>温度</b> 18-22℃</span>
+              <span class="indi"><b>湿度</b> 60-75%</span>
+              <span class="indi"><b>氨气</b> ≤15ppm</span>
+              <span class="indi"><b>通风</b> 稳定，无贼风</span>
+            </div>
+          </div>
+          <div class="info-card green">
+            <h4>✅ 管理要点</h4>
+            <ul class="bullet-list">
+              <li>产前7天转入已消毒的<strong>产房</strong></li>
+              <li>妊娠30天前<strong>单栏饲养</strong>，避免争斗流产</li>
+              <li>提供优质纤维素，控制膘情</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="info-card">
+            <h4>🐷 批次化妊娠母猪群结构</h4>
+            <table class="data-table" style="font-size:.72rem">
+              <tr><th>项目</th><th>目标</th></tr>
+              <tr><td>年产胎次</td><td>2.2胎</td></tr>
+              <tr><td>窝均产活仔</td><td>10头</td></tr>
+              <tr><td>窝均断奶仔</td><td>9头</td></tr>
+              <tr><td>母猪年更新率</td><td>40%左右</td></tr>
+              <tr><td>配种受胎率</td><td>≥90%</td></tr>
+              <tr><td>分娩率</td><td>≥90%</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-num">3 / 18</div>
+  </div>
+</div>
+
+<!-- PAGE 4: 分娩哺乳期 -->
+<div class="page" style="z-index:16;transform:rotateY(180deg)" data-page="4">
+  <div class="page-front">
+    <div class="page-header">
+      <div class="section-tag">PART 03 · 分娩哺乳期</div>
+      <div class="section-title">分娩与哺乳管理（28-35天）</div>
+    </div>
+    <div class="page-body">
+      <div class="two-col" style="gap:10px">
+        <div>
+          <div class="info-card amber" style="margin-bottom:8px">
+            <h4>🛁 分娩准备</h4>
+            <ul class="bullet-list">
+              <li>产房消毒：空栏清洗消毒，干燥<strong>7天</strong></li>
+              <li>产前<strong>7天</strong>进入产房</li>
+              <li>产房温度：母猪区<strong>20-22℃</strong>；仔猪保温箱<strong>30-32℃</strong></li>
+            </ul>
+          </div>
+          <div class="info-card green">
+            <h4>🐽 接产流程（标准操作）</h4>
+            <ol style="padding-left:16px;font-size:.74rem;line-height:1.8;color:#333">
+              <li>擦干仔猪口鼻粘液</li>
+              <li>断脐消毒（碘伏）</li>
+              <li>称重、打耳号</li>
+              <li><strong>6小时内</strong>吃足初乳</li>
+              <li>固定乳头</li>
+            </ol>
+          </div>
+        </div>
+        <div>
+          <div class="info-card" style="margin-bottom:8px">
+            <h4>🍼 产后母猪护理</h4>
+            <table class="data-table" style="font-size:.72rem">
+              <tr><th>时间</th><th>饲喂量</th></tr>
+              <tr><td>产后第1天</td><td>1.5kg</td></tr>
+              <tr><td>之后每天增加</td><td>+0.5kg</td></tr>
+              <tr><td>峰值</td><td>4.5-5.0kg/天</td></tr>
+              <tr><td>饲料类型</td><td>哺乳母猪料（蛋白18-19%）</td></tr>
+              <tr><td>产后护理</td><td>产后3天注射消炎针</td></tr>
+            </table>
+          </div>
+          <div class="info-card green">
+            <h4>🌡️ 哺乳仔猪温度管理（0-28日龄）</h4>
+            <div class="temp-row">
+              <div class="temp-item"><div class="temp-val">30-32℃</div><div class="temp-lbl">1-3日龄</div></div>
+              <div class="temp-item"><div class="temp-val">28-30℃</div><div class="temp-lbl">4-7日龄</div></div>
+              <div class="temp-item"><div class="temp-val">25-28℃</div><div class="temp-lbl">8-14日龄</div></div>
+              <div class="temp-item"><div class="temp-val">26℃</div><div class="temp-lbl">15-21日龄</div></div>
+              <div class="temp-item"><div class="temp-val">逐步降温</div><div class="temp-lbl">21-28日龄</div></div>
+            </div>
+            <div class="section-divider"></div>
+            <div style="font-size:.72rem;color:#333">
+              <strong>关键操作：</strong>2-3日龄补铁注射（预防贫血）；4-7日龄开始补料诱食（教槽料）
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:8px;background:var(--green-100);border:1px solid var(--green-300);border-radius:8px;padding:8px 12px;font-size:.75rem">
+        <strong style="color:var(--green-700)">🎯 断奶标准：</strong>
+        日龄 <strong>21-28天</strong> · 体重 <strong>≥6.5kg</strong>（目标6-8kg）· 哺乳仔猪成活率目标 <strong>≥90%</strong>
+      </div>
+    </div>
+    <div class="page-num">4 / 18</div>
+  </div>
+</div>
+
+<!-- PAGE 5: 保育期 -->
+<div class="page" style="z-index:15;transform:rotateY(180deg)" data-page="5">
+  <div class="page-front">
+    <div class="page-header">
+      <div class="section-tag">PART 04 · 保育期</div>
+      <div class="section-title">保育期管理（28-35天 / 21-70日龄）</div>
+    </div>
+    <div class="page-body">
+      <div class="flow-banner" style="margin-bottom:12px">
+        <span>🔰 保育期成活率目标：≥95%</span>
+        <span>·</span>
+        <span>每栏16头 · 同栏体重差≤2kg</span>
+      </div>
+      <div class="two-col" style="gap:10px;margin-bottom:10px">
+        <div>
+          <div class="info-card" style="margin-bottom:8px">
+            <h4>🏠 保育舍环境标准</h4>
+            <div class="indicator">
+              <span class="indi"><b>温度</b> 断奶初期26-28℃，每周下调2℃</span>
+              <span class="indi"><b>湿度</b> 60-65%</span>
+              <span class="indi"><b>密度</b> 0.3-0.4㎡/头</span>
+              <span class="indi"><b>同栏体重差</b> ≤2kg</span>
+            </div>
+          </div>
+          <div class="info-card green">
+            <h4>🍼 饲喂管理</h4>
+            <table class="data-table" style="font-size:.72rem">
+              <tr><th>阶段</th><th>饲料</th><th>蛋白</th><th>方式</th></tr>
+              <tr><td>断奶后1周</td><td>过渡料</td><td>19%</td><td>日喂4次，0.3-0.8kg/天</td></tr>
+              <tr><td>1周后</td><td>保育料</td><td>17-18%</td><td>自由采食</td></tr>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="info-card amber">
+            <h4>💉 免疫程序</h4>
+            <div class="imm-record">
+              <div class="imm-row"><span class="day">35日龄</span><span class="vacc">伪狂犬</span></div>
+              <div class="imm-row"><span class="day">42日龄</span><span class="vacc">口蹄疫</span></div>
+              <div class="imm-row"><span class="day">50日龄</span><span class="vacc">体内外驱虫（伊维菌素+阿苯达唑）</span></div>
+            </div>
+          </div>
+          <div style="margin-top:8px;background:var(--green-100);border:1px solid var(--green-300);border-radius:8px;padding:8px 12px">
+            <div style="font-size:.72rem;font-weight:700;color:var(--green-700);margin-bottom:4px">🌡️ 温度曲线</div>
+            <div class="temp-row">
+              <div class="temp-item"><div class="temp-val">26-28℃</div><div class="temp-lbl">断奶初期</div></div>
+              <div class="temp-item"><div class="temp-val">24-26℃</div><div class="temp-lbl">第2周</div></div>
+              <div class="temp-item"><div class="temp-val">22-24℃</div><div class="temp-lbl">第3-4周</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="background:#fef9ed;border:1px solid var(--amber-400);border-radius:8px;padding:8px 14px;font-size:.72rem;color:#92400e">
+        <strong>⚠️ 保育期关键：</strong>断奶后1周是仔猪最脆弱时期，温度不能骤降，饲料过渡要慢（过渡料→保育料），每栏16头，同栏体重差≤2kg，减少应激。
+      </div>
+    </div>
+    <div class="page-num">5 / 18</div>
+  </div>
+</div>
+
+<!-- PAGE 6: 育肥期 -->
+<div class="page" style="z-index:14;transform:rotateY(180deg)" data-page="6">
+  <div class="page-front">
+    <div class="page-header">
+      <div class="section-tag">PART 05 · 育肥期</div>
+      <div class="section-title">育肥期管理（90-120天 / 70-175日龄）</div>
+    </div>
+    <div class="page-body">
+      <div class="flow-banner" style="margin-bottom:12px">
+        <span>📈 育肥期成活率目标：≥98%</span>
+        <span>·</span>
+        <span>日增重目标：≥650g（目标720g）</span>
+        <span>·</span>
+        <span>出栏体重：100-120kg</span>
+      </div>
+      <div class="two-col" style="gap:10px;margin-bottom:10px">
+        <div>
+          <div class="info-card" style="margin-bottom:8px">
+            <h4>🏠 育肥舍环境标准</h4>
+            <div class="indicator">
+              <span class="indi"><b>温度</b> 18-22℃</span>
+              <span class="indi"><b>湿度</b> 60-75%</span>
+              <span class="indi"><b>密度</b> 0.8-1.0㎡/头</span>
+              <span class="indi"><b>每栏</b> 18-20头</span>
+              <span class="indi"><b>氨气</b> ≤15ppm</span>
+            </div>
+          </div>
+          <div class="info-card green">
+            <h4>📊 育肥生产指标</h4>
+            <table class="data-table" style="font-size:.72rem">
+              <tr><th>指标</th><th>目标值</th></tr>
+              <tr><td>日增重</td><td><strong>≥650g</strong>（目标720g）</td></tr>
+              <tr><td>料肉比</td><td><strong>≤2.7:1</strong></td></tr>
+              <tr><td>成活率</td><td>≥98%</td></tr>
+              <tr><td>出栏体重</td><td>100-120kg</td></tr>
+              <tr><td>出栏日龄</td><td>≤175天</td></tr>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="info-card" style="margin-bottom:8px">
+            <h4>🌾 饲喂管理</h4>
+            <table class="data-table" style="font-size:.72rem">
+              <tr><th>体重阶段</th><th>饲料类型</th><th>蛋白</th><th>方式</th></tr>
+              <tr><td>25-60kg</td><td>中猪料</td><td>16-18%</td><td>自由采食</td></tr>
+              <tr><td>60kg-出栏</td><td>大猪料</td><td>14-16%</td><td>前期自由，后期适当限饲</td></tr>
+            </table>
+          </div>
+          <div class="phase-grid">
+            <div class="phase-card green">
+              <h5>保育末重</h5>
+              <div class="phase-val">~25kg</div>
+            </div>
+            <div class="phase-card amber">
+              <h5>出栏重</h5>
+              <div class="phase-val">100-120kg</div>
+            </div>
+            <div class="phase-card blue">
+              <h5>全程料比</h5>
+              <div class="phase-val">≤2.7:1</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="background:var(--green-100);border:1px solid var(--green-300);border-radius:8px;padding:8px 14px;font-size:.72rem;color:#166534">
+        <strong>📐 育肥节奏：</strong>保育末（~25kg，70日龄）→中猪（25-60kg）→大猪（60kg-出栏，≤175日龄）→出栏（100-120kg）。后期适当限饲可改善肉质，提高瘦肉率。
+      </div>
+    </div>
+    <div class="page-num">6 / 18</div>
+  </div>
+</div>
+
+<!-- PAGE 7: 生物安全 -->
+<div class="page" style="z-index:13;transform:rotateY(180deg)" data-page="7">
+  <div class="page-front">
+    <div class="page-header">
+      <div class="section-tag">PART 06 · 生物安全</div>
+      <div class="section-title">生物安全体系 · 三级防线</div>
+    </div>
+    <div class="page-body">
+      <div class="flow-banner" style="margin-bottom:12px">
+        <span>🛡️ 净道、污道严格分离</span>
+        <span>·</span>
+        <span>人员、物资、猪只单向流动</span>
+        <span>·</span>
+        <span>全进全出制度</span>
+      </div>
+      <div class="biosafe" style="margin-bottom:12px">
+        <div class="biosafe-level l1">
+          <h5>🚧 第一级防线</h5>
+          <p>场区大门<br>车辆消毒<br>人员淋浴更衣</p>
+        </div>
+        <div class="biosafe-level l2">
+          <h5>🏗️ 第二级防线</h5>
+          <p>生产区<br>物资消毒室<br>消毒通道</p>
+        </div>
+        <div class="biosafe-level l3">
+          <h5>🚪 第三级防线</h5>
+          <p>栋舍入口<br>栋舍消毒<br>物品单向流动</p>
+        </div>
+      </div>
+      <div class="two-col" style="gap:10px">
+        <div>
+          <div class="info-card" style="margin-bottom:8px">
+            <h4>🦠 核心疫病防控</h4>
+            <table class="data-table" style="font-size:.72rem">
+              <tr><th>疫病</th><th>防控措施</th></tr>
+              <tr><td>非洲猪瘟</td><td><strong style="color:#991b1b">严格生物安全，严防死守</strong></td></tr>
+              <tr><td>猪瘟</td><td>按程序接种疫苗</td></tr>
+              <tr><td>口蹄疫</td><td>定期免疫</td></tr>
+              <tr><td>伪狂犬</td><td>定期免疫</td></tr>
+              <tr><td>蓝耳病</td><td>根据猪场情况免疫</td></tr>
+              <tr><td>腹泻病</td><td>产房保温，仔猪管理</td></tr>
+              <tr><td>呼吸道病</td><td>改善空气质量，减少应激</td></tr>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="info-card amber" style="margin-bottom:8px">
+            <h4>🧴 消毒制度</h4>
+            <table class="data-table" style="font-size:.7rem">
+              <tr><th>区域</th><th>频次</th><th>消毒剂</th></tr>
+              <tr><td>门口消毒池</td><td>每日更换</td><td>过氧乙酸</td></tr>
+              <tr><td>生产区环境</td><td>每周2次</td><td>次氯酸钠</td></tr>
+              <tr><td>空栏舍</td><td>清洗→消毒→干燥7天→再消毒</td><td>轮换</td></tr>
+              <tr><td>栏舍内</td><td>每周1次</td><td>消毒剂轮换</td></tr>
+            </table>
+          </div>
+          <div class="info-card green">
+            <h4>💊 驱虫计划</h4>
+            <ul class="bullet-list">
+              <li>全场驱虫：每年<strong>2-4次</strong></li>
+              <li>驱虫药物：<strong>阿苯达唑+伊维菌素</strong></li>
+              <li>驱虫后及时清理粪便并消毒</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-num">7 / 18</div>
+  </div>
+</div>
+
+<!-- PAGE 8: 环境控制标准 -->
+<div class="page" style="z-index:12;transform:rotateY(180deg)" data-page="8">
+  <div class="page-front">
+    <div class="page-header">
+      <div class="section-tag">PART 07 · 环境控制</div>
+      <div class="section-title">环境控制标准 · 温度 & 空气质量</div>
+    </div>
+    <div class="page-body">
+      <div class="two-col" style="gap:10px;margin-bottom:10px">
+        <div>
+          <div class="info-card green" style="margin-bottom:8px">
+            <h4>🌡️ 温度标准（各猪群类型）</h4>
+            <table class="data-table" style="font-size:.72rem">
+              <tr><th>猪群类型</th><th>温度要求</th></tr>
+              <tr><td>初生仔猪</td><td><strong>30-34℃</strong></td></tr>
+              <tr><td>哺乳仔猪（1周后）</td><td>28-32℃</td></tr>
+              <tr><td>保育猪</td><td>24-28℃</td></tr>
+              <tr><td>育肥猪</td><td>18-22℃</td></tr>
+              <tr><td>妊娠母猪</td><td>18-22℃</td></tr>
+              <tr><td>分娩母猪</td><td>20-22℃</td></tr>
+            </table>
+          </div>
+          <div class="info-card">
+            <h4>🌬️ 通风模式</h4>
+            <div style="display:flex;gap:6px;font-size:.72rem;margin-top:6px">
+              <div style="flex:1;background:#eff6ff;border:1px solid #93c5fd;border-radius:6px;padding:6px;text-align:center;color:#1d4ed8"><strong>最小通风</strong><br><span style="font-size:.62rem">冬季/过渡季</span></div>
+              <div style="flex:1;background:#f0fdf4;border:1px solid var(--green-300);border-radius:6px;padding:6px;text-align:center;color:var(--green-700)"><strong>过渡通风</strong><br><span style="font-size:.62rem">春秋季</span></div>
+              <div style="flex:1;background:#fef3c7;border:1px solid var(--amber-400);border-radius:6px;padding:6px;text-align:center;color:var(--amber-600)"><strong>最大通风</strong><br><span style="font-size:.62rem">夏季</span></div>
+            </div>
+            <div style="font-size:.68rem;color:#666;margin-top:6px;text-align:center">四季自动切换，杜绝贼风</div>
+          </div>
+        </div>
+        <div>
+          <div class="info-card amber" style="margin-bottom:8px">
+            <h4>💨 空气质量标准</h4>
+            <table class="data-table" style="font-size:.72rem">
+              <tr><th>指标</th><th>标准</th></tr>
+              <tr><td>氨气（NH₃）</td><td>≤15ppm</td></tr>
+              <tr><td>硫化氢（H₂S）</td><td>≤10ppm</td></tr>
+              <tr><td>二氧化碳（CO₂）</td><td>≤0.15%</td></tr>
+              <tr><td>湿度</td><td>60-75%</td></tr>
+            </table>
+          </div>
+          <div class="info-card">
+            <h4>📊 全期成活率汇总</h4>
+            <table class="data-table" style="font-size:.72rem">
+              <tr><th>阶段</th><th>目标成活率</th></tr>
+              <tr><td>哺乳期</td><td><strong>≥90%</strong></td></tr>
+              <tr><td>保育期</td><td><strong>≥95%</strong></td></tr>
+              <tr><td>育肥期</td><td><strong>≥98%</strong></td></tr>
+              <tr><td>全期合计</td><td><strong style="color:#b45309">≥85%</strong></td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-num">8 / 18</div>
+  </div>
+</div>
+
+<!-- PAGE 9: 饲料营养 -->
+<div class="page" style="z-index:11;transform:rotateY(180deg)" data-page="9">
+  <div class="page-front">
+    <div class="page-header">
+      <div class="section-tag">PART 08 · 饲料营养</div>
+      <div class="section-title">饲料类型与营养标准</div>
+    </div>
+    <div class="page-body">
+      <div class="feed-grid" style="margin-bottom:12px">
+        <div class="feed-item">
+          <h5>后备母猪料</h5>
+          <p>适用：后备母猪</p>
+          <p>蛋白：16-17%</p>
+          <div class="protein">促进繁殖系统发育</div>
+        </div>
+        <div class="feed-item">
+          <h5>妊娠母猪料</h5>
+          <p>适用：妊娠期</p>
+          <p>蛋白：14-15%</p>
+          <div class="protein">控制膘情</div>
+        </div>
+        <div class="feed-item">
+          <h5>哺乳母猪料</h5>
+          <p>适用：哺乳期</p>
+          <p>蛋白：18-19%</p>
+          <div class="protein">高蛋白促进泌乳</div>
+        </div>
+        <div class="feed-item">
+          <h5>教槽料</h5>
+          <p>适用：7-28日龄</p>
+          <p>蛋白：20-22%</p>
+          <div class="protein">含乳糖、血浆蛋白粉</div>
+        </div>
+        <div class="feed-item">
+          <h5>保育料</h5>
+          <p>适用：断奶-25kg</p>
+          <p>蛋白：17-19%</p>
+          <div class="protein">易消化配方</div>
+        </div>
+        <div class="feed-item">
+          <h5>大猪料</h5>
+          <p>适用：60kg-出栏</p>
+          <p>蛋白：14-16%</p>
+          <div class="protein">降低料肉比</div>
+        </div>
+      </div>
+      <div class="two-col" style="gap:10px">
+        <div>
+          <div class="info-card amber" style="margin-bottom:8px">
+            <h4>🚫 饲料安全红线</h4>
+            <ul class="bullet-list">
+              <li><strong>严禁</strong>使用未经处理的泔水</li>
+              <li><strong>禁止</strong>使用霉变饲料</li>
+              <li>料槽残留饲料 <strong>≤5%</strong></li>
+              <li><strong>每日</strong>清理料槽</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="info-card green">
+            <h4>🐷 中猪料（25-60kg）</h4>
+            <p style="font-size:.72rem;margin-bottom:4px">蛋白：16-18% · 自由采食</p>
+            <p style="font-size:.72rem;color:#666">促进生长，维持高效日增重</p>
+            <div class="section-divider"></div>
+            <h4 style="font-size:.78rem">🌾 饲料安全要点</h4>
+            <ul class="bullet-list">
+              <li>原料来源可追溯</li>
+              <li>定期检测霉菌毒素</li>
+              <li>现用现配，避免氧化酸败</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-num">9 / 18</div>
+  </div>
+</div>
+
+<!-- PAGE 10: 档案记录 & 参考标准 -->
+<div class="page" style="z-index:10;transform:rotateY(180deg)" data-page="10">
+  <div class="page-front">
+    <div class="page-header">
+      <div class="section-tag">PART 09 · 档案管理 & 参考标准</div>
+      <div class="section-title">档案记录 · 应急预案 · 参考标准</div>
+    </div>
+    <div class="page-body">
+      <div class="two-col" style="gap:10px;margin-bottom:10px">
+        <div>
+          <div class="info-card green" style="margin-bottom:8px">
+            <h4>📋 必备记录档案（8类）</h4>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:.7rem;margin-top:6px">
+              <div class="pig-label"><span class="pig">🐷</span>繁殖记录</div>
+              <div class="pig-label"><span class="pig">📈</span>生长记录</div>
+              <div class="pig-label"><span class="pig">🌾</span>饲喂记录</div>
+              <div class="pig-label"><span class="pig">💉</span>免疫记录</div>
+              <div class="pig-label"><span class="pig">🧴</span>消毒记录</div>
+              <div class="pig-label"><span class="pig">🦠</span>疫病记录</div>
+              <div class="pig-label"><span class="pig">✅</span>出栏记录</div>
+              <div class="pig-label"><span class="pig">📦</span>物资记录</div>
+            </div>
+          </div>
+          <div class="info-card">
+            <h4>⚡ 应急预案</h4>
+            <ul class="bullet-list">
+              <li><strong>突发疫病：</strong>立即隔离→24h采样送检→确诊后治疗→死猪无害化（深埋/焚烧）</li>
+              <li><strong>高温：</strong>启动水帘、风机、喷雾降温</li>
+              <li><strong>低温：</strong>保温灯、地暖、关闭卷帘</li>
+              <li><strong>停水停电：</strong>备用发电机启动，储水罐应急</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="info-card amber">
+            <h4>📚 参考标准（权威资料）</h4>
+            <ul class="ref-list">
+              <li>GB/T 17824.2-2008《规模猪场生产技术规程》</li>
+              <li>GB/T 17824.3《规模猪场环境参数及环境管理》</li>
+              <li>GB 13078《饲料卫生标准》</li>
+              <li>GB 18596《畜禽养殖业污染物排放标准》</li>
+              <li>DB14/T 1090-2024《生猪规模养殖技术规程》（山西省地方标准）</li>
+              <li>NY/T 388《畜禽场环境质量标准》</li>
+              <li>NY/T 682《畜禽场场区设计技术规范》</li>
+            </ul>
+          </div>
+          <div style="margin-top:8px;background:#f6faf6;border:1px solid var(--green-200);border-radius:8px;padding:8px 12px">
+            <div style="font-size:.7rem;font-weight:700;color:var(--green-700);margin-bottom:4px">🏆 批次化生产核心优势</div>
+            <ul class="bullet-list">
+              <li>减少运猪车频率，降低疫病传播风险</li>
+              <li>便于计划管理</li>
+              <li>设备使用效率提升</li>
+              <li>劳动生产效率提高</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-num">10 / 18</div>
+  </div>
+</div>
+
+<!-- Page nav buttons -->
+<button class="page-nav prev hidden" id="prevBtn" onclick="event.stopPropagation()">‹</button>
+<button class="page-nav next" id="nextBtn" onclick="event.stopPropagation()">›</button>
+</div>
+</div>
+
+<!-- Page indicator dots -->
+<div class="page-dots" id="pageDots"></div>
+
+<script>
+const flipbook = document.getElementById('flipbook');
+const pages = document.querySelectorAll('.page');
+const dotsContainer = document.getElementById('pageDots');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+let currentPage = 0;
+const totalPages = pages.length;
+
+// Create dots
+for(let i = 0; i < totalPages; i++){
+  const dot = document.createElement('button');
+  dot.className = 'dot' + (i === 0 ? ' active' : '');
+  dot.onclick = () => goToPage(i);
+  dotsContainer.appendChild(dot);
+}
+const dots = document.querySelectorAll('.dot');
+
+function updatePage(){
+  pages.forEach((p, i) => {
+    p.classList.toggle('flipped', i < currentPage);
+    p.style.zIndex = i < currentPage ? (20 - i) : (20 + (totalPages - i - 1));
+  });
+  dots.forEach((d, i) => {
+    d.classList.toggle('active', i === currentPage);
+  });
+  prevBtn.classList.toggle('hidden', currentPage === 0);
+  nextBtn.classList.toggle('hidden', currentPage === totalPages - 1);
+}
+
+function goToPage(n){
+  currentPage = Math.max(0, Math.min(n, totalPages - 1));
+  updatePage();
+}
+
+function nextPage(){
+  if(currentPage < totalPages - 1){ currentPage++; updatePage(); }
+}
+
+function prevPage(){
+  if(currentPage > 0){ currentPage--; updatePage(); }
+}
+
+nextBtn.addEventListener('click', e => { e.stopPropagation(); nextPage(); });
+prevBtn.addEventListener('prevBtn', e => { e.stopPropagation(); prevPage(); });
+
+// Click page to flip
+pages.forEach((page, i) => {
+  page.addEventListener('click', (e) => {
+    if(e.target.closest('.page-nav')) return;
+    if(i === currentPage && i < totalPages - 1) nextPage();
+    else if(i === currentPage - 1) prevPage();
+  });
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if(e.key === 'ArrowRight' || e.key === 'ArrowDown') nextPage();
+  if(e.key === 'ArrowLeft' || e.key === 'ArrowUp') prevPage();
+  if(e.key === 'Home') goToPage(0);
+  if(e.key === 'End') goToPage(totalPages - 1);
+});
+
+// Touch swipe support
+let touchStartX = 0;
+flipbook.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+flipbook.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if(Math.abs(dx) > 50){ dx < 0 ? nextPage() : prevPage(); }
+});
+
+updatePage();
+</script>
+</body>
+</html>
