@@ -269,15 +269,15 @@ footer { position: relative; z-index: 1; }
     </div>
     <!-- 动态行情数据 ticker -->
     <div class="text-center mb-4">
-      <span class="font-mono text-xs tracking-widest text-steel-400 bg-navy-900/60 px-4 py-1.5 rounded-full border border-steel-700/30" id="market-date">2026年04月26日 · 实时行情</span>
+      <span class="font-mono text-xs tracking-widest text-steel-400 bg-navy-900/60 px-4 py-1.5 rounded-full border border-steel-700/30" id="market-date">2026年04月27日 · 实时行情</span>
     </div>
     <div id="price-ticker" class="flex flex-wrap justify-center gap-3 mb-8 text-xs" style="display:flex;align-items:stretch;justify-content:center;flex-wrap:wrap;gap:8px;">
       <!-- 外三元 -->
       <div class="glass-card px-3 py-3 text-center border border-orange-500/20 flex flex-col justify-between" style="min-width:100px;">
         <div class="text-steel-400 text-[10px] mb-1">生猪(外三元)</div>
-        <div class="text-accent-400 font-bold text-lg leading-tight" id="p-outer">10.14</div>
-        <div class="text-[11px] mt-0.5" id="p-outer-change"><span class="text-red-400">↓0.06元</span></div>
-        <div class="text-[10px] text-steel-500 mt-0.5">同比 <span class="text-red-400">-32.26%</span> · 环比 <span class="text-red-400">-0.88%</span></div>
+        <div class="text-accent-400 font-bold text-lg leading-tight" id="p-outer">10.91</div>
+        <div class="text-[11px] mt-0.5" id="p-outer-change"><span class="text-green-400">↑0.05元</span></div>
+        <div class="text-[10px] text-steel-500 mt-0.5">同比 <span class="text-red-400">-31.95%</span> · 环比 <span class="text-green-400">0.39%</span></div>
       </div>
       <!-- 内三元 -->
       <div class="glass-card px-3 py-3 text-center border border-blue-500/20 flex flex-col justify-between" style="min-width:100px;">
@@ -290,27 +290,27 @@ footer { position: relative; z-index: 1; }
       <div class="glass-card px-3 py-3 text-center border border-green-500/20 flex flex-col justify-between" style="min-width:100px;">
         <div class="text-steel-400 text-[10px] mb-1">生猪(土杂猪)</div>
         <div class="text-green-400 font-bold text-lg leading-tight" id="p-local">9.81</div>
-        <div class="text-[11px] mt-0.5" id="p-local-change"><span class="text-red-400">↓0.02元</span></div>
+        <div class="text-[11px] mt-0.5" id="p-local-change"><span class="text-green-400">↑0.05元</span></div>
         <div class="text-[10px] text-steel-500 mt-0.5">同比 <span class="text-red-400">-32.06%</span> · 环比 <span class="text-red-400">-4.94%</span></div>
       </div>
       <!-- 玉米 -->
       <div class="glass-card px-3 py-3 text-center border border-orange-500/20 flex flex-col justify-between" style="min-width:100px;">
         <div class="text-steel-400 text-[10px] mb-1">玉米(饲料原料)</div>
-        <div class="text-accent-400 font-bold text-lg leading-tight" id="p-corn">2402</div>
-        <div class="text-[11px] mt-0.5" id="p-corn-change"><span class="text-green-400">↑2元</span></div>
+        <div class="text-accent-400 font-bold text-lg leading-tight" id="p-corn">2388</div>
+        <div class="text-[11px] mt-0.5" id="p-corn-change"><span class="text-green-400">↑8元</span></div>
         <div class="text-[10px] text-steel-500 mt-0.5">同比 <span class="text-green-400">6.99%</span> · 环比 <span class="text-red-400">-0.29%</span></div>
       </div>
       <!-- 豆粕 -->
       <div class="glass-card px-3 py-3 text-center border border-green-500/20 flex flex-col justify-between" style="min-width:100px;">
         <div class="text-steel-400 text-[10px] mb-1">豆粕(饲料原料)</div>
-        <div class="text-green-400 font-bold text-lg leading-tight" id="p-bean">3130</div>
-        <div class="text-[11px] mt-0.5" id="p-bean-change"><span class="text-green-400">↑16元</span></div>
+        <div class="text-green-400 font-bold text-lg leading-tight" id="p-bean">3014</div>
+        <div class="text-[11px] mt-0.5" id="p-bean-change"><span class="text-green-400">↑22元</span></div>
         <div class="text-[10px] text-steel-500 mt-0.5">同比 <span class="text-red-400">-13.37%</span> · 环比 <span class="text-red-400">-4.11%</span></div>
       </div>
       <!-- 猪粮比 -->
       <div class="glass-card px-3 py-3 text-center border-2 border-accent-500/40 flex flex-col justify-between" style="min-width:100px;">
         <div class="text-steel-400 text-[10px] mb-1">猪粮比</div>
-        <div class="text-accent-400 font-bold text-lg leading-tight" id="p-ratio">4.22<span class="text-sm">:1</span></div>
+        <div class="text-accent-400 font-bold text-lg leading-tight" id="p-ratio">4.57<span class="text-sm">:1</span></div>
         <div class="text-[10px] text-steel-500 mt-0.5">生猪价格/玉米价格</div>
       </div>
     </div>
@@ -1958,8 +1958,8 @@ document.querySelectorAll('.proj-card').forEach(card => {
 
   // Fallback static values (today's data from API)
   const FALLBACK = {
-    pigprice: 14.99, pig_in: 14.65, pig_local: 14.48,
-    maizeprice: 2251, bean: 3607, ratio: 6.66  // = 14.99*1000/2251
+    pigprice: 10.91, pig_in: 10.24, pig_local: 9.81,
+    maizeprice: 2388, bean: 3014, ratio: 4.57
   };
 
   function getEl(id) { return document.getElementById(id); }
