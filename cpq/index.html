@@ -289,14 +289,29 @@ async function detail(idx){
     if(data.code===1&&Array.isArray(data.entity)&&data.entity.length){
       const items=data.entity.filter(s=>s.sampleLength>0);
       if(items.length){
-      h+=items.map(s=>{
+      h+=items.map((s,i)=>{
         const pic=s.docPicPath||'';
         const pdf=pic.replace('/pic/','/file/').replace('.jpg','.pdf');
         const sz=(s.sampleLength/1024).toFixed(1)+'MB';
-        return`<a class="s-item" href="${e(pdf)}" target="_blank"><div class="s-icon">PDF</div>`+
+        return`<a class="s-item" data-pdf="${i}" href="${e(pdf)}" target="_blank"><div class="s-icon">PDF</div>`+
           `<div class="s-info"><div class="sn">${e(s.sampleName||'样本')}</div><div class="su">${e(pdf)}</div></div>`+
-          `<div class="s-dl">${sz} ↓</div></a>`}).join('')}
-      else h+='<div class="no-data">NO SAMPLES AVAILABLE</div>';
+          `<div class="s-dl">${sz} ↓</div></a>`}).join('');
+      // Background check: remove 404 PDFs
+      items.forEach((s,i)=>{
+        const pic=s.docPicPath||'';
+        const pdf=pic.replace('/pic/','/file/').replace('.jpg','.pdf');
+        fetch(pdf,{method:'HEAD'}).then(r=>{
+          if(!r.ok){
+            const el=dt.querySelector(`[data-pdf="${i}"]`);
+            if(el)el.remove();
+            // If no items left, show message
+            if(!dt.querySelector('.s-item')){
+              dt.querySelector('.d-body').innerHTML='<h4>📄 SAMPLE DOCUMENTS</h4><div class="no-data">NO SAMPLES AVAILABLE</div>';
+            }
+          }
+        }).catch(()=>{});
+      });
+      }else h+='<div class="no-data">NO SAMPLES AVAILABLE</div>';
     }
     else if(data.code===0){
       h+=`<div class="no-data">API ERROR: ${e(data.msg||'参数错误')}</div>`+
