@@ -260,6 +260,7 @@ function search(){
     if((s.s||'').toUpperCase().includes(kw)||(s.n||'').toUpperCase().includes(kw)){
       hits.push({sid:s.i,code:s.s,name:s.n,fid:s.j,factory:(factories[s.j]||{}).n||s.j});
       if(hits.length>=80)break}}
+  hits.sort((a,b)=>(a.factory.includes('天正')?0:1)-(b.factory.includes('天正')?0:1));
   th.style.display=hits.length?'':'none';dt.className='detail';
   cnt&&(cnt.innerHTML=`🔍 <b>${hits.length}</b> 条结果`);
   el.innerHTML=hits.map((r,i)=>`<div class="row" data-i="${i}" ondblclick="detail(${i})">`+
