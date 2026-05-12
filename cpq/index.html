@@ -290,7 +290,7 @@ async function detail(idx){
       h+=data.entity.map(s=>{
         const pic=s.docPicPath||'';
         const pdf=pic.replace('/pic/','/file/').replace('.jpg','.pdf');
-        const sz=s.sampleLength?(s.sampleLength/1024/1024).toFixed(1)+'MB':'';
+        const sz=s.sampleLength?(s.sampleLength/1024).toFixed(1)+'MB':'';
         return`<a class="s-item" href="${e(pdf)}" target="_blank"><div class="s-icon">PDF</div>`+
           `<div class="s-info"><div class="sn">${e(s.sampleName||'样本')}</div><div class="su">${e(pdf)}</div></div>`+
           `<div class="s-dl">${sz} ↓</div></a>`}).join('')}
