@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TITANMATRIX // 电气选型资料检索系统</title>
+<title>天正电气 · 可信赖 更美好</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500;600&family=ZCOOL+XiaoWei&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--cyan:#00f0ff;--purple:#a855f7;--magenta:#ff00aa;--bg:#050510;--card:rgba(10,10,30,0.7);--glow:0 0 20px rgba(0,240,255,.15)}
 body{font-family:'JetBrains Mono','SF Mono','Cascadia Code',monospace;background:var(--bg);color:#c0c8e0;min-height:100vh;overflow-x:hidden}
@@ -35,7 +35,7 @@ body{font-family:'JetBrains Mono','SF Mono','Cascadia Code',monospace;background
 .boot{position:fixed;top:0;left:0;width:100%;height:100%;z-index:100;background:var(--bg);
   display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .8s,visibility .8s}
 .boot.done{opacity:0;visibility:hidden}
-.boot .logo{font-family:'Orbitron',sans-serif;font-size:36px;font-weight:900;
+.boot .logo{font-family:'ZCOOL XiaoWei','Noto Serif SC',serif;font-size:42px;font-weight:400;letter-spacing:8px;
   background:linear-gradient(135deg,var(--cyan),var(--purple),var(--magenta));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 40px rgba(0,240,255,.3)}
 .boot .sub{color:var(--cyan);font-size:11px;letter-spacing:4px;margin-top:12px;opacity:.6}
@@ -45,9 +45,10 @@ body{font-family:'JetBrains Mono','SF Mono','Cascadia Code',monospace;background
 
 /* === 标题 === */
 .header{text-align:center;padding:32px 0 16px}
-.header h1{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:700;letter-spacing:3px;
-  background:linear-gradient(135deg,var(--cyan),#60a5fa,var(--purple));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header h1{font-family:'ZCOOL XiaoWei','Noto Serif SC',serif;font-size:28px;font-weight:400;letter-spacing:6px;
+  background:linear-gradient(135deg,var(--cyan),#a855f7,var(--magenta),var(--cyan));
+  background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:grad 4s ease infinite;margin-bottom:8px;text-align:center}
 .header .tagline{font-size:11px;color:rgba(0,240,255,.4);letter-spacing:3px;margin-top:6px;text-transform:uppercase}
 .header .stats-row{display:flex;gap:16px;justify-content:center;margin-top:12px}
 .header .chip{padding:4px 14px;border:1px solid rgba(0,240,255,.15);border-radius:20px;font-size:10px;color:rgba(0,240,255,.5);letter-spacing:1px}
@@ -117,6 +118,7 @@ body{font-family:'JetBrains Mono','SF Mono','Cascadia Code',monospace;background
 .loading-d{text-align:center;padding:24px;color:rgba(0,240,255,.3);font-size:12px}
 .loading-d::before{content:'▸ ';color:var(--cyan)}
 @keyframes blink{50%{opacity:0}}
+@keyframes grad{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 .cursor{animation:blink 1s infinite}
 
 .empty-state{text-align:center;padding:60px 20px;color:rgba(0,240,255,.15)}
@@ -142,7 +144,7 @@ body{font-family:'JetBrains Mono','SF Mono','Cascadia Code',monospace;background
 
 <!-- 启动画面 -->
 <div class="boot" id="boot">
-  <div class="logo">TITANMATRIX</div>
+  <div class="logo">天正电气</div>
   <div class="sub">ELECTRICAL SELECTION SYSTEM v3.0</div>
   <div class="bar"><div class="bar-inner" id="bootBar"></div></div>
   <div class="log" id="bootLog"></div>
@@ -156,7 +158,7 @@ body{font-family:'JetBrains Mono','SF Mono','Cascadia Code',monospace;background
 <!-- 主内容 -->
 <div class="wrap">
   <div class="header">
-    <h1>⚡ TITANMATRIX</h1>
+    <h1>天正电气 · 可信赖 更美好</h1>
     <div class="tagline">Electrical Selection Data Retrieval System</div>
     <div class="stats-row" id="stats">
       <div class="chip">INITIALIZING<span class="cursor">_</span></div>
@@ -173,7 +175,7 @@ body{font-family:'JetBrains Mono','SF Mono','Cascadia Code',monospace;background
   </div>
   <div class="results" id="list"></div>
   <div class="detail" id="detail"></div>
-  <div class="footer">TITANMATRIX ELECTRICAL CPQ SYSTEM · POWERED BY CDN DATA STREAM</div>
+  <div class="footer">天正电气 · 可信赖 更美好 · ELECTRICAL CPQ SYSTEM</div>
 </div>
 
 <script>
