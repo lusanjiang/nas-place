@@ -287,13 +287,17 @@ async function detail(idx){
     const data=await apiPost('https://tmmp.titanmatrix.com/wxmp_factory/common/sample/series',{sId:r.sid});
     let h='<h4>📄 SAMPLE DOCUMENTS</h4>';
     if(data.code===1&&Array.isArray(data.entity)&&data.entity.length){
-      h+=data.entity.map(s=>{
+      const items=data.entity.filter(s=>s.sampleLength>0);
+      if(items.length){
+      h+=items.map(s=>{
         const pic=s.docPicPath||'';
         const pdf=pic.replace('/pic/','/file/').replace('.jpg','.pdf');
-        const sz=s.sampleLength?(s.sampleLength/1024).toFixed(1)+'MB':'';
+        const sz=(s.sampleLength/1024).toFixed(1)+'MB';
         return`<a class="s-item" href="${e(pdf)}" target="_blank"><div class="s-icon">PDF</div>`+
           `<div class="s-info"><div class="sn">${e(s.sampleName||'样本')}</div><div class="su">${e(pdf)}</div></div>`+
           `<div class="s-dl">${sz} ↓</div></a>`}).join('')}
+      else h+='<div class="no-data">NO SAMPLES AVAILABLE</div>';
+    }
     else if(data.code===0){
       h+=`<div class="no-data">API ERROR: ${e(data.msg||'参数错误')}</div>`+
         `<div style="margin-top:12px;font-size:10px;color:rgba(0,240,255,.15)">TIP: Try opening from NAS local network for full proxy access</div>`;
