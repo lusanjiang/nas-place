@@ -159,9 +159,9 @@ body{font-family:'JetBrains Mono','SF Mono','Cascadia Code',monospace;background
 <div class="wrap">
   <div class="header">
     <h1>天正电气 · 可信赖 更美好</h1>
-    <div class="tagline">Electrical Selection Data Retrieval System</div>
+    <div class="tagline">电气选型资料检索系统</div>
     <div class="stats-row" id="stats">
-      <div class="chip">INITIALIZING<span class="cursor">_</span></div>
+      <div class="chip">初始化中<span class="cursor">_</span></div>
     </div>
   </div>
 
@@ -171,11 +171,11 @@ body{font-family:'JetBrains Mono','SF Mono','Cascadia Code',monospace;background
   </div>
 
   <div id="th" class="th" style="display:none">
-    <span>#</span><span>SERIES CODE</span><span>SERIES NAME</span><span style="text-align:right">FACTORY</span>
+    <span>#</span><span>系列编码</span><span>系列名称</span><span style="text-align:right">厂家</span>
   </div>
   <div class="results" id="list"></div>
   <div class="detail" id="detail"></div>
-  <div class="footer">天正电气 · 可信赖 更美好 · ELECTRICAL CPQ SYSTEM</div>
+  <div class="footer">天正电气 · 可信赖 更美好 · 电气选型资料检索系统</div>
 </div>
 
 <script>
@@ -217,11 +217,11 @@ for(let i=0;i<20;i++){const p=document.createElement('div');p.className='p';
 
 // === 启动序列 ===
 const bootLog=document.getElementById('bootLog'),bootBar=document.getElementById('bootBar');
-const bootMsgs=['CONNECTING TO CDN SATELLITE...','LOADING FACTORY DATABASE...','LOADING SERIES INDEX...','CALIBRATING SEARCH ENGINE...','SYSTEM READY'];
+const bootMsgs=['正在连接 CDN 数据源...','加载厂家数据库...','加载系列索引...','校准搜索引擎...','系统就绪'];
 let bootIdx=0;
 function bootStep(){
   if(bootIdx>=bootMsgs.length){
-    bootLog.textContent='✓ ALL SYSTEMS ONLINE';bootBar.style.width='100%';
+    bootLog.textContent='✓ 所有系统已就绪';bootBar.style.width='100%';
     setTimeout(()=>{document.getElementById('boot').classList.add('done');loadData()},400);return}
   bootLog.textContent=bootMsgs[bootIdx];bootBar.style.width=((bootIdx+1)/bootMsgs.length*100)+'%';
   bootIdx++;setTimeout(bootStep,300+Math.random()*400)}
@@ -240,11 +240,11 @@ async function loadData(){
     fl.forEach(f=>factories[f.id]=f);
     loaded=true;
     document.getElementById('stats').innerHTML=
-      `<div class="chip">🏭 <b>${fl.length}</b> FACTORIES</div>`+
-      `<div class="chip">📦 <b>${series.length}</b> SERIES</div>`+
-      `<div class="chip" id="cnt">⌕ AWAITING QUERY</div>`;
+      `<div class="chip">🏭 <b>${fl.length}</b> 厂家</div>`+
+      `<div class="chip">📦 <b>${series.length}</b> 系列</div>`+
+      `<div class="chip" id="cnt">🔍 等待查询</div>`;
   }catch(e){
-    document.getElementById('stats').innerHTML='<div class="chip" style="border-color:rgba(255,0,170,.3);color:var(--magenta)">✖ CONNECTION FAILED</div>'}
+    document.getElementById('stats').innerHTML='<div class="chip" style="border-color:rgba(255,0,170,.3);color:var(--magenta)">✖ 连接失败</div>'}
 }
 
 // === 搜索 ===
@@ -254,14 +254,14 @@ function search(){
   const kw=document.getElementById('kw').value.trim().toUpperCase();
   const el=document.getElementById('list'),th=document.getElementById('th'),
     dt=document.getElementById('detail'),cnt=document.getElementById('cnt');
-  if(!kw){el.innerHTML='';th.style.display='none';dt.className='detail';cnt&&(cnt.innerHTML='⌕ AWAITING QUERY');return}
+  if(!kw){el.innerHTML='';th.style.display='none';dt.className='detail';cnt&&(cnt.innerHTML='🔍 等待查询');return}
   hits=[];
   for(const s of series){
     if((s.s||'').toUpperCase().includes(kw)||(s.n||'').toUpperCase().includes(kw)){
       hits.push({sid:s.i,code:s.s,name:s.n,fid:s.j,factory:(factories[s.j]||{}).n||s.j});
       if(hits.length>=80)break}}
   th.style.display=hits.length?'':'none';dt.className='detail';
-  cnt&&(cnt.innerHTML=`⌕ <b>${hits.length}</b> RESULTS`);
+  cnt&&(cnt.innerHTML=`🔍 <b>${hits.length}</b> 条结果`);
   el.innerHTML=hits.map((r,i)=>`<div class="row" data-i="${i}" ondblclick="detail(${i})">`+
     `<div class="idx">${String(i+1).padStart(2,'0')}</div>`+
     `<div class="code">${e(r.code)}</div>`+
@@ -287,7 +287,7 @@ async function detail(idx){
   dt.scrollIntoView({behavior:'smooth',block:'nearest'});
   try{
     const data=await apiPost('https://tmmp.titanmatrix.com/wxmp_factory/common/sample/series',{sId:r.sid});
-    let h='<h4>📄 SAMPLE DOCUMENTS</h4>';
+    let h='<h4>📄 样本资料</h4>';
     if(data.code===1&&Array.isArray(data.entity)&&data.entity.length){
       const items=data.entity.filter(s=>s.sampleLength>0);
       if(items.length){
@@ -308,21 +308,21 @@ async function detail(idx){
             if(el)el.remove();
             // If no items left, show message
             if(!dt.querySelector('.s-item')){
-              dt.querySelector('.d-body').innerHTML='<h4>📄 SAMPLE DOCUMENTS</h4><div class="no-data">NO SAMPLES AVAILABLE</div>';
+              dt.querySelector('.d-body').innerHTML='<h4>📄 样本资料</h4><div class="no-data">暂无样本资料</div>';
             }
           }
         }).catch(()=>{});
       });
-      }else h+='<div class="no-data">NO SAMPLES AVAILABLE</div>';
+      }else h+='<div class="no-data">暂无样本资料</div>';
     }
     else if(data.code===0){
       h+=`<div class="no-data">API ERROR: ${e(data.msg||'参数错误')}</div>`+
         `<div style="margin-top:12px;font-size:10px;color:rgba(0,240,255,.15)">TIP: Try opening from NAS local network for full proxy access</div>`;
     }
-    else h+='<div class="no-data">NO SAMPLES AVAILABLE</div>';
+    else h+='<div class="no-data">暂无样本资料</div>';
     dt.querySelector('.d-body').innerHTML=h;
   }catch(err){
-    dt.querySelector('.d-body').innerHTML=`<h4>📄 SAMPLE DOCUMENTS</h4>`+
+    dt.querySelector('.d-body').innerHTML=`<h4>📄 样本资料</h4>`+
       `<div class="no-data">NETWORK ERROR: ${e(err.message)}</div>`+
       `<div style="margin-top:12px"><a class="s-item" href="https://cdn.titanmatrix.com/samples/${r.fid}/" target="_blank" style="border-color:rgba(168,85,247,.2)">`+
       `<div class="s-icon" style="background:linear-gradient(135deg,var(--purple),#7c3aed)">CDN</div>`+
