@@ -120,6 +120,9 @@ function log(m){
 // ===== 搜索 =====
 function doSearch(){
     var raw=document.getElementById('kw').value.trim();
+    // 自动提取宽泛关键词（去掉末尾的具体规格）
+    var broadKw=raw.replace(/[-\/].*$/,'').trim();
+    if(broadKw.length<3)broadKw=raw;
     if(!raw)return;
     var kw=raw.toUpperCase();
     document.getElementById('btn').disabled=true;
@@ -280,14 +283,24 @@ function renderParams(product,zipData){
         '智能控制器类型','N极型式','过载报警不脱扣功能'
     ];
 
-    // 收集关键维度的所有选项
-    var dimOpts=[];
+    // 收集关键维度的所有选项（严格去重维度名）
+    var dimMap={};
     (zipData.c||[]).forEach(function(dim){
         var label=dim.aj||'';
         if(KEY_DIMS.indexOf(label)<0)return;
         var opts=(dim.ar||[]).filter(function(o){return o.au&&o.au!=='null';});
         if(opts.length<=1)return;
-        dimOpts.push({label:label,opts:opts});
+        // 合并同名维度的选项
+        if(!dimMap[label])dimMap[label]=[];
+        opts.forEach(function(o){
+            if(!dimMap[label].find(function(x){return x.as===o.as;})){
+                dimMap[label].push(o);
+            }
+        });
+    });
+    var dimOpts=[];
+    Object.keys(dimMap).forEach(function(label){
+        dimOpts.push({label:label,opts:dimMap[label]});
     });
 
     // 渲染参数选择器
@@ -333,50 +346,91 @@ function pickOpt(asId,dimLabel){
     });
 
     // 更新选中的 as 值
-    // 先去掉同维度的旧选择
     var newSelected=[];
     currentSelectedAs.forEach(function(as){
         var isSameDim=false;
         dimOpts.forEach(function(o){if(o.as===as)isSameDim=true;});
         if(!isSameDim)newSelected.push(as);
     });
-    // 加上新选择
     newSelected.push(asId);
     currentSelectedAs=newSelected;
 
-    // 在产品列表中找最匹配的
-    var bestIdx=-1;
-    var bestScore=0;
-    products.forEach(function(p,idx){
-        var pAs=p.propOptSet.split('-').map(Number);
-        var score=0;
-        newSelected.forEach(function(as){if(pAs.indexOf(as)>=0)score++;});
-        if(score>bestScore){bestScore=score;bestIdx=idx;}
+    // 用选中的参数值构造搜索关键词
+    var searchParts=[];
+    newSelected.forEach(function(as){
+        var asMap={};
+        (currentZipData.c||[]).forEach(function(dim){
+            (dim.ar||[]).forEach(function(opt){
+                asMap[opt.as]=opt;
+            });
+        });
+        var info=asMap[as];
+        if(info&&info.av)searchParts.push(info.av);
     });
 
-    if(bestIdx>=0){
-        // 切换到匹配的产品
-        currentProductIdx=bestIdx;
-        var p=products[bestIdx];
+    // 用原始搜索词的前缀 + 新参数搜索
+    var origKw=document.getElementById('kw').value.trim();
+    var prefix=origKw.replace(/[-\/].*$/,'').trim();
+    var newKw=prefix+' '+searchParts.join(' ');
 
-        // 更新详情
-        var pr=p.price&&parseFloat(p.price)>0?'<div class="price-big">¥'+parseFloat(p.price).toLocaleString()+'</div>':'<div class="price-big-na">暂无报价</div>';
-        document.getElementById('detailModel').textContent=p.model;
-        document.getElementById('detailPrice').innerHTML=pr;
+    log('重新搜索: '+newKw);
 
-        // 高亮表格行
-        document.querySelectorAll('.product-table tr').forEach(function(r){r.classList.remove('active');});
-        var rows=document.querySelectorAll('.product-table tbody tr');
-        if(rows[bestIdx])rows[bestIdx].classList.add('active');
+    // 重新搜索
+    jsonp(API+'/open/sprice?v='+Date.now()+'&fid=&sid=&kw='+encodeURIComponent(newKw)+'&pi=1')
+    .then(function(d){
+        var data=decode(d);
+        var all=data.data||[];
+        var seen={};
+        var list=[];
+        all.forEach(function(p){
+            var m=strip(p.model||'');
+            if(!m)return;
+            var key=m+'|'+(p.className||'');
+            if(seen[key])return;
+            seen[key]=true;
+            list.push({model:m,price:p.price,series:p.className||'',type:p.type||'',sid:p.F_ProductLineID||'',propOptSet:p.propOptSet||'',productID:p.productID||''});
+        });
 
-        // 重新渲染参数
-        currentSelectedAs=p.propOptSet.split('-').map(Number);
-        renderParams(p,currentZipData);
+        if(list.length>0){
+            products=list;
+            renderTable(list);
 
-        log('切换到: '+p.model+' ¥'+(p.price||'未定价'));
-    }else{
-        log('未找到匹配产品');
-    }
+            // 选中最匹配的产品
+            var bestIdx=0;
+            var bestScore=0;
+            list.forEach(function(p,idx){
+                var pAs=p.propOptSet.split('-').map(Number);
+                var score=0;
+                newSelected.forEach(function(as){if(pAs.indexOf(as)>=0)score++;});
+                if(score>bestScore){bestScore=score;bestIdx=idx;}
+            });
+
+            currentProductIdx=bestIdx;
+            var p=list[bestIdx];
+
+            var pr=p.price&&parseFloat(p.price)>0?'<div class="price-big">¥'+parseFloat(p.price).toLocaleString()+'</div>':'<div class="price-big-na">暂无报价</div>';
+            document.getElementById('detailModel').textContent=p.model;
+            document.getElementById('detailPrice').innerHTML=pr;
+
+            document.querySelectorAll('.product-table tr').forEach(function(r){r.classList.remove('active');});
+            var rows=document.querySelectorAll('.product-table tbody tr');
+            if(rows[bestIdx])rows[bestIdx].classList.add('active');
+
+            // 加载新产品的 ZIP
+            if(p.sid&&zipCache[p.sid]){
+                currentZipData=zipCache[p.sid];
+                currentSelectedAs=p.propOptSet.split('-').map(Number);
+                renderParams(p,currentZipData);
+            }else if(p.sid){
+                loadZip(p);
+            }
+
+            log('匹配到: '+p.model+' ¥'+(p.price||'未定价'));
+        }else{
+            log('未找到匹配产品');
+        }
+    })
+    .catch(function(e){log('搜索错误: '+e.message);});
 }
 
 document.getElementById('kw').addEventListener('keypress',function(e){if(e.key==='Enter')doSearch();});
