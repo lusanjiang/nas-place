@@ -338,49 +338,37 @@ function renderParams(product,zipData){
 
 // ===== 点选参数 =====
 function pickOpt(asId,dimLabel){
-    // 找到这个维度的所有选项
-    var dimOpts=[];
+    // 找到选中的选项值
+    var selectedVal='';
     (currentZipData.c||[]).forEach(function(dim){
         if(dim.aj===dimLabel){
-            dimOpts=dim.ar||[];
+            (dim.ar||[]).forEach(function(o){
+                if(o.as===asId)selectedVal=o.au||o.av||'';
+            });
         }
     });
 
-    // 更新选中的 as 值
-    var newSelected=[];
-    currentSelectedAs.forEach(function(as){
-        var isSameDim=false;
-        dimOpts.forEach(function(o){if(o.as===as)isSameDim=true;});
-        if(!isSameDim)newSelected.push(as);
-    });
-    newSelected.push(asId);
-    currentSelectedAs=newSelected;
+    if(!selectedVal){log('未找到选项值');return;}
 
-    // 用选中的参数值构造搜索关键词
-    var searchParts=[];
-    newSelected.forEach(function(as){
-        var asMap={};
-        (currentZipData.c||[]).forEach(function(dim){
-            (dim.ar||[]).forEach(function(opt){
-                asMap[opt.as]=opt;
-            });
-        });
-        var info=asMap[as];
-        if(info&&info.av)searchParts.push(info.av);
-    });
-
-    // 用原始搜索词的前缀 + 新参数搜索
+    // 提取型号前缀（去掉具体规格）
     var origKw=document.getElementById('kw').value.trim();
-    var prefix=origKw.replace(/[-\/].*$/,'').trim();
-    var newKw=prefix+' '+searchParts.join(' ');
+    // 前缀：取第一个 '-' 或 '/' 之前的部分
+    var prefix=origKw.split(/[-\/\s]/)[0];
 
-    log('重新搜索: '+newKw);
+    // 构造新搜索词：前缀 + 改变的参数值
+    var newKw=prefix;
+    if(selectedVal)newKw+=' '+selectedVal;
+
+    log('搜索: '+newKw);
 
     // 重新搜索
     jsonp(API+'/open/sprice?v='+Date.now()+'&fid=&sid=&kw='+encodeURIComponent(newKw)+'&pi=1')
     .then(function(d){
         var data=decode(d);
         var all=data.data||[];
+        var total=(data.remark&&data.remark.totalCount)||0;
+        log('找到: '+total+'条');
+
         var seen={};
         var list=[];
         all.forEach(function(p){
@@ -395,44 +383,16 @@ function pickOpt(asId,dimLabel){
         if(list.length>0){
             products=list;
             renderTable(list);
-
-            // 选中最匹配的产品
-            var bestIdx=0;
-            var bestScore=0;
-            list.forEach(function(p,idx){
-                var pAs=p.propOptSet.split('-').map(Number);
-                var score=0;
-                newSelected.forEach(function(as){if(pAs.indexOf(as)>=0)score++;});
-                if(score>bestScore){bestScore=score;bestIdx=idx;}
-            });
-
-            currentProductIdx=bestIdx;
-            var p=list[bestIdx];
-
-            var pr=p.price&&parseFloat(p.price)>0?'<div class="price-big">¥'+parseFloat(p.price).toLocaleString()+'</div>':'<div class="price-big-na">暂无报价</div>';
-            document.getElementById('detailModel').textContent=p.model;
-            document.getElementById('detailPrice').innerHTML=pr;
-
-            document.querySelectorAll('.product-table tr').forEach(function(r){r.classList.remove('active');});
-            var rows=document.querySelectorAll('.product-table tbody tr');
-            if(rows[bestIdx])rows[bestIdx].classList.add('active');
-
-            // 加载新产品的 ZIP
-            if(p.sid&&zipCache[p.sid]){
-                currentZipData=zipCache[p.sid];
-                currentSelectedAs=p.propOptSet.split('-').map(Number);
-                renderParams(p,currentZipData);
-            }else if(p.sid){
-                loadZip(p);
-            }
-
-            log('匹配到: '+p.model+' ¥'+(p.price||'未定价'));
+            // 选第一个
+            showDetail(0);
+            log('匹配: '+list[0].model+' ¥'+(list[0].price||'未定价'));
         }else{
             log('未找到匹配产品');
         }
     })
     .catch(function(e){log('搜索错误: '+e.message);});
 }
+
 
 document.getElementById('kw').addEventListener('keypress',function(e){if(e.key==='Enter')doSearch();});
 </script>
