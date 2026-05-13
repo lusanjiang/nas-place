@@ -1,217 +1,264 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>电气选型 · 点选报价</title>
-    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
-    <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);color:#fff;min-height:100vh}
-        .container{max-width:1100px;margin:0 auto;padding:20px}
-        header{text-align:center;padding:20px 0}
-        h1{font-family:'ZCOOL XiaoWei',serif;font-size:2em;background:linear-gradient(45deg,#00d2ff,#3a7bd5);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .tagline{color:#888;margin-top:4px;font-size:0.9em}
-        .search-box{display:flex;gap:10px;max-width:600px;margin:16px auto;background:rgba(255,255,255,0.05);border-radius:12px;padding:8px;border:1px solid rgba(255,255,255,0.1)}
-        .search-box input{flex:1;background:transparent;border:none;color:#fff;font-size:1.1em;padding:10px 14px;outline:none}
-        .search-box input::placeholder{color:#666}
-        .search-btn{background:linear-gradient(45deg,#00d2ff,#3a7bd5);border:none;color:#fff;padding:10px 22px;border-radius:8px;cursor:pointer;font-size:1em}
-        .search-btn:hover{opacity:0.8}
-        .search-btn:disabled{opacity:0.5;cursor:not-allowed}
-        .series-bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0}
-        .series-btn{padding:6px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:20px;color:#aaa;cursor:pointer;font-size:0.85em;transition:all 0.15s}
-        .series-btn:hover,.series-btn.active{background:rgba(0,210,255,0.15);border-color:#00d2ff;color:#00d2ff}
-        .series-btn .cnt{color:#666;font-size:0.8em;margin-left:4px}
-        .stats{display:flex;gap:20px;justify-content:center;padding:8px 0;color:#888;font-size:0.85em}
-        .stats b{color:#00d2ff}
-        table{width:100%;border-collapse:collapse;margin:10px 0}
-        th{text-align:left;padding:10px 12px;color:#888;font-weight:normal;font-size:0.8em;border-bottom:1px solid rgba(255,255,255,0.1);position:sticky;top:0;background:#16132b;cursor:pointer;user-select:none}
-        th:hover{color:#ccc}
-        td{padding:8px 12px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:0.9em}
-        tr:hover{background:rgba(255,255,255,0.03)}
-        .price{color:#ff6b6b;font-weight:600}
-        .price-na{color:#444}
-        .model{color:#e0e0e0}
-        .series-tag{color:#888;font-size:0.8em}
-        .pager{display:flex;justify-content:center;gap:6px;margin:12px 0;align-items:center}
-        .pg{padding:5px 10px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:4px;color:#aaa;cursor:pointer;font-size:0.8em}
-        .pg:hover,.pg.active{background:rgba(0,210,255,0.15);border-color:#00d2ff;color:#00d2ff}
-        .pg-info{color:#666;font-size:0.8em}
-        .hint{text-align:center;color:#666;padding:40px;font-size:0.95em}
-        .loading{text-align:center;color:#888;padding:30px}
-        .error{color:#ff6b6b;text-align:center;padding:20px}
-        .footer{text-align:center;padding:30px 0 10px;color:#444;font-size:0.8em}
-        .footer a{color:#3a7bd5;text-decoration:none}
-    </style>
+<meta charset="UTF-8">
+<title>电气选型</title>
+<style>
+body{font-family:sans-serif;background:#0f0c29;color:#fff;min-height:100vh;margin:0;padding:20px}
+h1{text-align:center;background:linear-gradient(45deg,#00d2ff,#3a7bd5);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.search{display:flex;gap:10px;max-width:600px;margin:20px auto}
+.search input{flex:1;padding:12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:#fff;font-size:1em}
+.search button{padding:12px 24px;background:linear-gradient(45deg,#00d2ff,#3a7bd5);border:none;color:#fff;border-radius:8px;cursor:pointer;font-size:1em}
+table{width:100%;border-collapse:collapse;margin:20px 0}
+th{padding:10px;text-align:left;color:#888;font-size:0.85em;border-bottom:1px solid rgba(255,255,255,0.1);background:#16132b}
+td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:0.9em}
+tr{cursor:pointer}
+tr:hover{background:rgba(0,210,255,0.05)}
+.price{color:#ff6b6b;font-weight:600}
+.msg{text-align:center;color:#888;padding:30px}
+.err{color:#ff6b6b;text-align:center;padding:20px}
+.detail{background:rgba(0,210,255,0.03);border:1px solid rgba(0,210,255,0.15);border-radius:10px;padding:20px;margin:10px 0;display:none}
+.detail.show{display:block}
+.detail h3{color:#00d2ff;margin-bottom:10px}
+.detail .price-big{font-size:1.8em;color:#ff6b6b;font-weight:700;margin:8px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:6px;margin:10px 0}
+.item{background:rgba(255,255,255,0.03);padding:8px;border-radius:6px}
+.item .label{color:#888;font-size:0.75em}
+.item .val{color:#fff;font-size:0.85em;margin-top:2px}
+.pdf{display:block;color:#3a7bd5;text-decoration:none;padding:4px 0;font-size:0.85em}
+.pdf:hover{text-decoration:underline}
+.log{margin:10px 0;padding:8px;background:rgba(0,0,0,0.3);border-radius:6px;font-family:monospace;font-size:0.7em;color:#0f0;max-height:100px;overflow-y:auto;display:none}
+</style>
 </head>
 <body>
-<div class="container">
-    <header>
-        <h1>天正电气 · 可信赖 更美好</h1>
-        <p class="tagline">Electrical Selection Data Retrieval System</p>
-    </header>
-    <div class="search-box">
-        <input type="text" id="kw" placeholder="输入型号关键词，如 NXM、CM3、CW1、TGW45..." autocomplete="off">
-        <button class="search-btn" id="btn" onclick="doSearch()">检索</button>
-    </div>
-    <div id="seriesBar" class="series-bar"></div>
-    <div id="stats" style="display:none" class="stats"></div>
-    <div id="area"><div class="hint">输入关键词开始选型</div></div>
-    <div class="footer">数据来源：<a href="https://www.dq123.com" target="_blank">dq123.com</a> · 实时抓取 · 仅供学习交流</div>
+<h1>电气选型 · 精确报价</h1>
+<div class="search">
+    <input type="text" id="kw" placeholder="输入型号，如 NDM3-630M/3300 630A">
+    <button onclick="doSearch()">检索</button>
 </div>
+<div id="log" class="log"></div>
+<div id="detail" class="detail"></div>
+<div id="area"><div class="msg">输入型号开始检索</div></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
-const API_BASE='https://dian.dq123.com';
-let ALL_PRODUCTS=[];
-let SERIES_LIST=[];
-let PAGE=1;
-const PAGESIZE=50;
-let SORT={col:null,asc:true};
+var API='https://dian.dq123.com';
+var PROXY='/dq123';
+var products=[];
 
-// JSONP 调用（不受证书/CORS限制）
+function log(m){
+    var el=document.getElementById('log');
+    el.style.display='block';
+    el.innerHTML+='['+new Date().toLocaleTimeString()+'] '+m+'<br>';
+    el.scrollTop=el.scrollHeight;
+}
+
 function jsonp(url){
-    return new Promise((resolve,reject)=>{
-        const cb='cb_'+Date.now()+Math.random().toString(36).slice(2,6);
-        window[cb]=function(data){delete window[cb];s.remove();resolve(data);};
-        const s=document.createElement('script');
-        s.src=url+(url.includes('?')?'&':'?')+'callback='+cb;
-        s.onerror=function(){delete window[cb];s.remove();reject(new Error('JSONP加载失败'));};
+    return new Promise(function(ok,fail){
+        var cb='cb_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
+        var done=false;
+        var t=setTimeout(function(){if(!done){done=true;cleanup();fail(new Error('超时'));}},15000);
+        function cleanup(){try{delete window[cb];}catch(e){} if(s&&s.parentNode)s.remove();}
+        window[cb]=function(d){if(!done){done=true;clearTimeout(t);cleanup();ok(d);}};
+        var s=document.createElement('script');
+        s.src=url+(url.indexOf('?')>=0?'&':'?')+'callback='+cb;
+        s.onerror=function(){if(!done){done=true;clearTimeout(t);cleanup();fail(new Error('脚本加载失败'));}};
         document.head.appendChild(s);
-        setTimeout(function(){delete window[cb];if(s.parentNode)s.remove();reject(new Error('请求超时'));},15000);
     });
 }
 
-// 解码 dq123 数据
 function decode(enc){
-    // 直接解码编码字符串（JSONP回调已剥离）
-    const b64=enc.substring(20).replace(/#/g,'+');
-    const bin=atob(b64);
-    const bytes=Uint8Array.from(bin,c=>c.charCodeAt(0));
+    if(typeof enc!=='string'||enc.length<20)throw new Error('数据太短');
+    var b64=enc.substring(20).replace(/#/g,'+');
+    var bin=atob(b64);
+    var bytes=Uint8Array.from(bin,function(c){return c.charCodeAt(0);});
     return JSON.parse(new TextDecoder().decode(bytes));
 }
 
-function clean(m){return(m||'').replace(/<[^>]+>/g,'')}
+function strip(m){return(m||'').replace(/<[^>]+>/g,'');}
 
 // 搜索
-async function doSearch(){
-    const kw=document.getElementById('kw').value.trim();
-    if(!kw)return;
-    document.getElementById('btn').disabled=true;
-    document.getElementById('area').innerHTML='<div class="loading">搜索中...</div>';
-    document.getElementById('seriesBar').innerHTML='';
-    document.getElementById('stats').style.display='none';
+function doSearch(){
+    var raw=document.getElementById('kw').value.trim();
+    if(!raw)return;
+    var kw=raw.toUpperCase();
+    document.getElementById('area').innerHTML='<div class="msg">检索中...</div>';
+    document.getElementById('detail').className='detail';
+    log('搜索: '+raw);
 
-    try{
-        ALL_PRODUCTS=[];SERIES_LIST=[];
+    // 直接用 JSONP 调 API（不走代理）
+    jsonp(API+'/open/sprice?v='+Date.now()+'&fid=&sid=&kw='+encodeURIComponent(raw)+'&pi=1')
+    .then(function(d1){
+        log('响应: '+d1.length+'字符');
+        var data=decode(d1);
+        var all=data.data||[];
+        var total=(data.remark&&data.remark.totalCount)||0;
+        var pages=Math.min(Math.ceil(total/20),25);
+        log('总数: '+total+', 页数: '+pages);
 
-        // 第一页
-        console.log('开始搜索:', kw);
-        const d1=await jsonp(API_BASE+'/open/sprice?v='+Date.now()+'&fid=&sid=&kw='+encodeURIComponent(kw)+'&pi=1');
-        console.log('第一页JSONP响应长度:', d1.length);
-        const data1=decode(d1);
-        console.log('第一页解码成功, 产品数:', data1.data.length);
-        SERIES_LIST=(data1.remark&&data1.remark.F_ProductLineID)||[];
-        const total=(data1.remark&&data1.remark.totalCount)||0;
-        const pages=Math.min(Math.ceil(total/20),25);
-        addProds(data1);
-
-        // 剩余页并行
-        if(pages>1){
-            const fs=[];
-            for(let p=2;p<=pages;p++) fs.push(jsonp(API_BASE+'/open/sprice?v='+(Date.now()+p)+'&fid=&sid=&kw='+encodeURIComponent(kw)+'&pi='+p).then(r=>decode(r)));
-            (await Promise.all(fs)).forEach(r=>addProds(r));
-        }
-
-        // 去重
-        const seen=new Set();
-        ALL_PRODUCTS=ALL_PRODUCTS.filter(p=>{if(seen.has(p.prop))return false;seen.add(p.prop);return true;});
-
-        // 渲染系列选择
-        if(SERIES_LIST.length>1){
-            let h='';
-            SERIES_LIST.forEach((s,i)=>{
-                h+='<div class="series-btn'+(i===0?' active':'')+'" onclick="filterSeries(\''+s.Key+'\',this)">'+s.Name+'<span class="cnt">'+s.Value+'</span></div>';
+        // 过滤匹配的产品
+        var seen={};
+        var list=[];
+        all.forEach(function(p){
+            var m=strip(p.model||'');
+            if(!m)return;
+            if(m.toUpperCase().indexOf(kw)<0)return;
+            var key=m+'|'+(p.className||'');
+            if(seen[key])return;
+            seen[key]=true;
+            list.push({
+                model:m,price:p.price,series:p.className||'',
+                type:p.type||'',sid:p.F_ProductLineID||'',
+                propOptSet:p.propOptSet||''
             });
-            document.getElementById('seriesBar').innerHTML=h;
-        }
+        });
 
-        renderTable();
-        document.getElementById('btn').disabled=false;
-    }catch(e){
-        document.getElementById('area').innerHTML='<div class="error">'+e.message+'</div>';
-        document.getElementById('btn').disabled=false;
-    }
-}
+        log('匹配: '+list.length+'条');
+        products=list;
+        render(list);
 
-function addProds(d){
-    (d.data||[]).forEach(function(p){
-        const m=clean(p.model||'');
-        if(m&&p.propOptSet) ALL_PRODUCTS.push({model:m,price:p.price,prop:p.propOptSet,series:p.className||'',type:p.type||'',sid:p.F_ProductLineID||''});
+        // 如果有更多页，继续加载
+        if(pages>1)loadMore(raw,kw,2,pages,list);
+    })
+    .catch(function(e){
+        log('错误: '+e.message);
+        document.getElementById('area').innerHTML='<div class="err">'+e.message+'</div>';
     });
 }
 
-function filterSeries(sid,el){
-    document.querySelectorAll('.series-btn').forEach(b=>b.classList.remove('active'));
-    if(el)el.classList.add('active');
-    PAGE=1;
-    renderTable(sid);
+function loadMore(raw,kw,page,maxPage,list){
+    if(page>maxPage){products=list;render(list);return;}
+    jsonp(API+'/open/sprice?v='+Date.now()+'&fid=&sid=&kw='+encodeURIComponent(raw)+'&pi='+page)
+    .then(function(d){
+        var data=decode(d);
+        (data.data||[]).forEach(function(p){
+            var m=strip(p.model||'');
+            if(!m||m.toUpperCase().indexOf(kw)<0)return;
+            var key=m+'|'+(p.className||'');
+            if(list.find(function(x){return (x.model+'|'+x.series)===key;}))return;
+            list.push({model:m,price:p.price,series:p.className||'',type:p.type||'',sid:p.F_ProductLineID||'',propOptSet:p.propOptSet||''});
+        });
+        log('第'+page+'页完成, 累计'+list.length+'条');
+        loadMore(raw,kw,page+1,maxPage,list);
+    })
+    .catch(function(e){log('第'+page+'页错误: '+e.message);loadMore(raw,kw,page+1,maxPage,list);});
 }
 
-function renderTable(filterSid){
-    const list=filterSid?ALL_PRODUCTS.filter(p=>String(p.sid)===String(filterSid)):ALL_PRODUCTS;
-    const total=list.length;
-    const priced=list.filter(p=>p.price&&parseFloat(p.price)>0).length;
-    document.getElementById('stats').innerHTML='共 <b>'+total+'</b> 条 · 有价格 <b>'+priced+'</b> 条';
-    document.getElementById('stats').style.display='flex';
-
-    if(!total){document.getElementById('area').innerHTML='<div class="hint">未找到产品</div>';return;}
-
-    // 排序
-    if(SORT.col){
-        list.sort((a,b)=>{
-            let va=a[SORT.col]||'',vb=b[SORT.col]||'';
-            if(SORT.col==='price'){va=parseFloat(va)||0;vb=parseFloat(vb)||0;}
-            if(va<vb)return SORT.asc?-1:1;
-            if(va>vb)return SORT.asc?1:-1;
-            return 0;
-        });
+function render(list){
+    if(!list.length){
+        document.getElementById('area').innerHTML='<div class="msg">未找到匹配产品</div>';
+        return;
     }
-
-    // 分页
-    const start=(PAGE-1)*PAGESIZE;
-    const slice=list.slice(start,start+PAGESIZE);
-
-    let h='<table><thead><tr>';
-    h+='<th onclick="sortBy(\'model\')">型号</th>';
-    h+='<th onclick="sortBy(\'series\')">系列</th>';
-    h+='<th onclick="sortBy(\'type\')">类型</th>';
-    h+='<th onclick="sortBy(\'price\')">价格</th>';
-    h+='</tr></thead><tbody>';
-
-    slice.forEach(p=>{
-        const pr=p.price&&parseFloat(p.price)>0?'<span class="price">¥'+parseFloat(p.price).toLocaleString()+'</span>':'<span class="price-na">—</span>';
-        h+='<tr><td class="model">'+p.model+'</td><td class="series-tag">'+p.series+'</td><td class="series-tag">'+p.type+'</td><td>'+pr+'</td></tr>';
+    var h='<table><thead><tr><th>型号</th><th>系列</th><th>价格</th></tr></thead><tbody>';
+    list.forEach(function(p,i){
+        var pr=p.price&&parseFloat(p.price)>0?'<span class="price">¥'+parseFloat(p.price).toLocaleString()+'</span>':'—';
+        h+='<tr onclick="showDetail('+i+')"><td>'+p.model+'</td><td style="color:#888;font-size:0.85em">'+p.series+'</td><td>'+pr+'</td></tr>';
     });
     h+='</tbody></table>';
-
-    const tp=Math.ceil(total/PAGESIZE);
-    if(tp>1){
-        h+='<div class="pager">';
-        for(let i=1;i<=Math.min(tp,15);i++) h+='<div class="pg'+(i===PAGE?' active':'')+'" onclick="goPage('+i+')">'+i+'</div>';
-        h+='<span class="pg-info">共'+tp+'页</span></div>';
-    }
     document.getElementById('area').innerHTML=h;
 }
 
-function sortBy(col){
-    if(SORT.col===col)SORT.asc=!SORT.asc;
-    else{SORT.col=col;SORT.asc=true;}
-    renderTable();
+// 显示详情
+function showDetail(idx){
+    var p=products[idx];
+    if(!p)return;
+
+    // 高亮
+    document.querySelectorAll('tbody tr').forEach(function(r){r.style.background='';});
+    var rows=document.querySelectorAll('tbody tr');
+    if(rows[idx])rows[idx].style.background='rgba(0,210,255,0.08)';
+
+    var panel=document.getElementById('detail');
+    panel.className='detail show';
+
+    var pr=p.price&&parseFloat(p.price)>0?'<div class="price-big">¥'+parseFloat(p.price).toLocaleString()+'</div>':'<div style="color:#555;font-size:1.2em">暂无报价</div>';
+    var h='<h3>'+p.model+'</h3>'+pr;
+    h+='<div style="color:#888;font-size:0.85em">'+p.series+'</div>';
+    h+='<div id="params" style="margin-top:12px;color:#888;font-size:0.85em">加载参数...</div>';
+    panel.innerHTML=h;
+
+    // 加载 ZIP
+    if(p.sid){
+        loadZip(p);
+    }else{
+        document.getElementById('params').innerHTML='无系列ID';
+    }
 }
 
-function goPage(p){PAGE=p;renderTable();}
+function loadZip(p){
+    var path='4/z_p/'+p.sid+'.jss';
+    var b64=btoa(path).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/g,'');
 
-document.getElementById('kw').addEventListener('keypress',e=>{if(e.key==='Enter')doSearch()});
+    // 尝试通过代理加载
+    fetch(PROXY+'/electricData?v='+b64+'&t='+Date.now())
+    .then(function(r){
+        if(!r.ok)throw new Error('HTTP '+r.status);
+        return r.arrayBuffer();
+    })
+    .then(function(buf){
+        if(buf.byteLength<10)throw new Error('空文件');
+        return JSZip.loadAsync(buf);
+    })
+    .then(function(zip){
+        var js=Object.keys(zip.files).find(function(n){return n.endsWith('.js');});
+        if(!js)throw new Error('无JS文件');
+        return zip.files[js].async('string');
+    })
+    .then(function(content){
+        var data=JSON.parse(content);
+        renderParams(p,data);
+    })
+    .catch(function(e){
+        log('ZIP错误: '+e.message);
+        document.getElementById('params').innerHTML='<div style="color:#888">参数加载失败: '+e.message+'</div>';
+    });
+}
+
+function renderParams(p,zipData){
+    // 建 as→参数 映射
+    var asMap={};
+    (zipData.c||[]).forEach(function(dim){
+        (dim.ar||[]).forEach(function(opt){
+            asMap[opt.as]={dim:dim.aj||'',name:opt.au,av:opt.av||''};
+        });
+    });
+
+    // 解析 propOptSet
+    var ids=(p.propOptSet||'').split('-').map(Number);
+    var groups={};
+    ids.forEach(function(as){
+        var info=asMap[as];
+        if(info&&info.dim){
+            // 同维度覆盖（保留最后一个）
+            if(!groups[info.dim])groups[info.dim]=[];
+            groups[info.dim].push(info.av||info.name);
+        }
+    });
+
+    var h='<div style="color:#00d2ff;font-size:0.9em;margin:12px 0 6px">📋 产品参数</div>';
+    h+='<div class="grid">';
+    Object.keys(groups).forEach(function(dim){
+        var vals=groups[dim].filter(Boolean);
+        if(vals.length>0){
+            h+='<div class="item"><div class="label">'+dim+'</div><div class="val">'+vals[vals.length-1]+'</div></div>';
+        }
+    });
+    h+='</div>';
+
+    // PDF 样本
+    var samples=zipData.g||[];
+    if(samples.length>0){
+        h+='<div style="color:#00d2ff;font-size:0.9em;margin:16px 0 6px">📄 样本文档 ('+samples.length+'个)</div>';
+        samples.forEach(function(s){
+            var url='http://datafiles.oss-cn-shanghai.aliyuncs.com/dx2_data/proddata/sp/'+s.bk+'/'+s.bl;
+            h+='<a class="pdf" href="'+url+'" target="_blank">📄 '+s.bl+' ('+s.bm.toFixed(1)+'MB)</a>';
+        });
+    }
+
+    document.getElementById('params').innerHTML=h;
+}
+
+document.getElementById('kw').addEventListener('keypress',function(e){if(e.key==='Enter')doSearch();});
 </script>
 </body>
 </html>
