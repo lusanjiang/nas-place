@@ -28,32 +28,22 @@ h1{font-size:1.8em;background:linear-gradient(45deg,#00d2ff,#3a7bd5);-webkit-bac
 .product-table tr.active{background:rgba(0,210,255,0.08);border-left:3px solid #00d2ff}
 .price{color:#ff6b6b;font-weight:600}
 .price-na{color:#444}
-
-/* 详情面板 */
 .detail{background:rgba(0,210,255,0.03);border:1px solid rgba(0,210,255,0.15);border-radius:10px;padding:20px;margin:10px 0;display:none}
 .detail.show{display:block}
 .detail h3{color:#00d2ff;margin-bottom:8px}
 .detail .price-big{font-size:1.8em;color:#ff6b6b;font-weight:700;margin:8px 0}
 .detail .price-big-na{color:#555;font-size:1.2em}
 .detail .series-info{color:#888;font-size:0.85em;margin-bottom:16px}
-
-/* 参数选择器 */
-.param-section{margin:12px 0}
-.param-label{color:#888;font-size:0.85em;margin-bottom:6px;display:flex;align-items:center;gap:6px}
-.param-label .current{color:#00d2ff;font-weight:600}
+.param-section{margin:10px 0}
+.param-label{color:#888;font-size:0.85em;margin-bottom:4px}
+.param-label .current{color:#00d2ff;font-weight:600;margin-left:6px}
 .param-opts{display:flex;flex-wrap:wrap;gap:4px}
-.param-opt{
-    padding:4px 10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
-    border-radius:12px;color:#aaa;cursor:pointer;font-size:0.8em;transition:all 0.15s;
-}
+.param-opt{padding:4px 10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;color:#aaa;cursor:pointer;font-size:0.8em;transition:all 0.15s}
 .param-opt:hover{background:rgba(0,210,255,0.1);border-color:rgba(0,210,255,0.3);color:#fff}
 .param-opt.selected{background:rgba(0,210,255,0.2);border-color:#00d2ff;color:#00d2ff;font-weight:600}
-
-/* PDF 样本 */
 .pdf-section{margin:16px 0}
 .pdf-item{display:block;color:#3a7bd5;text-decoration:none;padding:4px 0;font-size:0.85em}
 .pdf-item:hover{text-decoration:underline}
-
 .log{margin:10px 0;padding:8px;background:rgba(0,0,0,0.3);border-radius:6px;font-family:monospace;font-size:0.7em;color:#0f0;max-height:100px;overflow-y:auto;display:none}
 .footer{text-align:center;padding:30px 0 10px;color:#444;font-size:0.8em}
 .footer a{color:#3a7bd5;text-decoration:none}
@@ -63,10 +53,10 @@ h1{font-size:1.8em;background:linear-gradient(45deg,#00d2ff,#3a7bd5);-webkit-bac
 <div class="container">
     <header>
         <h1>电气选型 · 精确报价</h1>
-        <p class="tagline">输入型号检索，点击参数切换型号与价格</p>
+        <p class="tagline">输入型号检索，点击参数切换型号</p>
     </header>
     <div class="search-box">
-        <input type="text" id="kw" placeholder="输入型号，如 E4N 3200、CM3-100、NDM3-630..." autocomplete="off">
+        <input type="text" id="kw" placeholder="输入型号，如 NXM-630、TGM1N-400、CM3-100..." autocomplete="off">
         <button class="search-btn" id="btn" onclick="doSearch()">检索</button>
     </div>
     <div id="log" class="log"></div>
@@ -82,7 +72,6 @@ var PROXY='/dq123';
 var products=[];
 var zipCache={};
 var currentZipData=null;
-var currentProductIdx=-1;
 var currentSelectedAs=[];
 
 // ===== JSONP =====
@@ -120,41 +109,42 @@ function log(m){
 // ===== 搜索 =====
 function doSearch(){
     var raw=document.getElementById('kw').value.trim();
-    // 自动提取宽泛关键词（去掉末尾的具体规格）
-    var broadKw=raw.replace(/[-\/].*$/,'').trim();
-    if(broadKw.length<3)broadKw=raw;
     if(!raw)return;
-    var kw=raw.toUpperCase();
     document.getElementById('btn').disabled=true;
     document.getElementById('area').innerHTML='<div class="msg">检索中...</div>';
     document.getElementById('detail').className='detail';
     document.getElementById('log').innerHTML='';
-    log('搜索: '+raw);
 
-    jsonp(API+'/open/sprice?v='+Date.now()+'&fid=&sid=&kw='+encodeURIComponent(raw)+'&pi=1')
+    // 用原始关键词搜索
+    searchAndDisplay(raw);
+}
+
+function searchAndDisplay(kw){
+    log('搜索: '+kw);
+    jsonp(API+'/open/sprice?v='+Date.now()+'&fid=&sid=&kw='+encodeURIComponent(kw)+'&pi=1')
     .then(function(d1){
-        log('第1页: '+d1.length+'字符');
         var data=decode(d1);
         var all=data.data||[];
         var total=(data.remark&&data.remark.totalCount)||0;
-        var pages=Math.min(Math.ceil(total/20),25);
-        log('总数: '+total+', 页数: '+pages);
+        log('找到: '+total+'条');
 
         var seen={};
         var list=[];
         all.forEach(function(p){
             var m=strip(p.model||'');
-            if(!m||m.toUpperCase().indexOf(kw)<0)return;
+            if(!m)return;
             var key=m+'|'+(p.className||'');
             if(seen[key])return;
             seen[key]=true;
-            list.push({model:m,price:p.price,series:p.className||'',type:p.type||'',sid:p.F_ProductLineID||'',propOptSet:p.propOptSet||'',productID:p.productID||''});
+            list.push({model:m,price:p.price,series:p.className||'',type:p.type||'',sid:p.F_ProductLineID||'',propOptSet:p.propOptSet||''});
         });
 
         products=list;
         renderTable(list);
+        document.getElementById('btn').disabled=false;
 
-        if(pages>1)loadMore(raw,kw,2,pages,list);
+        // 如果只有1个产品，自动展开详情
+        if(list.length===1)showDetail(0);
     })
     .catch(function(e){
         log('错误: '+e.message);
@@ -163,33 +153,9 @@ function doSearch(){
     });
 }
 
-function loadMore(raw,kw,page,maxPage,list){
-    if(page>maxPage){products=list;renderTable(list);return;}
-    jsonp(API+'/open/sprice?v='+Date.now()+'&fid=&sid=&kw='+encodeURIComponent(raw)+'&pi='+page)
-    .then(function(d){
-        var data=decode(d);
-        var seen={};
-        list.forEach(function(p){seen[p.model+'|'+p.series]=true;});
-        (data.data||[]).forEach(function(p){
-            var m=strip(p.model||'');
-            if(!m||m.toUpperCase().indexOf(kw)<0)return;
-            var key=m+'|'+(p.className||'');
-            if(seen[key])return;
-            seen[key]=true;
-            list.push({model:m,price:p.price,series:p.className||'',type:p.type||'',sid:p.F_ProductLineID||'',propOptSet:p.propOptSet||'',productID:p.productID||''});
-        });
-        log('第'+page+'页完成, 累计'+list.length+'条');
-        products=list;
-        renderTable(list);
-        loadMore(raw,kw,page+1,maxPage,list);
-    })
-    .catch(function(e){log('第'+page+'页错误: '+e.message);loadMore(raw,kw,page+1,maxPage,list);});
-}
-
 function renderTable(list){
     if(!list.length){
         document.getElementById('area').innerHTML='<div class="msg">未找到匹配产品</div>';
-        document.getElementById('btn').disabled=false;
         return;
     }
     var h='<div class="table-wrap"><table class="product-table"><thead><tr><th>型号</th><th>系列</th><th>价格</th></tr></thead><tbody>';
@@ -199,16 +165,13 @@ function renderTable(list){
     });
     h+='</tbody></table></div>';
     document.getElementById('area').innerHTML=h;
-    document.getElementById('btn').disabled=false;
 }
 
 // ===== 显示详情 =====
 function showDetail(idx){
-    currentProductIdx=idx;
     var p=products[idx];
     if(!p)return;
 
-    // 高亮选中行
     document.querySelectorAll('.product-table tr').forEach(function(r){r.classList.remove('active');});
     var rows=document.querySelectorAll('.product-table tbody tr');
     if(rows[idx])rows[idx].classList.add('active');
@@ -223,7 +186,6 @@ function showDetail(idx){
     h+='<div id="params" style="color:#888;font-size:0.85em">加载参数...</div>';
     panel.innerHTML=h;
 
-    // 加载 ZIP
     if(p.sid){
         if(zipCache[p.sid]){
             currentZipData=zipCache[p.sid];
@@ -232,8 +194,6 @@ function showDetail(idx){
         }else{
             loadZip(p);
         }
-    }else{
-        document.getElementById('params').innerHTML='<div style="color:#ff6b6b">无系列ID</div>';
     }
 }
 
@@ -261,11 +221,11 @@ function loadZip(p){
     })
     .catch(function(e){
         log('ZIP错误: '+e.message);
-        document.getElementById('params').innerHTML='<div style="color:#888">参数加载失败: '+e.message+'</div>';
+        document.getElementById('params').innerHTML='<div style="color:#888">参数加载失败</div>';
     });
 }
 
-// ===== 渲染参数（可交互） =====
+// ===== 渲染参数 =====
 function renderParams(product,zipData){
     var asMap={};
     (zipData.c||[]).forEach(function(dim){
@@ -280,44 +240,39 @@ function renderParams(product,zipData){
         '极数','本体极数命名属性','安装型式','接线形式','接线方式','电压',
         '附件代号','附件标准配置','附件名称','分励脱扣器电压','欠压电压',
         '剩余动作类型','额定剩余动作电流值','分断时间','操作方式','配用壳架',
-        '智能控制器类型','N极型式','过载报警不脱扣功能'
+        '智能控制器类型','N极型式','过载报警不扣功能'
     ];
 
-    // 收集关键维度的所有选项（严格去重维度名）
+    // 按维度名去重合并
     var dimMap={};
     (zipData.c||[]).forEach(function(dim){
         var label=dim.aj||'';
         if(KEY_DIMS.indexOf(label)<0)return;
         var opts=(dim.ar||[]).filter(function(o){return o.au&&o.au!=='null';});
         if(opts.length<=1)return;
-        // 合并同名维度的选项
         if(!dimMap[label])dimMap[label]=[];
         opts.forEach(function(o){
-            // 按选项值(au)去重，不是按选项ID(as)
             if(!dimMap[label].find(function(x){return x.au===o.au;})){
                 dimMap[label].push(o);
             }
         });
     });
-    var dimOpts=[];
-    Object.keys(dimMap).forEach(function(label){
-        dimOpts.push({label:label,opts:dimMap[label]});
-    });
 
-    // 渲染参数选择器
-    var h='<div style="color:#00d2ff;font-size:0.9em;margin-bottom:12px">📋 点击参数切换型号与价格</div>';
-    dimOpts.forEach(function(dim){
+    // 渲染
+    var h='<div style="color:#00d2ff;font-size:0.9em;margin-bottom:12px">📋 产品参数</div>';
+    Object.keys(dimMap).forEach(function(label){
+        var opts=dimMap[label];
         var currentVal='';
-        dim.opts.forEach(function(o){
+        opts.forEach(function(o){
             if(currentSelectedAs.indexOf(o.as)>=0)currentVal=o.au;
         });
 
         h+='<div class="param-section">';
-        h+='<div class="param-label">'+dim.label+(currentVal?' <span class="current">'+currentVal+'</span>':'')+'</div>';
+        h+='<div class="param-label">▼'+label+(currentVal?' <span class="current">'+currentVal+'</span>':'')+'</div>';
         h+='<div class="param-opts">';
-        dim.opts.forEach(function(o){
-            var isSelected=currentSelectedAs.indexOf(o.as)>=0;
-            h+='<div class="param-opt'+(isSelected?' selected':'')+'" onclick="pickOpt('+o.as+','+JSON.stringify(dim.label).replace(/"/g,'&quot;')+')">'+o.au+'</div>';
+        opts.forEach(function(o){
+            var isSel=currentSelectedAs.indexOf(o.as)>=0;
+            h+='<div class="param-opt'+(isSel?' selected':'')+'" onclick="pickOpt('+o.as+',\''+label+'\')">'+o.au+'</div>';
         });
         h+='</div></div>';
     });
@@ -336,34 +291,24 @@ function renderParams(product,zipData){
     document.getElementById('params').innerHTML=h;
 }
 
-// ===== 点选参数 =====
+// ===== 点击参数 =====
 function pickOpt(asId,dimLabel){
-    // 找到选中的选项值
-    var selectedVal='';
-    (currentZipData.c||[]).forEach(function(dim){
-        if(dim.aj===dimLabel){
-            (dim.ar||[]).forEach(function(o){
-                if(o.as===asId)selectedVal=o.au||'';
-            });
-        }
-    });
-    log('点击: '+dimLabel+' → '+selectedVal);
-
-    // 更新选中的 as 值
-    var dimOpts=[];
-    (currentZipData.c||[]).forEach(function(dim){
-        if(dim.aj===dimLabel)dimOpts=dim.ar||[];
-    });
+    // 在已有列表中找匹配
     var newSelected=[];
     currentSelectedAs.forEach(function(as){
+        // 去掉同维度的旧选择
         var isSameDim=false;
-        dimOpts.forEach(function(o){if(o.as===as)isSameDim=true;});
+        (currentZipData.c||[]).forEach(function(dim){
+            if(dim.aj===dimLabel){
+                (dim.ar||[]).forEach(function(o){if(o.as===as)isSameDim=true;});
+            }
+        });
         if(!isSameDim)newSelected.push(as);
     });
     newSelected.push(asId);
     currentSelectedAs=newSelected;
 
-    // 在已有产品列表中找最佳匹配
+    // 在产品列表中找最佳匹配
     var bestIdx=-1;
     var bestScore=0;
     products.forEach(function(p,idx){
@@ -373,50 +318,13 @@ function pickOpt(asId,dimLabel){
         if(score>bestScore){bestScore=score;bestIdx=idx;}
     });
 
-    if(bestIdx>=0&&bestIdx!==currentProductIdx){
+    if(bestIdx>=0){
         showDetail(bestIdx);
-        log('匹配: '+products[bestIdx].model+' ¥'+(products[bestIdx].price||'未定价'));
-    }else if(bestIdx<0){
-        log('当前列表无匹配，尝试搜索...');
-        // 只有在列表里找不到时才搜索，而且只用前缀+一个关键词
-        var prefix=document.getElementById('kw').value.trim().split(/[-\/\s]/)[0];
-        var searchKw=prefix;
-        // 只加壳架或额定电流这种关键参数
-        if(dimLabel.indexOf('壳架')>=0||dimLabel.indexOf('额定电流')>=0){
-            searchKw+=' '+selectedVal;
-        }
-        doSearchWith(searchKw);
+        log('匹配: '+products[bestIdx].model);
+    }else{
+        log('列表中无匹配');
     }
 }
-
-function doSearchWith(kw){
-    log('搜索: '+kw);
-    jsonp(API+'/open/sprice?v='+Date.now()+'&fid=&sid=&kw='+encodeURIComponent(kw)+'&pi=1')
-    .then(function(d){
-        var data=decode(d);
-        var all=data.data||[];
-        var seen={};
-        var list=[];
-        all.forEach(function(p){
-            var m=strip(p.model||'');
-            if(!m)return;
-            var key=m+'|'+(p.className||'');
-            if(seen[key])return;
-            seen[key]=true;
-            list.push({model:m,price:p.price,series:p.className||'',type:p.type||'',sid:p.F_ProductLineID||'',propOptSet:p.propOptSet||'',productID:p.productID||''});
-        });
-        if(list.length>0){
-            products=list;
-            renderTable(list);
-            showDetail(0);
-            log('找到 '+list.length+' 条');
-        }else{
-            log('未找到');
-        }
-    })
-    .catch(function(e){log('错误: '+e.message);});
-}
-
 
 document.getElementById('kw').addEventListener('keypress',function(e){if(e.key==='Enter')doSearch();});
 </script>
