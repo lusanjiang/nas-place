@@ -99,7 +99,8 @@ function jsonp(url){
 function decode(raw){
   const b64=raw.substring(20).replace(/#/g,'+');
   const bin=atob(b64);
-  return JSON.parse(decodeURIComponent(escape(bin)));
+  const bytes=Uint8Array.from(bin,c=>c.charCodeAt(0));
+  return JSON.parse(new TextDecoder().decode(bytes));
 }
 
 function clean(m){return(m||'').replace(/<[^>]+>/g,'').replace(/<\/?\w+/g,'').trim()}
