@@ -82,13 +82,8 @@ function jsonp(url){
 }
 
 // 解码 dq123 数据
-function decode(raw){
-    // JSONP格式: callback("data")
-    // 找第一个("和最后一个")
-    const s=raw.indexOf('("');
-    const e=raw.lastIndexOf('")');
-    if(s<0||e<0)throw new Error('JSONP格式错误');
-    const enc=raw.substring(s+2,e);
+function decode(enc){
+    // 直接解码编码字符串（JSONP回调已剥离）
     const b64=enc.substring(20).replace(/#/g,'+');
     const bin=atob(b64);
     const bytes=Uint8Array.from(bin,c=>c.charCodeAt(0));
