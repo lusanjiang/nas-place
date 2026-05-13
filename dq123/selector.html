@@ -235,12 +235,17 @@ function renderParams(product,zipData){
     });
 
     var KEY_DIMS=[
-        '框架代号','壳架等级额定电流','额定极限短路分断能力','额定极限短路分断能力(AC415V)',
-        '额定持续电流Iu','额定电流','脱扣器型号','脱扣器方式','保护类型','保护用途',
+        '壳架等级额定电流','壳架代号','配用壳架',
+        '额定极限短路分断能力','额定极限短路分断能力(AC415V)','额定极限短路分断能力(AC400/415V)',
+        '额定持续电流Iu','额定电流',
+        '脱扣器型号','脱扣器方式','保护类型','保护用途',
         '极数','本体极数命名属性','安装型式','接线形式','接线方式','电压',
-        '附件代号','附件标准配置','附件名称','分励脱扣器电压','欠压电压',
-        '剩余动作类型','额定剩余动作电流值','分断时间','操作方式','配用壳架',
-        '智能控制器类型','N极型式','过载报警不扣功能'
+        '附件代号','附件代号1','附件代号2','附件标准配置','附件名称',
+        '分励脱扣器电压','分励电压','欠压电压','分励欠压电压','电操电压',
+        '剩余动作类型','额定剩余动作电流值','分断时间',
+        '操作方式','N极型式','过载报警不扣功能',
+        '框架代号','扩展功能代号','通讯功能模块代号','控制电压代号','安装位置','颜色',
+        '适用产品极数','适用产品分断能力','配用极数'
     ];
 
     // 按维度名去重合并
@@ -293,37 +298,50 @@ function renderParams(product,zipData){
 
 // ===== 点击参数 =====
 function pickOpt(asId,dimLabel){
-    // 在已有列表中找匹配
-    var newSelected=[];
-    currentSelectedAs.forEach(function(as){
-        // 去掉同维度的旧选择
-        var isSameDim=false;
-        (currentZipData.c||[]).forEach(function(dim){
-            if(dim.aj===dimLabel){
-                (dim.ar||[]).forEach(function(o){if(o.as===as)isSameDim=true;});
-            }
+    // 找选中的选项值
+    var selectedVal='';
+    (currentZipData.c||[]).forEach(function(dim){
+        if(dim.aj===dimLabel){
+            (dim.ar||[]).forEach(function(o){
+                if(o.as===asId)selectedVal=o.au||'';
+            });
+        }
+    });
+    if(!selectedVal)return;
+
+    // 提取型号前缀
+    var origKw=document.getElementById('kw').value.trim();
+    var prefix=origKw.split(/[-\/\s]/)[0];
+
+    // 搜索：前缀 + 参数值
+    var newKw=prefix+' '+selectedVal;
+    log('搜索: '+newKw);
+
+    jsonp(API+'/open/sprice?v='+Date.now()+'&fid=&sid=&kw='+encodeURIComponent(newKw)+'&pi=1')
+    .then(function(d){
+        var data=decode(d);
+        var all=data.data||[];
+        var seen={};
+        var list=[];
+        all.forEach(function(p){
+            var m=strip(p.model||'');
+            if(!m)return;
+            var key=m+'|'+(p.className||'');
+            if(seen[key])return;
+            seen[key]=true;
+            list.push({model:m,price:p.price,series:p.className||'',type:p.type||'',sid:p.F_ProductLineID||'',propOptSet:p.propOptSet||''});
         });
-        if(!isSameDim)newSelected.push(as);
-    });
-    newSelected.push(asId);
-    currentSelectedAs=newSelected;
 
-    // 在产品列表中找最佳匹配
-    var bestIdx=-1;
-    var bestScore=0;
-    products.forEach(function(p,idx){
-        var pAs=p.propOptSet.split('-').map(Number);
-        var score=0;
-        newSelected.forEach(function(as){if(pAs.indexOf(as)>=0)score++;});
-        if(score>bestScore){bestScore=score;bestIdx=idx;}
-    });
-
-    if(bestIdx>=0){
-        showDetail(bestIdx);
-        log('匹配: '+products[bestIdx].model);
-    }else{
-        log('列表中无匹配');
-    }
+        if(list.length>0){
+            products=list;
+            renderTable(list);
+            showDetail(0);
+            log('匹配: '+list[0].model);
+        }else{
+            log('未找到');
+        }
+    })
+    .catch(function(e){log('错误: '+e.message);});
 }
 
 document.getElementById('kw').addEventListener('keypress',function(e){if(e.key==='Enter')doSearch();});
