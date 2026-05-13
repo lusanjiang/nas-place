@@ -299,28 +299,36 @@ function renderParams(product,zipData){
 // ===== 点击参数 =====
 function pickOpt(asId,dimLabel){
     // 找选中的选项值
-    var selectedVal='';
+    var selectedAu='';
+    var selectedAv='';
     (currentZipData.c||[]).forEach(function(dim){
         if(dim.aj===dimLabel){
             (dim.ar||[]).forEach(function(o){
-                if(o.as===asId)selectedVal=o.au||'';
+                if(o.as===asId){
+                    selectedAu=o.au||'';
+                    selectedAv=o.av||'';
+                }
             });
         }
     });
-    if(!selectedVal)return;
+    if(!selectedAu)return;
 
     // 提取型号前缀
     var origKw=document.getElementById('kw').value.trim();
     var prefix=origKw.split(/[-\/\s]/)[0];
 
-    // 搜索：前缀 + 参数值
-    var newKw=prefix+' '+selectedVal;
-    log('搜索: '+newKw);
+    // 构造搜索词：前缀 + 短值(av)
+    var searchVal=selectedAv||selectedAu;
+    var newKw=prefix+'-'+searchVal;
+    log('搜索: '+newKw+' (点击: '+dimLabel+'='+selectedAu+')');
 
     jsonp(API+'/open/sprice?v='+Date.now()+'&fid=&sid=&kw='+encodeURIComponent(newKw)+'&pi=1')
     .then(function(d){
         var data=decode(d);
         var all=data.data||[];
+        var total=(data.remark&&data.remark.totalCount)||0;
+        log('找到: '+total+'条');
+
         var seen={};
         var list=[];
         all.forEach(function(p){
@@ -336,13 +344,14 @@ function pickOpt(asId,dimLabel){
             products=list;
             renderTable(list);
             showDetail(0);
-            log('匹配: '+list[0].model);
+            log('匹配: '+list[0].model+' ¥'+(list[0].price||'未定价'));
         }else{
-            log('未找到');
+            log('未找到匹配产品');
         }
     })
     .catch(function(e){log('错误: '+e.message);});
 }
+
 
 document.getElementById('kw').addEventListener('keypress',function(e){if(e.key==='Enter')doSearch();});
 </script>
