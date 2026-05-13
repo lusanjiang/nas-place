@@ -233,29 +233,33 @@ function renderParams(p,zipData){
         '智能控制器类型','N极型式','过载报警不脱扣功能'
     ];
 
-    // 解析 propOptSet
-    var ids=(p.propOptSet||'').split('-').map(Number);
-    var groups={};
-    ids.forEach(function(as){
-        var info=asMap[as];
-        if(!info||!info.dim)return;
-        // 只保留关键维度
-        if(KEY_DIMS.indexOf(info.dim)<0)return;
-        // 同维度覆盖（保留最后一个）
-        groups[info.dim]=info;
+    // 当前选中的 as 值
+    var selectedAs=(p.propOptSet||'').split('-').map(Number);
+
+    // 收集每个关键维度的所有可选项
+    var dimOpts={};
+    (zipData.c||[]).forEach(function(dim){
+        var label=dim.aj||'';
+        if(KEY_DIMS.indexOf(label)<0)return;
+        var opts=(dim.ar||[]).filter(function(o){return o.au&&o.au!=='null';});
+        if(opts.length<=1)return;  // 跳过单选项
+        dimOpts[label]=opts;
     });
 
+    // 渲染
     var h='<div style="color:#00d2ff;font-size:0.9em;margin:12px 0 6px">📋 产品参数</div>';
-    h+='<div class="grid">';
-    Object.keys(groups).forEach(function(dim){
-        var info=groups[dim];
-        // 优先显示 au（完整描述），没有则显示 av
-        var val=info.name||info.av;
-        if(val){
-            h+='<div class="item"><div class="label">'+dim+'</div><div class="val">'+val+'</div></div>';
-        }
+    Object.keys(dimOpts).forEach(function(dim){
+        var opts=dimOpts[dim];
+        h+='<div style="margin:8px 0">';
+        h+='<div style="color:#888;font-size:0.85em;margin-bottom:4px">▼'+dim+'</div>';
+        opts.forEach(function(o){
+            var isSel=selectedAs.indexOf(o.as)>=0;
+            var style=isSel?'color:#00d2ff;font-weight:600':'color:#aaa;font-size:0.85em';
+            var prefix=isSel?'● ':'○ ';
+            h+='<div style="'+style+';padding:2px 0">'+prefix+(o.au)+'</div>';
+        });
+        h+='</div>';
     });
-    h+='</div>';
 
     // PDF 样本
     var samples=zipData.g||[];
@@ -266,7 +270,6 @@ function renderParams(p,zipData){
             h+='<a class="pdf" href="'+url+'" target="_blank">📄 '+s.bl+' ('+s.bm.toFixed(1)+'MB)</a>';
         });
     }
-
     document.getElementById('params').innerHTML=h;
 }
 
