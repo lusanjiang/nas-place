@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电气资料检索 · dq123</title>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+        .splash-screen {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        .splash-screen.fade-out { opacity: 0; pointer-events: none; }
+        .splash-title {
+            font-family: 'ZCOOL XiaoWei', serif;
+            font-size: 3em;
+            background: linear-gradient(45deg, #00d2ff, #3a7bd5, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+        .splash-subtitle { color: #888; font-size: 1.1em; }
+        .splash-author { color: #666; margin-top: 30px; font-size: 0.9em; }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .container.fade-in { opacity: 1; }
+        header { text-align: center; padding: 30px 0; }
+        h1 {
+            font-family: 'ZCOOL XiaoWei', serif;
+            font-size: 2.2em;
+            background: linear-gradient(45deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        .subtitle { color: #888; font-size: 0.95em; }
+        .search-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 25px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .search-input {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 1.1em;
+            border: 2px solid rgba(58, 123, 213, 0.5);
+            border-radius: 10px;
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .search-input::placeholder { color: #666; }
+        .search-input:focus {
+            border-color: #00d2ff;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
+        }
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+        }
+        .stat { text-align: center; }
+        .stat-num {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #00d2ff;
+        }
+        .stat-label { color: #888; font-size: 0.85em; }
+        .results-container { margin-top: 20px; }
+        .result-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .result-card:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: #3a7bd5;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .result-type-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 500;
+        }
+        .badge-sample { background: #3a7bd5; }
+        .badge-cad { background: #00b894; }
+        .badge-3d { background: #6c5ce7; }
+        .badge-cert { background: #fdcb6e; color: #000; }
+        .result-title {
+            font-size: 1.1em;
+            color: #fff;
+            flex: 1;
+        }
+        .result-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            color: #888;
+            font-size: 0.85em;
+        }
+        .meta-item { display: flex; align-items: center; gap: 5px; }
+        .result-preview {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #aaa;
+            font-size: 0.85em;
+            line-height: 1.6;
+            max-height: 60px;
+            overflow: hidden;
+        }
+        .hint-message {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        .hint-icon { font-size: 3em; margin-bottom: 15px; }
+        .loading-spinner {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: #00d2ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #555;
+            font-size: 0.85em;
+        }
+        .footer a { color: #3a7bd5; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <!-- 开机画面 -->
+    <div class="splash-screen" id="splash">
+        <div class="splash-title">电气图书馆</div>
+        <div class="splash-subtitle">dq123 资料检索系统</div>
+        <div class="splash-author">作者：TENGEN-LUSANJIANG</div>
+    </div>
+
+    <!-- 主界面 -->
+    <div class="container" id="mainContainer">
+        <header>
+            <h1>📚 电气资料检索</h1>
+            <p class="subtitle">dq123.com 电天下 · 样本 / CAD / 3D / 证书一站式检索</p>
+        </header>
+
+        <div class="search-section">
+            <input type="text" class="search-input" id="searchInput" 
+                   placeholder="输入型号或关键词 · 回车检索 · 例如：NXM、NM1、CM3" autofocus>
+        </div>
+
+        <div class="stats-bar" id="statsBar" style="display:none;">
+            <div class="stat">
+                <div class="stat-num" id="statTotal">0</div>
+                <div class="stat-label">相关资源</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num" id="statSamples">0</div>
+                <div class="stat-label">产品样本</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num" id="statCAD">0</div>
+                <div class="stat-label">CAD图纸</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num" id="stat3D">0</div>
+                <div class="stat-label">3D模型</div>
+            </div>
+        </div>
+
+        <div class="results-container" id="results">
+            <div class="hint-message">
+                <div class="hint-icon">🔍</div>
+                <p>输入型号开始检索电气资料</p>
+                <p style="margin-top:10px; font-size:0.9em;">支持产品样本、CAD图块、3D模型、认证证书等</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>数据来源：<a href="https://www.dq123.com" target="_blank">dq123.com 电天下</a> · 仅供学习交流使用</p>
+        </div>
+    </div>
+
+    <script>
+        // 开机画面
+        setTimeout(() => {
+            document.getElementById('splash').classList.add('fade-out');
+            document.getElementById('mainContainer').classList.add('fade-in');
+            document.getElementById('searchInput').focus();
+        }, 1500);
+
+        const searchInput = document.getElementById('searchInput');
+        const resultsDiv = document.getElementById('results');
+        const statsBar = document.getElementById('statsBar');
+
+        // dq123 JSONP 搜索
+        function searchDQ123(keyword) {
+            return new Promise((resolve, reject) => {
+                const ts = Date.now();
+                const callbackName = `cb_${ts}`;
+                
+                window[callbackName] = function(data) {
+                    delete window[callbackName];
+                    document.head.removeChild(script);
+                    resolve(data);
+                };
+
+                const script = document.createElement('script');
+                script.src = `https://dian.dq123.com/open/sprice?v=${ts}&fid=&sid=&kw=${encodeURIComponent(keyword)}&pi=1&callback=${callbackName}`;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+
+        // 解码数据
+        function decodeData(encoded) {
+            const s = encoded.substring(20).replace(/#/g, '+');
+            return JSON.parse(atob(s));
+        }
+
+        // 搜索处理
+        async function handleSearch() {
+            const keyword = searchInput.value.trim();
+            if (!keyword) return;
+
+            resultsDiv.innerHTML = `
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>正在检索: ${keyword}</p>
+                </div>
+            `;
+            statsBar.style.display = 'none';
+
+            try {
+                const response = await searchDQ123(keyword);
+                const decoded = decodeData(response);
+                
+                if (decoded.data && decoded.data.length > 0) {
+                    displayResults(decoded, keyword);
+                } else {
+                    resultsDiv.innerHTML = `
+                        <div class="hint-message">
+                            <div class="hint-icon">😅</div>
+                            <p>未找到 "${keyword}" 相关资料</p>
+                            <p style="margin-top:10px; font-size:0.9em;">试试其他关键词</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('搜索失败:', error);
+                resultsDiv.innerHTML = `
+                    <div class="hint-message">
+                        <div class="hint-icon">❌</div>
+                        <p>搜索失败，请稍后重试</p>
+                    </div>
+                `;
+            }
+        }
+
+        // 显示结果
+        function displayResults(data, keyword) {
+            const items = data.data || [];
+            const totalCount = data.remark?.totalCount || items.length;
+
+            // 统计各类资源
+            let samples = 0, cad = 0, models3d = 0;
+            items.forEach(item => {
+                const t = (item.type || '').toLowerCase();
+                if (t.includes('样本') || t.includes('说明书') || t.includes('catalog')) samples++;
+                else if (t.includes('cad') || t.includes('图块') || t.includes('dwg')) cad++;
+                else if (t.includes('3d') || t.includes('模型') || t.includes('step')) models3d++;
+            });
+
+            document.getElementById('statTotal').textContent = totalCount;
+            document.getElementById('statSamples').textContent = samples;
+            document.getElementById('statCAD').textContent = cad;
+            document.getElementById('stat3D').textContent = models3d;
+            statsBar.style.display = 'flex';
+
+            // 渲染结果
+            let html = '';
+            items.slice(0, 20).forEach((item, index) => {
+                const badgeClass = getBadgeClass(item.type);
+                const typeLabel = item.type || '资料';
+                const title = item.model || item.className || keyword;
+                const preview = item.propSet || item.className || '';
+
+                html += `
+                    <div class="result-card" onclick="goToDetail(${item.productID || 0})">
+                        <div class="result-header">
+                            <span class="result-type-badge ${badgeClass}">${typeLabel}</span>
+                            <div class="result-title">${title}</div>
+                        </div>
+                        <div class="result-meta">
+                            ${item.className ? `<span class="meta-item">📋 ${item.className}</span>` : ''}
+                            ${item.F_ManufactoryID ? `<span class="meta-item">🏭 厂家 #${item.F_ManufactoryID}</span>` : ''}
+                            ${item.F_ProductLineID ? `<span class="meta-item">📦 系列 #${item.F_ProductLineID}</span>` : ''}
+                            ${item.price ? `<span class="meta-item">💰 ¥${item.price}</span>` : ''}
+                        </div>
+                        ${preview ? `<div class="result-preview">${preview}</div>` : ''}
+                    </div>
+                `;
+            });
+
+            resultsDiv.innerHTML = html;
+        }
+
+        // 获取徽章样式
+        function getBadgeClass(type) {
+            if (!type) return 'badge-sample';
+            const t = type.toLowerCase();
+            if (t.includes('cad') || t.includes('图块') || t.includes('dwg')) return 'badge-cad';
+            if (t.includes('3d') || t.includes('模型') || t.includes('step')) return 'badge-3d';
+            if (t.includes('证书') || t.includes('认证')) return 'badge-cert';
+            return 'badge-sample';
+        }
+
+        // 跳转详情
+        function goToDetail(id) {
+            window.open('https://www.dq123.com/price', '_blank');
+        }
+
+        // 事件监听
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSearch();
+        });
+    </script>
+</body>
+</html>
