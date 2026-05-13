@@ -343,32 +343,58 @@ function pickOpt(asId,dimLabel){
     (currentZipData.c||[]).forEach(function(dim){
         if(dim.aj===dimLabel){
             (dim.ar||[]).forEach(function(o){
-                if(o.as===asId)selectedVal=o.au||o.av||'';
+                if(o.as===asId)selectedVal=o.au||'';
             });
         }
     });
+    log('点击: '+dimLabel+' → '+selectedVal);
 
-    if(!selectedVal){log('未找到选项值');return;}
+    // 更新选中的 as 值
+    var dimOpts=[];
+    (currentZipData.c||[]).forEach(function(dim){
+        if(dim.aj===dimLabel)dimOpts=dim.ar||[];
+    });
+    var newSelected=[];
+    currentSelectedAs.forEach(function(as){
+        var isSameDim=false;
+        dimOpts.forEach(function(o){if(o.as===as)isSameDim=true;});
+        if(!isSameDim)newSelected.push(as);
+    });
+    newSelected.push(asId);
+    currentSelectedAs=newSelected;
 
-    // 提取型号前缀（去掉具体规格）
-    var origKw=document.getElementById('kw').value.trim();
-    // 前缀：取第一个 '-' 或 '/' 之前的部分
-    var prefix=origKw.split(/[-\/\s]/)[0];
+    // 在已有产品列表中找最佳匹配
+    var bestIdx=-1;
+    var bestScore=0;
+    products.forEach(function(p,idx){
+        var pAs=p.propOptSet.split('-').map(Number);
+        var score=0;
+        newSelected.forEach(function(as){if(pAs.indexOf(as)>=0)score++;});
+        if(score>bestScore){bestScore=score;bestIdx=idx;}
+    });
 
-    // 构造新搜索词：前缀 + 改变的参数值
-    var newKw=prefix;
-    if(selectedVal)newKw+=' '+selectedVal;
+    if(bestIdx>=0&&bestIdx!==currentProductIdx){
+        showDetail(bestIdx);
+        log('匹配: '+products[bestIdx].model+' ¥'+(products[bestIdx].price||'未定价'));
+    }else if(bestIdx<0){
+        log('当前列表无匹配，尝试搜索...');
+        // 只有在列表里找不到时才搜索，而且只用前缀+一个关键词
+        var prefix=document.getElementById('kw').value.trim().split(/[-\/\s]/)[0];
+        var searchKw=prefix;
+        // 只加壳架或额定电流这种关键参数
+        if(dimLabel.indexOf('壳架')>=0||dimLabel.indexOf('额定电流')>=0){
+            searchKw+=' '+selectedVal;
+        }
+        doSearchWith(searchKw);
+    }
+}
 
-    log('搜索: '+newKw);
-
-    // 重新搜索
-    jsonp(API+'/open/sprice?v='+Date.now()+'&fid=&sid=&kw='+encodeURIComponent(newKw)+'&pi=1')
+function doSearchWith(kw){
+    log('搜索: '+kw);
+    jsonp(API+'/open/sprice?v='+Date.now()+'&fid=&sid=&kw='+encodeURIComponent(kw)+'&pi=1')
     .then(function(d){
         var data=decode(d);
         var all=data.data||[];
-        var total=(data.remark&&data.remark.totalCount)||0;
-        log('找到: '+total+'条');
-
         var seen={};
         var list=[];
         all.forEach(function(p){
@@ -379,18 +405,16 @@ function pickOpt(asId,dimLabel){
             seen[key]=true;
             list.push({model:m,price:p.price,series:p.className||'',type:p.type||'',sid:p.F_ProductLineID||'',propOptSet:p.propOptSet||'',productID:p.productID||''});
         });
-
         if(list.length>0){
             products=list;
             renderTable(list);
-            // 选第一个
             showDetail(0);
-            log('匹配: '+list[0].model+' ¥'+(list[0].price||'未定价'));
+            log('找到 '+list.length+' 条');
         }else{
-            log('未找到匹配产品');
+            log('未找到');
         }
     })
-    .catch(function(e){log('搜索错误: '+e.message);});
+    .catch(function(e){log('错误: '+e.message);});
 }
 
 
