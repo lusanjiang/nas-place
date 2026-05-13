@@ -293,7 +293,8 @@ function renderParams(product,zipData){
         // 合并同名维度的选项
         if(!dimMap[label])dimMap[label]=[];
         opts.forEach(function(o){
-            if(!dimMap[label].find(function(x){return x.as===o.as;})){
+            // 按选项值(au)去重，不是按选项ID(as)
+            if(!dimMap[label].find(function(x){return x.au===o.au;})){
                 dimMap[label].push(o);
             }
         });
