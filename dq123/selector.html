@@ -105,8 +105,11 @@ async function doSearch(){
         ALL_PRODUCTS=[];SERIES_LIST=[];
 
         // 第一页
+        console.log('开始搜索:', kw);
         const d1=await jsonp(API_BASE+'/open/sprice?v='+Date.now()+'&fid=&sid=&kw='+encodeURIComponent(kw)+'&pi=1');
+        console.log('第一页JSONP响应长度:', d1.length);
         const data1=decode(d1);
+        console.log('第一页解码成功, 产品数:', data1.data.length);
         SERIES_LIST=(data1.remark&&data1.remark.F_ProductLineID)||[];
         const total=(data1.remark&&data1.remark.totalCount)||0;
         const pages=Math.min(Math.ceil(total/20),25);
