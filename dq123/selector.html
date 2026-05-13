@@ -298,52 +298,57 @@ function renderParams(product,zipData){
 
 // ===== 点击参数 =====
 function pickOpt(asId,dimLabel){
-    // 按照 dq123 原网页逻辑：
-    // 1. 找到维度
-    // 2. 设置选中的选项 (aw=true)
-    // 3. 从所有选中选项构造 propOptSet
-    // 4. 在产品列表中找匹配
-
-    // 找到维度并更新选中状态
-    var targetDim=null;
+    // 找到选项值
+    var selectedVal='';
+    var selectedAv='';
     (currentZipData.c||[]).forEach(function(dim){
         if(dim.aj===dimLabel){
-            targetDim=dim;
-            (dim.ar||[]).forEach(function(opt){
-                opt.aw=(opt.as===asId); // 设置选中
+            (dim.ar||[]).forEach(function(o){
+                if(o.as===asId){
+                    selectedVal=o.au||'';
+                    selectedAv=o.av||'';
+                }
             });
         }
     });
+    if(!selectedVal)return;
 
-    if(!targetDim)return;
+    // 提取型号前缀
+    var origKw=document.getElementById('kw').value.trim();
+    var prefix=origKw.split(/[-\/\s]/)[0];
 
-    // 从所有维度的选中选项构造 propOptSet
-    var newPropOptSet=[];
-    (currentZipData.c||[]).forEach(function(dim){
-        (dim.ar||[]).forEach(function(opt){
-            if(opt.aw)newPropOptSet.push(opt.as);
+    // 搜索：前缀 + 参数值
+    var newKw=prefix+'-'+(selectedAv||selectedVal);
+    log('搜索: '+newKw);
+
+    jsonp(API+'/open/sprice?v='+Date.now()+'&fid=&sid=&kw='+encodeURIComponent(newKw)+'&pi=1')
+    .then(function(d){
+        var data=decode(d);
+        var all=data.data||[];
+        var total=(data.remark&&data.remark.totalCount)||0;
+        log('找到: '+total+'条');
+
+        var seen={};
+        var list=[];
+        all.forEach(function(p){
+            var m=strip(p.model||'');
+            if(!m)return;
+            var key=m+'|'+(p.className||'');
+            if(seen[key])return;
+            seen[key]=true;
+            list.push({model:m,price:p.price,series:p.className||'',type:p.type||'',sid:p.F_ProductLineID||'',propOptSet:p.propOptSet||''});
         });
-    });
 
-    // 在产品列表中找最佳匹配
-    var bestIdx=-1;
-    var bestScore=0;
-    products.forEach(function(p,idx){
-        var pAs=p.propOptSet.split('-').map(Number);
-        var score=0;
-        newPropOptSet.forEach(function(as){
-            if(pAs.indexOf(as)>=0)score++;
-        });
-        if(score>bestScore){bestScore=score;bestIdx=idx;}
-    });
-
-    if(bestIdx>=0){
-        currentSelectedAs=products[bestIdx].propOptSet.split('-').map(Number);
-        showDetail(bestIdx);
-        log('切换到: '+products[bestIdx].model+' (匹配'+bestScore+'个选项)');
-    }else{
-        log('未找到匹配产品');
-    }
+        if(list.length>0){
+            products=list;
+            renderTable(list);
+            showDetail(0);
+            log('显示: '+list[0].model+' ¥'+(list[0].price||'未定价'));
+        }else{
+            log('未找到产品');
+        }
+    })
+    .catch(function(e){log('错误: '+e.message);});
 }
 
 
