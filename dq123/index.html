@@ -14,207 +14,167 @@
             min-height: 100vh;
         }
         .splash-screen {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 9999; transition: opacity 0.5s ease;
         }
         .splash-screen.fade-out { opacity: 0; pointer-events: none; }
         .splash-title {
-            font-family: 'ZCOOL XiaoWei', serif;
-            font-size: 3em;
+            font-family: 'ZCOOL XiaoWei', serif; font-size: 3em;
             background: linear-gradient(45deg, #00d2ff, #3a7bd5, #a855f7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px;
         }
         .splash-subtitle { color: #888; font-size: 1.1em; }
         .splash-author { color: #666; margin-top: 30px; font-size: 0.9em; }
         .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            opacity: 0;
-            transition: opacity 0.5s ease;
+            max-width: 1000px; margin: 0 auto; padding: 20px;
+            opacity: 0; transition: opacity 0.5s ease;
         }
         .container.fade-in { opacity: 1; }
         header { text-align: center; padding: 30px 0; }
         h1 {
-            font-family: 'ZCOOL XiaoWei', serif;
-            font-size: 2.2em;
+            font-family: 'ZCOOL XiaoWei', serif; font-size: 2.2em;
             background: linear-gradient(45deg, #00d2ff, #3a7bd5);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        .subtitle { color: #888; font-size: 0.95em; }
-        .search-section {
-            background: rgba(255,255,255,0.05);
-            border-radius: 16px;
-            padding: 25px;
-            margin: 20px 0;
-            backdrop-filter: blur(10px);
+        .tagline { color: #888; margin-top: 8px; font-size: 0.95em; letter-spacing: 1px; }
+        .search-box {
+            display: flex; gap: 10px; max-width: 600px; margin: 30px auto;
+            background: rgba(255,255,255,0.05); border-radius: 12px; padding: 8px;
             border: 1px solid rgba(255,255,255,0.1);
         }
-        .search-input {
-            width: 100%;
-            padding: 16px 20px;
-            font-size: 1.1em;
-            border: 2px solid rgba(58, 123, 213, 0.5);
-            border-radius: 10px;
-            background: rgba(0,0,0,0.3);
-            color: #fff;
-            outline: none;
-            transition: all 0.3s ease;
+        .search-box input {
+            flex: 1; background: transparent; border: none; color: #fff;
+            font-size: 1.1em; padding: 12px 16px; outline: none;
         }
-        .search-input::placeholder { color: #666; }
-        .search-input:focus {
-            border-color: #00d2ff;
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
+        .search-box input::placeholder { color: #666; }
+        .search-btn {
+            background: linear-gradient(45deg, #00d2ff, #3a7bd5);
+            border: none; color: #fff; padding: 12px 24px; border-radius: 8px;
+            cursor: pointer; font-size: 1em; transition: opacity 0.3s;
         }
+        .search-btn:hover { opacity: 0.8; }
+        .search-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .stats-bar {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(255,255,255,0.03);
-            border-radius: 10px;
+            display: flex; justify-content: center; gap: 40px;
+            padding: 20px 0; margin-bottom: 20px;
         }
         .stat { text-align: center; }
-        .stat-num {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #00d2ff;
-        }
-        .stat-label { color: #888; font-size: 0.85em; }
-        .results-container { margin-top: 20px; }
-        .result-card {
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 12px;
-            border: 1px solid rgba(255,255,255,0.08);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .result-card:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: #3a7bd5;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        }
-        .result-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 10px;
-        }
-        .result-type-badge {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75em;
-            font-weight: 500;
-        }
-        .badge-sample { background: #3a7bd5; }
-        .badge-cad { background: #00b894; }
-        .badge-3d { background: #6c5ce7; }
-        .badge-cert { background: #fdcb6e; color: #000; }
-        .result-title {
-            font-size: 1.1em;
-            color: #fff;
-            flex: 1;
-        }
-        .result-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            color: #888;
-            font-size: 0.85em;
-        }
-        .meta-item { display: flex; align-items: center; gap: 5px; }
-        .result-preview {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: #aaa;
-            font-size: 0.85em;
-            line-height: 1.6;
-            max-height: 60px;
-            overflow: hidden;
-        }
-        .hint-message {
-            text-align: center;
-            padding: 60px 20px;
-            color: #666;
-        }
-        .hint-icon { font-size: 3em; margin-bottom: 15px; }
+        .stat-num { font-size: 2em; font-weight: bold; color: #00d2ff; }
+        .stat-label { color: #888; font-size: 0.9em; margin-top: 4px; }
         .loading-spinner {
-            text-align: center;
-            padding: 40px;
-            color: #888;
+            display: flex; flex-direction: column; align-items: center;
+            padding: 60px 0; color: #888;
         }
         .spinner {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(255,255,255,0.1);
-            border-top-color: #00d2ff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 15px;
+            width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: #00d2ff; border-radius: 50%;
+            animation: spin 0.8s linear infinite; margin-bottom: 16px;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
+        .hint-message {
+            text-align: center; padding: 60px 0; color: #888;
+        }
+        .hint-icon { font-size: 3em; margin-bottom: 16px; }
+        /* 系列卡片 */
+        .series-card {
+            background: rgba(255,255,255,0.05); border-radius: 12px;
+            margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.08);
+            overflow: hidden; transition: border-color 0.3s;
+        }
+        .series-card:hover { border-color: rgba(0,210,255,0.3); }
+        .series-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 16px 20px; cursor: pointer;
+        }
+        .series-header:hover { background: rgba(255,255,255,0.03); }
+        .series-name {
+            font-size: 1.1em; font-weight: 600;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .series-count {
+            background: rgba(0,210,255,0.15); color: #00d2ff;
+            padding: 2px 10px; border-radius: 12px; font-size: 0.85em;
+        }
+        .series-badge {
+            display: inline-block; padding: 2px 8px; border-radius: 4px;
+            font-size: 0.75em; font-weight: normal;
+        }
+        .badge-tengen { background: rgba(255,107,53,0.2); color: #ff6b35; }
+        .badge-schneider { background: rgba(69,196,83,0.2); color: #45c453; }
+        .badge-abb { background: rgba(255,68,68,0.2); color: #ff4444; }
+        .badge-other { background: rgba(150,150,150,0.2); color: #999; }
+        .expand-icon {
+            transition: transform 0.3s; color: #666; font-size: 1.2em;
+        }
+        .expand-icon.expanded { transform: rotate(180deg); }
+        .series-body {
+            max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
+            border-top: 1px solid transparent;
+        }
+        .series-body.expanded {
+            max-height: 2000px; border-top-color: rgba(255,255,255,0.05);
+        }
+        .pdf-list { padding: 12px 20px; }
+        .pdf-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 14px; margin-bottom: 6px; border-radius: 8px;
+            background: rgba(255,255,255,0.03); transition: background 0.2s;
+            text-decoration: none; color: #fff;
+        }
+        .pdf-item:hover { background: rgba(0,210,255,0.08); }
+        .pdf-icon { font-size: 1.4em; flex-shrink: 0; }
+        .pdf-info { flex: 1; min-width: 0; }
+        .pdf-name {
+            font-size: 0.95em; white-space: nowrap;
+            overflow: hidden; text-overflow: ellipsis;
+        }
+        .pdf-size { color: #888; font-size: 0.8em; margin-top: 2px; }
+        .pdf-download {
+            background: rgba(0,210,255,0.15); color: #00d2ff;
+            padding: 6px 14px; border-radius: 6px; font-size: 0.85em;
+            flex-shrink: 0; transition: background 0.2s;
+        }
+        .pdf-item:hover .pdf-download { background: rgba(0,210,255,0.25); }
+        .no-samples { padding: 20px; text-align: center; color: #666; }
         .footer {
-            text-align: center;
-            padding: 30px 0;
-            color: #555;
-            font-size: 0.85em;
+            text-align: center; padding: 40px 0 20px; color: #555; font-size: 0.85em;
         }
         .footer a { color: #3a7bd5; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
-    <!-- 开机画面 -->
     <div class="splash-screen" id="splash">
         <div class="splash-title">电气图书馆</div>
-        <div class="splash-subtitle">dq123 资料检索系统</div>
+        <div class="splash-subtitle">Electrical Selection Data Retrieval System</div>
         <div class="splash-author">作者：TENGEN-LUSANJIANG</div>
     </div>
 
-    <!-- 主界面 -->
     <div class="container" id="mainContainer">
         <header>
-            <h1>📚 电气资料检索</h1>
-            <p class="subtitle">dq123.com 电天下 · 样本 / CAD / 3D / 证书一站式检索</p>
+            <h1>天正电气 · 可信赖 更美好</h1>
+            <p class="tagline">Electrical Selection Data Retrieval System</p>
         </header>
 
-        <div class="search-section">
-            <input type="text" class="search-input" id="searchInput" 
-                   placeholder="输入型号或关键词 · 回车检索 · 例如：NXM、NM1、CM3" autofocus>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="输入型号或关键词，如 CM5、NXM、TGM1N..." autocomplete="off">
+            <button class="search-btn" id="searchBtn" onclick="handleSearch()">检索</button>
         </div>
 
         <div class="stats-bar" id="statsBar" style="display:none;">
             <div class="stat">
-                <div class="stat-num" id="statTotal">0</div>
-                <div class="stat-label">相关资源</div>
+                <div class="stat-num" id="statSeries">0</div>
+                <div class="stat-label">产品系列</div>
             </div>
             <div class="stat">
-                <div class="stat-num" id="statSamples">0</div>
-                <div class="stat-label">产品样本</div>
+                <div class="stat-num" id="statProducts">0</div>
+                <div class="stat-label">产品型号</div>
             </div>
             <div class="stat">
-                <div class="stat-num" id="statCAD">0</div>
-                <div class="stat-label">CAD图纸</div>
-            </div>
-            <div class="stat">
-                <div class="stat-num" id="stat3D">0</div>
-                <div class="stat-label">3D模型</div>
+                <div class="stat-num" id="statPDFs">0</div>
+                <div class="stat-label">PDF样本</div>
             </div>
         </div>
 
@@ -242,52 +202,85 @@
         const searchInput = document.getElementById('searchInput');
         const resultsDiv = document.getElementById('results');
         const statsBar = document.getElementById('statsBar');
+        const searchBtn = document.getElementById('searchBtn');
+        const OSS_BASE = 'http://datafiles.oss-cn-shanghai.aliyuncs.com/dx2_data/proddata/sp/';
 
-        // dq123 JSONP 搜索
-        function searchDQ123(keyword) {
+        // JSONP 调用工具
+        function jsonpCall(url) {
             return new Promise((resolve, reject) => {
                 const ts = Date.now();
-                const callbackName = `cb_${ts}`;
-                
-                window[callbackName] = function(data) {
-                    delete window[callbackName];
-                    document.head.removeChild(script);
+                const cbName = `cb_${ts}`;
+                window[cbName] = function(data) {
+                    delete window[cbName];
+                    if (script.parentNode) script.parentNode.removeChild(script);
                     resolve(data);
                 };
-
                 const script = document.createElement('script');
-                script.src = `https://dian.dq123.com/open/sprice?v=${ts}&fid=&sid=&kw=${encodeURIComponent(keyword)}&pi=1&callback=${callbackName}`;
-                script.onerror = reject;
+                script.src = url + (url.includes('?') ? '&' : '?') + `callback=${cbName}`;
+                script.onerror = () => { reject(new Error('JSONP failed')); };
                 document.head.appendChild(script);
+                setTimeout(() => { reject(new Error('Timeout')); }, 15000);
             });
         }
 
-        // 解码数据
-        function decodeData(encoded) {
+        // 解码 dq123 加密数据
+        function decodeDQ123(encoded) {
             const s = encoded.substring(20).replace(/#/g, '+');
             return JSON.parse(atob(s));
         }
 
-        // 搜索处理
+        // 搜索产品（sprice API）
+        async function searchProducts(keyword) {
+            const ts = Date.now();
+            const raw = await jsonpCall(
+                `https://dian.dq123.com/open/sprice?v=${ts}&fid=&sid=&kw=${encodeURIComponent(keyword)}&pi=1`
+            );
+            return decodeDQ123(raw);
+        }
+
+        // 获取系列样本数据（ZIP → electricData API）
+        async function getSeriesSamples(seriesId) {
+            const path = `4/z_p/${seriesId}.jss`;
+            const b64 = btoa(path).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+            const ts = Date.now();
+            const url = `https://dian.dq123.com/electricData?v=${b64}&t=${ts}`;
+
+            const resp = await fetch(url);
+            if (!resp.ok) return [];
+
+            const buffer = await resp.arrayBuffer();
+            // 解压 ZIP（使用 JSZip，内联加载）
+            const zip = await JSZip.loadAsync(buffer);
+            const jsFile = Object.keys(zip.files).find(n => n.endsWith('.js'));
+            if (!jsFile) return [];
+
+            const content = await zip.files[jsFile].async('string');
+            const data = JSON.parse(content);
+            return data.g || [];  // g = SampleList
+        }
+
+        // 主搜索流程
         async function handleSearch() {
             const keyword = searchInput.value.trim();
             if (!keyword) return;
 
+            searchBtn.disabled = true;
             resultsDiv.innerHTML = `
                 <div class="loading-spinner">
                     <div class="spinner"></div>
                     <p>正在检索: ${keyword}</p>
+                    <p style="margin-top:8px; font-size:0.85em; color:#666;">搜索产品系列并加载样本数据...</p>
                 </div>
             `;
             statsBar.style.display = 'none';
 
             try {
-                const response = await searchDQ123(keyword);
-                const decoded = decodeData(response);
-                
-                if (decoded.data && decoded.data.length > 0) {
-                    displayResults(decoded, keyword);
-                } else {
+                // 1. 搜索产品
+                const searchResult = await searchProducts(keyword);
+                const products = searchResult.data || [];
+                const remark = searchResult.remark || {};
+
+                if (products.length === 0) {
                     resultsDiv.innerHTML = `
                         <div class="hint-message">
                             <div class="hint-icon">😅</div>
@@ -295,79 +288,113 @@
                             <p style="margin-top:10px; font-size:0.9em;">试试其他关键词</p>
                         </div>
                     `;
+                    searchBtn.disabled = false;
+                    return;
                 }
+
+                // 2. 提取系列信息
+                const seriesMap = {};
+                products.forEach(p => {
+                    const sid = p.F_ProductLineID;
+                    const fid = p.F_ManufactoryID;
+                    if (sid && !seriesMap[sid]) {
+                        // 从 remark 中找系列名
+                        const seriesInfo = (remark.F_ProductLineID || []).find(s => s.Key == sid);
+                        seriesMap[sid] = {
+                            id: sid,
+                            fid: fid,
+                            name: seriesInfo ? seriesInfo.Name : `系列 #${sid}`,
+                            count: seriesInfo ? seriesInfo.Value : 0,
+                            products: []
+                        };
+                    }
+                    if (sid) seriesMap[sid].products.push(p);
+                });
+
+                const seriesList = Object.values(seriesMap).sort((a, b) => b.count - a.count);
+
+                // 3. 更新统计
+                document.getElementById('statSeries').textContent = seriesList.length;
+                document.getElementById('statProducts').textContent = products.length;
+                statsBar.style.display = 'flex';
+
+                // 4. 显示系列列表（先显示骨架，再异步加载样本）
+                resultsDiv.innerHTML = seriesList.map((s, i) => `
+                    <div class="series-card" id="series-${s.id}">
+                        <div class="series-header" onclick="toggleSeries(${s.id})">
+                            <div class="series-name">
+                                <span>${s.name}</span>
+                                <span class="series-count">${s.count} 产品</span>
+                            </div>
+                            <span class="expand-icon" id="expand-${s.id}">▼</span>
+                        </div>
+                        <div class="series-body" id="body-${s.id}">
+                            <div class="pdf-list" id="pdfs-${s.id}">
+                                <div class="loading-spinner" style="padding:20px 0;">
+                                    <div class="spinner" style="width:24px;height:24px;"></div>
+                                    <p style="font-size:0.85em;">加载样本数据...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                // 5. 异步加载每个系列的样本数据
+                let totalPDFs = 0;
+                const loadPromises = seriesList.map(async (s) => {
+                    try {
+                        const samples = await getSeriesSamples(s.id);
+                        const pdfList = document.getElementById(`pdfs-${s.id}`);
+                        if (!pdfList) return;
+
+                        if (samples.length > 0) {
+                            totalPDFs += samples.length;
+                            document.getElementById('statPDFs').textContent = totalPDFs;
+                            pdfList.innerHTML = samples.map(samp => `
+                                <a class="pdf-item" href="${OSS_BASE}${samp.bk}/${samp.bl}" target="_blank" rel="noopener">
+                                    <span class="pdf-icon">📄</span>
+                                    <div class="pdf-info">
+                                        <div class="pdf-name">${samp.bl}</div>
+                                        <div class="pdf-size">${(samp.bm).toFixed(1)} MB</div>
+                                    </div>
+                                    <span class="pdf-download">下载</span>
+                                </a>
+                            `).join('');
+                        } else {
+                            pdfList.innerHTML = '<div class="no-samples">暂无样本数据</div>';
+                        }
+                    } catch (e) {
+                        const pdfList = document.getElementById(`pdfs-${s.id}`);
+                        if (pdfList) pdfList.innerHTML = '<div class="no-samples">加载失败</div>';
+                    }
+                });
+
+                // 不等待全部完成，让它们并行加载
+                // 但更新 PDF 总数需要等一下
+                setTimeout(() => {
+                    document.getElementById('statPDFs').textContent = totalPDFs;
+                }, 3000);
+
             } catch (error) {
                 console.error('搜索失败:', error);
                 resultsDiv.innerHTML = `
                     <div class="hint-message">
                         <div class="hint-icon">❌</div>
                         <p>搜索失败，请稍后重试</p>
+                        <p style="margin-top:8px; font-size:0.85em; color:#666;">${error.message}</p>
                     </div>
                 `;
             }
+
+            searchBtn.disabled = false;
         }
 
-        // 显示结果
-        function displayResults(data, keyword) {
-            const items = data.data || [];
-            const totalCount = data.remark?.totalCount || items.length;
-
-            // 统计各类资源
-            let samples = 0, cad = 0, models3d = 0;
-            items.forEach(item => {
-                const t = (item.type || '').toLowerCase();
-                if (t.includes('样本') || t.includes('说明书') || t.includes('catalog')) samples++;
-                else if (t.includes('cad') || t.includes('图块') || t.includes('dwg')) cad++;
-                else if (t.includes('3d') || t.includes('模型') || t.includes('step')) models3d++;
-            });
-
-            document.getElementById('statTotal').textContent = totalCount;
-            document.getElementById('statSamples').textContent = samples;
-            document.getElementById('statCAD').textContent = cad;
-            document.getElementById('stat3D').textContent = models3d;
-            statsBar.style.display = 'flex';
-
-            // 渲染结果
-            let html = '';
-            items.slice(0, 20).forEach((item, index) => {
-                const badgeClass = getBadgeClass(item.type);
-                const typeLabel = item.type || '资料';
-                const title = item.model || item.className || keyword;
-                const preview = item.propSet || item.className || '';
-
-                html += `
-                    <div class="result-card" onclick="goToDetail(${item.productID || 0})">
-                        <div class="result-header">
-                            <span class="result-type-badge ${badgeClass}">${typeLabel}</span>
-                            <div class="result-title">${title}</div>
-                        </div>
-                        <div class="result-meta">
-                            ${item.className ? `<span class="meta-item">📋 ${item.className}</span>` : ''}
-                            ${item.F_ManufactoryID ? `<span class="meta-item">🏭 厂家 #${item.F_ManufactoryID}</span>` : ''}
-                            ${item.F_ProductLineID ? `<span class="meta-item">📦 系列 #${item.F_ProductLineID}</span>` : ''}
-                            ${item.price ? `<span class="meta-item">💰 ¥${item.price}</span>` : ''}
-                        </div>
-                        ${preview ? `<div class="result-preview">${preview}</div>` : ''}
-                    </div>
-                `;
-            });
-
-            resultsDiv.innerHTML = html;
-        }
-
-        // 获取徽章样式
-        function getBadgeClass(type) {
-            if (!type) return 'badge-sample';
-            const t = type.toLowerCase();
-            if (t.includes('cad') || t.includes('图块') || t.includes('dwg')) return 'badge-cad';
-            if (t.includes('3d') || t.includes('模型') || t.includes('step')) return 'badge-3d';
-            if (t.includes('证书') || t.includes('认证')) return 'badge-cert';
-            return 'badge-sample';
-        }
-
-        // 跳转详情
-        function goToDetail(id) {
-            window.open('https://www.dq123.com/price', '_blank');
+        // 展开/折叠系列
+        function toggleSeries(id) {
+            const body = document.getElementById(`body-${id}`);
+            const icon = document.getElementById(`expand-${id}`);
+            body.classList.toggle('expanded');
+            icon.classList.toggle('expanded');
         }
 
         // 事件监听
@@ -375,5 +402,7 @@
             if (e.key === 'Enter') handleSearch();
         });
     </script>
+    <!-- JSZip 库（解压 ZIP 文件） -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </body>
 </html>
