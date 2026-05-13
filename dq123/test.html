@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>JSONP测试</title></head>
+<body style="background:#1a1a2e;color:#fff;font-family:monospace;padding:20px">
+<h2>JSONP 测试</h2>
+<input id="kw" value="NDM3-800M/3300 630A" style="width:300px;padding:8px;background:#333;color:#fff;border:1px solid #555">
+<button onclick="test()" style="padding:8px 16px;background:#00d2ff;border:none;color:#fff;cursor:pointer">测试</button>
+<pre id="out" style="margin-top:20px;white-space:pre-wrap"></pre>
+
+<script>
+function test(){
+    var kw=document.getElementById('kw').value;
+    var out=document.getElementById('out');
+    out.textContent='测试中...';
+    
+    var cb='cb_'+Date.now();
+    window[cb]=function(data){
+        delete window[cb];
+        document.head.removeChild(s);
+        try{
+            var b64=data.substring(20).replace(/#/g,'+');
+            var bin=atob(b64);
+            var bytes=Uint8Array.from(bin,function(c){return c.charCodeAt(0)});
+            var str=new TextDecoder().decode(bytes);
+            var json=JSON.parse(str);
+            out.textContent='成功!\n产品数: '+json.data.length+'\n\n';
+            json.data.slice(0,3).forEach(function(p){
+                var model=p.model.replace(/<[^>]+>/g,'');
+                out.textContent+=model+' | ¥'+p.price+'\n';
+            });
+        }catch(e){
+            out.textContent='解码错误: '+e.message;
+        }
+    };
+    var s=document.createElement('script');
+    s.src='https://dian.dq123.com/open/sprice?v='+Date.now()+'&fid=&sid=&kw='+encodeURIComponent(kw)+'&pi=1&callback='+cb;
+    s.onerror=function(){delete window[cb];s.remove();out.textContent='JSONP加载失败';};
+    document.head.appendChild(s);
+    setTimeout(function(){if(window[cb]){delete window[cb];if(s.parentNode)s.remove();out.textContent='超时';}},10000);
+}
+</script>
+</body>
+</html>
