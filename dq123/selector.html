@@ -298,57 +298,30 @@ function renderParams(product,zipData){
 
 // ===== 点击参数 =====
 function pickOpt(asId,dimLabel){
-    // 找到选项值
-    var selectedVal='';
-    var selectedAv='';
-    (currentZipData.c||[]).forEach(function(dim){
-        if(dim.aj===dimLabel){
-            (dim.ar||[]).forEach(function(o){
-                if(o.as===asId){
-                    selectedVal=o.au||'';
-                    selectedAv=o.av||'';
-                }
+    // 在已有产品列表中找包含这个 asId 的产品
+    var bestIdx=-1;
+    var bestScore=0;
+
+    products.forEach(function(p,idx){
+        var pAs=p.propOptSet.split('-').map(Number);
+        // 包含点击的选项 asId 就加分
+        if(pAs.indexOf(asId)>=0){
+            var score=100; // 基础分：包含目标选项
+            // 额外分：当前选中的选项也匹配
+            currentSelectedAs.forEach(function(as){
+                if(pAs.indexOf(as)>=0)score++;
             });
+            if(score>bestScore){bestScore=score;bestIdx=idx;}
         }
     });
-    if(!selectedVal)return;
 
-    // 提取型号前缀
-    var origKw=document.getElementById('kw').value.trim();
-    var prefix=origKw.split(/[-\/\s]/)[0];
-
-    // 搜索：前缀 + 参数值
-    var newKw=prefix+'-'+(selectedAv||selectedVal);
-    log('搜索: '+newKw);
-
-    jsonp(API+'/open/sprice?v='+Date.now()+'&fid=&sid=&kw='+encodeURIComponent(newKw)+'&pi=1')
-    .then(function(d){
-        var data=decode(d);
-        var all=data.data||[];
-        var total=(data.remark&&data.remark.totalCount)||0;
-        log('找到: '+total+'条');
-
-        var seen={};
-        var list=[];
-        all.forEach(function(p){
-            var m=strip(p.model||'');
-            if(!m)return;
-            var key=m+'|'+(p.className||'');
-            if(seen[key])return;
-            seen[key]=true;
-            list.push({model:m,price:p.price,series:p.className||'',type:p.type||'',sid:p.F_ProductLineID||'',propOptSet:p.propOptSet||''});
-        });
-
-        if(list.length>0){
-            products=list;
-            renderTable(list);
-            showDetail(0);
-            log('显示: '+list[0].model+' ¥'+(list[0].price||'未定价'));
-        }else{
-            log('未找到产品');
-        }
-    })
-    .catch(function(e){log('错误: '+e.message);});
+    if(bestIdx>=0){
+        currentSelectedAs=products[bestIdx].propOptSet.split('-').map(Number);
+        showDetail(bestIdx);
+        log('切换到: '+products[bestIdx].model);
+    }else{
+        log('当前列表中无匹配产品');
+    }
 }
 
 
