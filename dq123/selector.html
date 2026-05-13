@@ -223,24 +223,36 @@ function renderParams(p,zipData){
         });
     });
 
+    // 关键维度白名单
+    var KEY_DIMS=[
+        '框架代号','壳架等级额定电流','额定极限短路分断能力','额定极限短路分断能力(AC415V)',
+        '额定持续电流Iu','额定电流','脱扣器型号','脱扣器方式','保护类型','保护用途',
+        '极数','本体极数命名属性','安装型式','接线形式','接线方式','电压',
+        '附件代号','附件标准配置','附件名称','分励脱扣器电压','欠压电压',
+        '剩余动作类型','额定剩余动作电流值','分断时间','操作方式','配用壳架',
+        '智能控制器类型','N极型式','过载报警不脱扣功能'
+    ];
+
     // 解析 propOptSet
     var ids=(p.propOptSet||'').split('-').map(Number);
     var groups={};
     ids.forEach(function(as){
         var info=asMap[as];
-        if(info&&info.dim){
-            // 同维度覆盖（保留最后一个）
-            if(!groups[info.dim])groups[info.dim]=[];
-            groups[info.dim].push(info.av||info.name);
-        }
+        if(!info||!info.dim)return;
+        // 只保留关键维度
+        if(KEY_DIMS.indexOf(info.dim)<0)return;
+        // 同维度覆盖（保留最后一个）
+        groups[info.dim]=info;
     });
 
     var h='<div style="color:#00d2ff;font-size:0.9em;margin:12px 0 6px">📋 产品参数</div>';
     h+='<div class="grid">';
     Object.keys(groups).forEach(function(dim){
-        var vals=groups[dim].filter(Boolean);
-        if(vals.length>0){
-            h+='<div class="item"><div class="label">'+dim+'</div><div class="val">'+vals[vals.length-1]+'</div></div>';
+        var info=groups[dim];
+        // 优先显示 au（完整描述），没有则显示 av
+        var val=info.name||info.av;
+        if(val){
+            h+='<div class="item"><div class="label">'+dim+'</div><div class="val">'+val+'</div></div>';
         }
     });
     h+='</div>';
