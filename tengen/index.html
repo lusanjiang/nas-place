@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>TENGEN · 天正电气</title>
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --bg2: #1a1d27;
+  --card: #1e2130;
+  --card-hover: #252840;
+  --border: rgba(255,255,255,0.06);
+  --primary: #4f8cff;
+  --primary-glow: rgba(79,140,255,0.15);
+  --success: #34d399;
+  --danger: #f87171;
+  --text: #e8eaed;
+  --text2: #8b8fa3;
+  --text3: #555a6e;
+  --radius: 14px;
+}
+* { box-sizing:border-box; -webkit-font-smoothing:antialiased; -webkit-user-select:none; user-select:none; }
+input,textarea,select { -webkit-user-select:text; user-select:text; }
+body { background:var(--bg); margin:0; font-family:'Noto Sans SC',system-ui,sans-serif; color:var(--text); padding-bottom:120px; font-size:14px; }
+
+/* Header */
+.header { padding:24px 16px 12px; text-align:center; }
+.header h1 { font-family:'Ma Shan Zheng',cursive; font-size:1.8rem; margin:0; background:linear-gradient(135deg,#4f8cff,#a78bfa); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:4px; }
+.header .sub { font-size:11px; color:var(--text3); margin-top:4px; letter-spacing:6px; }
+
+/* Search */
+.search-wrap { position:sticky; top:0; z-index:100; background:rgba(15,17,23,0.85); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); padding:12px 16px; border-bottom:1px solid var(--border); }
+.search-bar { display:flex; gap:10px; max-width:640px; margin:0 auto; align-items:center; }
+#q { flex:1; min-height:42px; max-height:120px; border:1px solid var(--border); background:var(--bg2); border-radius:10px; padding:10px 14px; font-size:14px; outline:none; resize:none; overflow-y:hidden; line-height:1.5; color:var(--text); font-family:inherit; transition:border-color .2s; }
+#q:focus { border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-glow); }
+#q::placeholder { color:var(--text3); }
+#btn { height:42px; padding:0 20px; background:linear-gradient(135deg,#4f8cff,#6366f1); color:white; border:none; border-radius:10px; font-weight:700; font-size:14px; cursor:pointer; transition:all .2s; letter-spacing:2px; }
+#btn:hover { transform:translateY(-1px); box-shadow:0 4px 15px rgba(79,140,255,0.3); }
+#btn:active { transform:translateY(0); }
+
+/* Container */
+.container { max-width:640px; margin:0 auto; padding:0 12px; }
+.info-row { padding:10px 4px; font-size:12px; color:var(--text2); display:flex; justify-content:space-between; align-items:center; }
+#sort-btn { color:var(--primary); cursor:pointer; font-weight:500; font-size:12px; padding:4px 10px; border-radius:6px; background:var(--primary-glow); transition:all .2s; }
+
+/* Cards */
+.card { background:var(--card); border-radius:var(--radius); padding:14px 16px; margin-bottom:10px; border:1px solid var(--border); transition:all .25s; position:relative; overflow:hidden; }
+.card:hover { background:var(--card-hover); border-color:rgba(79,140,255,0.15); transform:translateY(-1px); }
+.card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:linear-gradient(180deg,var(--primary),#a78bfa); opacity:0; transition:opacity .3s; }
+.card:hover::before { opacity:1; }
+.card-title { font-size:14px; font-weight:700; line-height:1.5; color:var(--text); word-break:break-all; cursor:pointer; transition:color .2s; }
+.card-title:active { color:var(--primary); }
+.card-meta { display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; align-items:center; }
+.tag { font-size:11px; padding:3px 8px; border-radius:6px; font-weight:500; }
+.tag-stock { background:rgba(79,140,255,0.1); color:var(--primary); border:1px solid rgba(79,140,255,0.15); }
+.tag-stock.has-stock { background:rgba(52,211,153,0.1); color:var(--success); border-color:rgba(52,211,153,0.15); }
+.tag-id { background:rgba(255,255,255,0.03); color:var(--text3); border:1px solid var(--border); }
+.card-actions { display:flex; gap:8px; margin-top:12px; }
+.act-btn { flex:1; height:36px; border-radius:8px; border:1px solid var(--border); background:transparent; color:var(--text2); font-size:12px; font-weight:600; cursor:pointer; transition:all .2s; letter-spacing:1px; }
+.act-btn:hover { background:rgba(255,255,255,0.04); color:var(--text); }
+.act-btn.add { color:var(--primary); border-color:rgba(79,140,255,0.2); background:var(--primary-glow); }
+.act-btn.add:hover { background:rgba(79,140,255,0.25); }
+.act-btn.staged { background:rgba(52,211,153,0.08); color:var(--success); border-color:rgba(52,211,153,0.15); pointer-events:none; }
+
+/* Copy flash */
+.copy-flash { color:var(--success) !important; }
+
+/* FAB */
+#batch-fab { position:fixed; right:0; top:35%; width:48px; height:70px; background:linear-gradient(135deg,#4f8cff,#6366f1); color:white; border-radius:14px 0 0 14px; display:flex; flex-direction:column; align-items:center; justify-content:center; box-shadow:-3px 0 15px rgba(79,140,255,0.2); z-index:1001; cursor:pointer; transition:all .2s; }
+#batch-fab:hover { width:52px; }
+#batch-fab span { font-size:10px; opacity:.8; }
+#batch-fab b { font-size:16px; }
+
+/* Drawer */
+#overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1001; backdrop-filter:blur(4px); }
+#batch-drawer { position:fixed; right:-300px; top:0; width:280px; height:100%; background:var(--bg2); box-shadow:-5px 0 30px rgba(0,0,0,0.3); z-index:1002; transition:.3s ease; display:flex; flex-direction:column; }
+#batch-drawer.open { right:0; }
+.drawer-hd { padding:20px 16px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+.drawer-hd span { font-weight:700; font-size:15px; }
+.drawer-hd .close { color:var(--text3); cursor:pointer; font-size:20px; width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:8px; transition:all .2s; }
+.drawer-hd .close:hover { background:rgba(255,255,255,0.05); color:var(--text); }
+.drawer-list { flex:1; overflow-y:auto; padding:8px; }
+.drawer-item { font-size:13px; padding:12px 10px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+.drawer-item .name { flex:1; color:var(--text); font-weight:500; line-height:1.4; }
+.drawer-item .del { color:var(--danger); cursor:pointer; padding:4px 8px; border-radius:6px; transition:all .2s; font-weight:700; }
+.drawer-item .del:hover { background:rgba(248,113,113,0.1); }
+.drawer-ft { padding:16px; border-top:1px solid var(--border); display:flex; flex-direction:column; gap:10px; }
+.ft-btn { width:100%; height:44px; border-radius:10px; border:none; font-weight:700; cursor:pointer; font-size:14px; transition:all .2s; letter-spacing:2px; }
+.ft-btn.primary { background:linear-gradient(135deg,#4f8cff,#6366f1); color:white; }
+.ft-btn.primary:hover { box-shadow:0 4px 15px rgba(79,140,255,0.3); }
+.ft-btn.ghost { background:transparent; color:var(--text3); border:1px solid var(--border); }
+.ft-btn.ghost:hover { color:var(--text2); border-color:var(--text3); }
+
+/* Footer panel */
+.footer-panel { position:fixed; bottom:15px; left:12px; right:12px; background:rgba(30,33,48,0.95); backdrop-filter:blur(20px); border-radius:16px; padding:12px 16px; display:flex; gap:10px; align-items:flex-end; box-shadow:0 -4px 30px rgba(0,0,0,0.3); border:1px solid var(--border); z-index:1000; }
+.f-item { flex:1; display:flex; flex-direction:column; gap:5px; }
+.f-label { font-size:10px; font-weight:700; color:var(--text3); text-align:center; text-transform:uppercase; letter-spacing:1px; }
+.f-ui { width:100%; height:38px; border:1px solid var(--border); border-radius:8px; text-align:center; font-size:13px; font-weight:600; background:var(--bg); color:var(--text); outline:none; transition:all .2s; }
+.f-ui:focus { border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-glow); }
+
+/* Loader */
+#loader { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:var(--card); color:var(--text); padding:24px 36px; border-radius:16px; z-index:2000; border:1px solid var(--border); box-shadow:0 10px 40px rgba(0,0,0,0.4); font-weight:500; letter-spacing:2px; }
+
+/* Empty state */
+.empty { text-align:center; padding:60px 20px; color:var(--text3); }
+.empty .icon { font-size:48px; margin-bottom:16px; }
+.empty .text { font-size:14px; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width:4px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--text3); border-radius:4px; }
+
+/* Responsive */
+@media (max-width:400px) {
+  .header h1 { font-size:1.4rem; }
+  .footer-panel { padding:10px 12px; gap:6px; }
+}
+</style>
+</head>
+<body>
+<div id="loader">⏳ 调取中...</div>
+<div id="overlay" onclick="toggleDrawer()"></div>
+
+<div id="batch-fab" onclick="toggleDrawer()">
+  <span>暂存</span>
+  <b id="batch-count">0</b>
+</div>
+
+<div id="batch-drawer">
+  <div class="drawer-hd">
+    <span>📋 待汇总清单</span>
+    <div class="close" onclick="toggleDrawer()">×</div>
+  </div>
+  <div id="batch-list" class="drawer-list"></div>
+  <div class="drawer-ft">
+    <button class="ft-btn primary" onclick="copyBatchAll()">📋 全部汇总复制</button>
+    <button class="ft-btn ghost" onclick="clearBatch()">清空清单</button>
+  </div>
+</div>
+
+<div class="header">
+  <h1>☁️ TENGEN · LDS ☁️</h1>
+  <div class="sub">天正电气 · 物料检索系统</div>
+</div>
+
+<div class="search-wrap">
+  <div class="search-bar">
+    <textarea id="q" rows="1" placeholder="输入型号关键字..." autocomplete="off" oninput="autoHeight(this)"></textarea>
+    <button id="btn" onclick="doS()">查 询</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="info-row">
+    <span id="st-info">准备就绪</span>
+    <span id="sort-btn" onclick="toggleS()">排序: 默认</span>
+  </div>
+  <div id="list"></div>
+</div>
+
+<div class="footer-panel">
+  <div class="f-item">
+    <span class="f-label">每页条数</span>
+    <select id="ps" class="f-ui" onchange="doS()">
+      <option>20</option>
+      <option selected>50</option>
+      <option>100</option>
+    </select>
+  </div>
+  <div class="f-item">
+    <span class="f-label">验证令牌</span>
+    <input type="password" id="pwd" class="f-ui" placeholder="Token" value="666">
+  </div>
+</div>
+
+<script>
+let ori=[], cur=[], sSt=0, batchItems=[];
+
+// === Copy ===
+function smartCopy(el, text) {
+  const raw = text.toString().replace('¥','').trim();
+  const t = document.createElement('textarea');
+  t.value = raw; document.body.appendChild(t); t.select();
+  document.execCommand('copy'); document.body.removeChild(t);
+  el.classList.add('copy-flash');
+  if(window.navigator.vibrate) window.navigator.vibrate(30);
+  setTimeout(()=>el.classList.remove('copy-flash'), 600);
+}
+
+let pressTimer;
+function bindEvents(id, text) {
+  const el = document.getElementById(id); if(!el) return;
+  el.ondblclick = () => smartCopy(el, text);
+  el.ontouchstart = () => { pressTimer = setTimeout(()=>smartCopy(el,text),600); };
+  el.ontouchend = () => clearTimeout(pressTimer);
+  el.ontouchmove = () => clearTimeout(pressTimer);
+}
+
+function autoHeight(el) { el.style.height='42px'; el.style.height=el.scrollHeight+'px'; }
+
+document.getElementById('q').addEventListener('keydown', e => {
+  if(e.key==='Enter') { e.preventDefault(); doS(); }
+});
+
+// === Drawer ===
+function toggleDrawer() {
+  const d = document.getElementById('batch-drawer');
+  const o = document.getElementById('overlay');
+  if(d.classList.toggle('open')) o.style.display='block';
+  else o.style.display='none';
+  renderBatchList();
+}
+
+// === Batch ===
+function addToBatch(name, label, itemNum) {
+  if(batchItems.some(i=>i.itemNum===itemNum)) return;
+  batchItems.push({name, label, itemNum, id:Date.now()+Math.random()});
+  document.getElementById('batch-count').innerText = batchItems.length;
+  const fb = document.getElementById('batch-fab');
+  fb.style.background = 'var(--success)';
+  setTimeout(()=>fb.style.background='', 400);
+  render();
+}
+
+function removeFromBatch(id) {
+  batchItems = batchItems.filter(i=>i.id!==id);
+  document.getElementById('batch-count').innerText = batchItems.length;
+  renderBatchList(); render();
+}
+
+function clearBatch() {
+  batchItems = [];
+  document.getElementById('batch-count').innerText = '0';
+  renderBatchList(); render();
+}
+
+function renderBatchList() {
+  const l = document.getElementById('batch-list');
+  if(!batchItems.length) {
+    l.innerHTML = '<div class="empty"><div class="icon">📭</div><div class="text">暂无物料</div></div>';
+    return;
+  }
+  l.innerHTML = batchItems.map(i =>
+    `<div class="drawer-item">
+      <span class="name">${i.name}</span>
+      <span class="del" onclick="removeFromBatch(${i.id})">×</span>
+    </div>`
+  ).join('');
+}
+
+function copyBatchAll() {
+  if(!batchItems.length) return;
+  const text = batchItems.map(i=>`型号：${i.name}`).join('\n');
+  const el = document.createElement('textarea');
+  el.value = text; document.body.appendChild(el); el.select();
+  document.execCommand('copy'); document.body.removeChild(el);
+  alert('✅ 汇总复制成功');
+  toggleDrawer();
+}
+
+// === Search ===
+async function doS() {
+  const q = document.getElementById('q').value.trim();
+  const p = document.getElementById('pwd').value;
+  if(!p) { alert('请输入令牌'); return; }
+  if(!q) return;
+  document.getElementById('loader').style.display = 'block';
+  try {
+    const r = await fetch(`/api/search?q=${encodeURIComponent(q)}&pwd=${p}&ps=${document.getElementById('ps').value}`);
+    const j = await r.json();
+    if(j.error) alert(j.error);
+    else {
+      j.data.sort((a,b)=>a.itemDesc.length - b.itemDesc.length);
+      ori = JSON.parse(JSON.stringify(j.data));
+      cur = j.data;
+      render();
+      localStorage.setItem('lds_p', p);
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+  } catch(e) { alert('查询超时'); }
+  document.getElementById('loader').style.display = 'none';
+}
+
+// === Sort ===
+function toggleS() {
+  if(!cur.length) return;
+  sSt = (sSt+1)%3;
+  const b = document.getElementById('sort-btn');
+  if(sSt==1) { cur.sort((a,b)=>(a.anhand||0)-(b.anhand||0)); b.innerText='库存 ↑'; }
+  else if(sSt==2) { cur.sort((a,b)=>(b.anhand||0)-(a.anhand||0)); b.innerText='库存 ↓'; }
+  else { cur=JSON.parse(JSON.stringify(ori)); b.innerText='默认'; }
+  render();
+}
+
+// === Render ===
+function render() {
+  const l = document.getElementById('list');
+  document.getElementById('st-info').innerHTML = `共 <b style="color:var(--primary)">${cur.length}</b> 条数据`;
+  l.innerHTML = '';
+
+  if(!cur.length) {
+    l.innerHTML = '<div class="empty"><div class="icon">🔍</div><div class="text">输入关键字开始检索</div></div>';
+    return;
+  }
+
+  cur.forEach((i, idx) => {
+    const isStaged = batchItems.some(bi=>bi.itemNum===i.itemNum);
+    const tid = 't_'+idx;
+    const stock = i.anhand||0;
+    const stockClass = stock > 0 ? 'has-stock' : '';
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="card-title" id="${tid}">${i.itemDesc}</div>
+      <div class="card-meta">
+        <span class="tag tag-stock ${stockClass}">库存: ${stock}</span>
+        <span class="tag tag-id">NO: ${i.itemNum}</span>
+      </div>
+      <div class="card-actions">
+        <button class="act-btn" onclick="cpOne('${i.itemDesc.replace(/'/g,"\\'")}',event)">复制型号</button>
+        <button class="${isStaged?'act-btn staged':'act-btn add'}" onclick="addToBatch('${i.itemDesc.replace(/'/g,"\\'")}','型号','${i.itemNum}')">${isStaged?'✓ 已暂存':'+ 暂存'}</button>
+      </div>`;
+    l.appendChild(card);
+    bindEvents(tid, i.itemDesc);
+  });
+}
+
+function cpOne(name, e) {
+  const el = document.createElement('textarea');
+  el.value = name; document.body.appendChild(el); el.select();
+  document.execCommand('copy'); document.body.removeChild(el);
+  const btn = e.currentTarget;
+  const old = btn.innerText;
+  btn.innerText = '✓ 已复制';
+  btn.style.color = 'var(--success)';
+  btn.style.borderColor = 'rgba(52,211,153,0.3)';
+  setTimeout(()=>{ btn.innerText=old; btn.style=''; }, 1200);
+}
+
+// === Init ===
+window.onload = () => {
+  const s = localStorage.getItem('lds_p');
+  if(s) document.getElementById('pwd').value = s;
+  render();
+};
+</script>
+</body>
+</html>
