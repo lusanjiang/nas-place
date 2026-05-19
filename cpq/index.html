@@ -214,13 +214,16 @@ async function loadSampleIndex(){
   try{
     const base=location.pathname.replace(/\/[^/]*$/,'/');
     const [lr,sr]=await Promise.all([
-      fetch(base+'cpq_name_lookup.json'),
-      fetch(base+'cpq_samples.json')
+      fetch(base+'cpq_name_lookup.json?t=1779208472'),
+      fetch(base+'cpq_samples.json?t=1779208472')
     ]);
     if(lr.ok) nameLookup=await lr.json();
     if(sr.ok) sampleDB=await sr.json();
-    const cnt=document.getElementById('cnt');
-    if(cnt) cnt.innerHTML=`🔍 就绪 · 📄 ${Object.keys(sampleDB).length} 份样本`;
+    const n=Object.keys(sampleDB).length;
+    document.getElementById('stats').innerHTML=
+      '<div class="chip">🏭 <b>'+Object.keys(factories).length+'</b> 厂家</div>'+
+      '<div class="chip">📦 <b>'+series.length+'</b> 系列</div>'+
+      '<div class="chip">📄 <b>'+n+'</b> 样本资料</div>';
   }catch(e){/* sample index optional */}
 }
 
