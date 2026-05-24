@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>电气资料检索 · dq123</title>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
-            color: #fff;
-            min-height: 100vh;
+            color: #fff; min-height: 100vh;
         }
         .splash-screen {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
@@ -20,7 +21,7 @@
         }
         .splash-screen.fade-out { opacity: 0; pointer-events: none; }
         .splash-title {
-            font-size: 3em; font-weight: 800;
+            font-family: 'ZCOOL XiaoWei', serif; font-size: 3em;
             background: linear-gradient(45deg, #00d2ff, #3a7bd5, #a855f7);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px;
         }
@@ -33,7 +34,7 @@
         .container.fade-in { opacity: 1; }
         header { text-align: center; padding: 30px 0; }
         h1 {
-            font-size: 2.2em; font-weight: 800;
+            font-family: 'ZCOOL XiaoWei', serif; font-size: 2.2em;
             background: linear-gradient(45deg, #00d2ff, #3a7bd5);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
@@ -74,55 +75,93 @@
         @keyframes spin { to { transform: rotate(360deg); } }
         .hint-message { text-align: center; padding: 60px 0; color: #888; }
         .hint-icon { font-size: 3em; margin-bottom: 16px; }
-        /* 产品表格 */
-        .table-wrap { margin: 10px 0; overflow-x: auto; }
-        .product-table { width: 100%; border-collapse: collapse; }
-        .product-table th {
-            text-align: left; padding: 12px 14px; color: #888; font-weight: 600;
-            font-size: 0.8em; border-bottom: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.2); position: sticky; top: 0;
+        /* 系列卡片 */
+        .series-card {
+            background: rgba(255,255,255,0.05); border-radius: 12px;
+            margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.08);
+            overflow: hidden; transition: border-color 0.3s;
         }
-        .product-table td {
-            padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.03);
-            font-size: 0.9em;
+        .series-card:hover { border-color: rgba(0,210,255,0.3); }
+        .series-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 16px 20px; cursor: pointer;
         }
-        .product-table tr { cursor: pointer; transition: background 0.15s; }
-        .product-table tr:hover { background: rgba(0,210,255,0.05); }
-        .price { color: #ff6b6b; font-weight: 700; font-size: 1em; }
-        .price-na { color: #555; font-size: 0.85em; }
-        .series-tag {
+        .series-header:hover { background: rgba(255,255,255,0.03); }
+        .series-name {
+            font-size: 1.1em; font-weight: 600;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .series-count {
+            background: rgba(0,210,255,0.15); color: #00d2ff;
+            padding: 2px 10px; border-radius: 12px; font-size: 0.85em;
+        }
+        .series-badge {
             display: inline-block; padding: 2px 8px; border-radius: 4px;
-            font-size: 0.75em; background: rgba(0,210,255,0.15); color: #00d2ff;
+            font-size: 0.75em; font-weight: normal;
         }
-        .type-tag {
-            display: inline-block; padding: 2px 8px; border-radius: 4px;
-            font-size: 0.75em; background: rgba(168,85,247,0.15); color: #a855f7;
+        .badge-tengen { background: rgba(255,107,53,0.2); color: #ff6b35; }
+        .badge-schneider { background: rgba(69,196,83,0.2); color: #45c453; }
+        .badge-abb { background: rgba(255,68,68,0.2); color: #ff4444; }
+        .badge-other { background: rgba(150,150,150,0.2); color: #999; }
+        .expand-icon {
+            transition: transform 0.3s; color: #666; font-size: 1.2em;
         }
-        .model-text { font-weight: 600; color: #fff; }
-        /* 分页 */
-        .pagination {
-            display: flex; justify-content: center; align-items: center;
-            gap: 8px; padding: 20px 0;
+        .expand-icon.expanded { transform: rotate(180deg); }
+        .series-body {
+            max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
+            border-top: 1px solid transparent;
         }
-        .page-btn {
-            padding: 8px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.05); color: #ccc; cursor: pointer;
-            font-size: 0.85em; transition: all 0.2s;
+        .series-body.expanded {
+            max-height: 3000px; border-top-color: rgba(255,255,255,0.05);
         }
-        .page-btn:hover { background: rgba(0,210,255,0.1); border-color: rgba(0,210,255,0.3); }
-        .page-btn.active { background: rgba(0,210,255,0.2); border-color: #00d2ff; color: #00d2ff; font-weight: 600; }
-        .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-        .page-info { color: #888; font-size: 0.85em; }
+        .pdf-list { padding: 12px 20px; }
+        .pdf-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 14px; margin-bottom: 6px; border-radius: 8px;
+            background: rgba(255,255,255,0.03); transition: background 0.2s;
+            text-decoration: none; color: #fff;
+        }
+        .pdf-item:hover { background: rgba(0,210,255,0.08); }
+        .pdf-icon { font-size: 1.4em; flex-shrink: 0; }
+        .pdf-info { flex: 1; min-width: 0; }
+        .pdf-name {
+            font-size: 0.95em; white-space: nowrap;
+            overflow: hidden; text-overflow: ellipsis;
+        }
+        .pdf-size { color: #888; font-size: 0.8em; margin-top: 2px; }
+        .pdf-download {
+            background: rgba(0,210,255,0.15); color: #00d2ff;
+            padding: 6px 14px; border-radius: 6px; font-size: 0.85em;
+            flex-shrink: 0; transition: background 0.2s;
+        }
+        .pdf-item:hover .pdf-download { background: rgba(0,210,255,0.25); }
+        .no-samples { padding: 20px; text-align: center; color: #666; }
+        /* 产品型号列表 */
+        .model-list { padding: 12px 20px; }
+        .model-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 8px 14px; margin-bottom: 4px; border-radius: 8px;
+            background: rgba(255,255,255,0.02);
+        }
+        .model-text { font-size: 0.9em; flex: 1; }
+        .model-price { color: #ff6b6b; font-size: 0.85em; font-weight: 600; }
+        .model-price.na { color: #555; font-weight: normal; }
         .footer {
             text-align: center; padding: 40px 0 20px; color: #555; font-size: 0.85em;
         }
         .footer a { color: #3a7bd5; text-decoration: none; }
         .footer a:hover { text-decoration: underline; }
+        .log {
+            margin: 10px auto; max-width: 600px; padding: 8px 14px;
+            background: rgba(0,0,0,0.3); border-radius: 6px;
+            font-family: monospace; font-size: 0.7em; color: #0f0;
+            max-height: 80px; overflow-y: auto; display: none;
+        }
     </style>
 </head>
 <body>
     <div class="splash-screen" id="splash">
-        <div class="splash-title">电气资料检索</div>
+        <div class="splash-title">电气图书馆</div>
         <div class="splash-subtitle">Electrical Selection Data Retrieval System</div>
         <div class="splash-author">作者：TENGEN-LUSANJIANG</div>
     </div>
@@ -138,6 +177,8 @@
             <button class="search-btn" id="searchBtn" onclick="handleSearch()">检索</button>
         </div>
 
+        <div class="log" id="log"></div>
+
         <div class="stats-bar" id="statsBar" style="display:none;">
             <div class="stat">
                 <div class="stat-num" id="statSeries">0</div>
@@ -147,13 +188,17 @@
                 <div class="stat-num" id="statProducts">0</div>
                 <div class="stat-label">产品型号</div>
             </div>
+            <div class="stat">
+                <div class="stat-num" id="statPDFs">0</div>
+                <div class="stat-label">PDF样本</div>
+            </div>
         </div>
 
         <div id="results">
             <div class="hint-message">
                 <div class="hint-icon">🔍</div>
                 <p>输入型号开始检索电气资料</p>
-                <p style="margin-top:10px; font-size:0.9em;">支持正泰·德力西·常熟·施耐德·ABB·西门子·环宇·北元·上海人民·良信·北京人民</p>
+                <p style="margin-top:10px; font-size:0.9em;">支持产品样本、CAD图块、3D模型、认证证书等</p>
             </div>
         </div>
 
@@ -174,10 +219,21 @@
         const resultsDiv = document.getElementById('results');
         const statsBar = document.getElementById('statsBar');
         const searchBtn = document.getElementById('searchBtn');
+        const logDiv = document.getElementById('log');
+        const OSS_BASE = 'https://datafiles.oss-cn-shanghai.aliyuncs.com/dx2_data/proddata/sp/';
 
-        const PAGE_SIZE = 30;
-        let allProducts = [];
-        let currentPage = 1;
+        // CORS代理列表（按优先级）
+        const CORS_PROXIES = [
+            url => url,  // 先尝试直接访问
+            url => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url),
+            url => 'https://corsproxy.io/?' + encodeURIComponent(url),
+        ];
+
+        function log(msg) {
+            logDiv.style.display = 'block';
+            logDiv.innerHTML += '[' + new Date().toLocaleTimeString() + '] ' + msg + '<br>';
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
 
         // JSONP 调用工具
         function jsonpCall(url) {
@@ -208,21 +264,52 @@
             return (s || '').replace(/<[^>]+>/g, '').replace(/<\/?\w+/g, '').trim();
         }
 
-        // 搜索产品（sprice API）- 多页
-        async function searchProducts(keyword, maxPages = 5) {
-            let allRecords = [];
-            for (let page = 1; page <= maxPages; page++) {
-                const ts = Date.now();
-                const raw = await jsonpCall(
-                    `https://dian.dq123.com/open/sprice?v=${ts}&fid=&sid=&kw=${encodeURIComponent(keyword)}&pi=${page}`
-                );
-                const data = decodeDQ123(raw);
-                const records = data.data || [];
-                if (records.length === 0) break;
-                allRecords = allRecords.concat(records);
-                if (records.length < 20) break; // 最后一页
+        // 搜索产品（sprice API）
+        async function searchProducts(keyword) {
+            const ts = Date.now();
+            const raw = await jsonpCall(
+                `https://dian.dq123.com/open/sprice?v=${ts}&fid=&sid=&kw=${encodeURIComponent(keyword)}&pi=1`
+            );
+            return decodeDQ123(raw);
+        }
+
+        // 获取系列样本数据（通过CORS代理）
+        async function getSeriesSamples(seriesId) {
+            const path = `4/z_p/${seriesId}.jss`;
+            const b64 = btoa(path).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+            const ts = Date.now();
+            const directUrl = `https://dian.dq123.com/electricData?v=${b64}&t=${ts}`;
+
+            // 尝试多个代理
+            for (const makeUrl of CORS_PROXIES) {
+                try {
+                    const url = makeUrl(directUrl);
+                    const resp = await fetch(url);
+                    if (!resp.ok) continue;
+
+                    const buffer = await resp.arrayBuffer();
+                    const zip = await JSZip.loadAsync(buffer);
+                    const jsFile = Object.keys(zip.files).find(n => n.endsWith('.js'));
+                    if (!jsFile) continue;
+
+                    const content = await zip.files[jsFile].async('string');
+                    const data = JSON.parse(content);
+                    return data.g || [];  // g = SampleList
+                } catch (e) {
+                    log(`代理失败: ${e.message}`);
+                    continue;
+                }
             }
-            return allRecords;
+            return [];
+        }
+
+        // 判断厂家徽章
+        function getFactoryBadge(name) {
+            if (!name) return '';
+            if (name.includes('天正')) return '<span class="series-badge badge-tengen">天正</span>';
+            if (name.includes('施耐德')) return '<span class="series-badge badge-schneider">施耐德</span>';
+            if (name.includes('ABB')) return '<span class="series-badge badge-abb">ABB</span>';
+            return '<span class="series-badge badge-other">' + esc(name) + '</span>';
         }
 
         // 主搜索流程
@@ -231,20 +318,26 @@
             if (!keyword) return;
 
             searchBtn.disabled = true;
+            logDiv.innerHTML = '';
+            logDiv.style.display = 'none';
             resultsDiv.innerHTML = `
                 <div class="loading-spinner">
                     <div class="spinner"></div>
                     <p>正在检索: ${keyword}</p>
-                    <p style="margin-top:8px; font-size:0.85em; color:#666;">搜索产品型号...</p>
+                    <p style="margin-top:8px; font-size:0.85em; color:#666;">搜索产品系列并加载样本数据...</p>
                 </div>
             `;
             statsBar.style.display = 'none';
 
             try {
-                // 搜索产品
-                const records = await searchProducts(keyword);
+                // 1. 搜索产品
+                log('搜索: ' + keyword);
+                const searchResult = await searchProducts(keyword);
+                const products = searchResult.data || [];
+                const remark = searchResult.remark || {};
+                log('找到: ' + products.length + ' 条产品');
 
-                if (records.length === 0) {
+                if (products.length === 0) {
                     resultsDiv.innerHTML = `
                         <div class="hint-message">
                             <div class="hint-icon">😅</div>
@@ -256,54 +349,116 @@
                     return;
                 }
 
-                // 解析产品
-                const seriesSet = new Set();
-                allProducts = records.map(r => {
-                    const model = stripHtml(r.model || '');
-                    const series = r.className || '';
-                    const sid = r.F_ProductLineID || 0;
-                    if (series) seriesSet.add(series);
-                    return {
-                        model: model,
-                        price: r.price || null,
-                        series: series,
-                        type: r.type || '',
-                        sid: sid,
-                        factoryId: r.F_ManufactoryID || 0
-                    };
-                }).filter(p => p.model);
-
-                // 去重
-                const seen = new Set();
-                allProducts = allProducts.filter(p => {
-                    const key = p.model + '|' + p.series;
-                    if (seen.has(key)) return false;
-                    seen.add(key);
-                    return true;
+                // 2. 提取系列信息
+                const seriesMap = {};
+                const factoryMap = {};
+                products.forEach(p => {
+                    const sid = p.F_ProductLineID;
+                    const fid = p.F_ManufactoryID;
+                    if (sid && !seriesMap[sid]) {
+                        const seriesInfo = (remark.F_ProductLineID || []).find(s => s.Key == sid);
+                        seriesMap[sid] = {
+                            id: sid,
+                            fid: fid,
+                            name: seriesInfo ? seriesInfo.Name : `系列 #${sid}`,
+                            count: seriesInfo ? seriesInfo.Value : 0,
+                            products: []
+                        };
+                    }
+                    if (sid) seriesMap[sid].products.push(p);
                 });
 
-                // 按匹配度排序
-                const qNorm = keyword.toUpperCase().replace(/\s/g, '');
-                allProducts.sort((a, b) => {
-                    const am = a.model.toUpperCase().replace(/\s/g, '');
-                    const bm = b.model.toUpperCase().replace(/\s/g, '');
-                    const aExact = am === qNorm ? 0 : 1;
-                    const bExact = bm === qNorm ? 0 : 1;
-                    if (aExact !== bExact) return aExact - bExact;
-                    const aStarts = am.startsWith(qNorm) ? 0 : 1;
-                    const bStarts = bm.startsWith(qNorm) ? 0 : 1;
-                    if (aStarts !== bStarts) return aStarts - bStarts;
-                    return am.length - bm.length;
+                // 获取厂家名映射
+                const factoryIds = [...new Set(Object.values(seriesMap).map(s => s.fid))];
+                log('厂家ID: ' + factoryIds.join(', '));
+
+                // 通过remark获取厂家名
+                const factoryRemark = remark.F_ManufactoryID || [];
+                factoryIds.forEach(fid => {
+                    const info = factoryRemark.find(f => f.Key == fid);
+                    factoryMap[fid] = info ? info.Name : `厂家 #${fid}`;
                 });
 
-                // 更新统计
-                document.getElementById('statSeries').textContent = seriesSet.size;
-                document.getElementById('statProducts').textContent = allProducts.length;
+                const seriesList = Object.values(seriesMap).sort((a, b) => b.count - a.count);
+                log('系列数: ' + seriesList.length);
+
+                // 3. 更新统计
+                document.getElementById('statSeries').textContent = seriesList.length;
+                document.getElementById('statProducts').textContent = products.length;
                 statsBar.style.display = 'flex';
 
-                // 渲染
-                currentPage = 1;
-                renderPage();
+                // 4. 显示系列列表
+                resultsDiv.innerHTML = seriesList.map(s => `
+                    <div class="series-card" id="series-${s.id}">
+                        <div class="series-header" onclick="toggleSeries(${s.id})">
+                            <div class="series-name">
+                                ${getFactoryBadge(factoryMap[s.fid] || '')}
+                                <span>${esc(s.name)}</span>
+                                <span class="series-count">${s.count} 产品</span>
+                            </div>
+                            <span class="expand-icon" id="expand-${s.id}">▼</span>
+                        </div>
+                        <div class="series-body" id="body-${s.id}">
+                            <div class="pdf-list" id="pdfs-${s.id}">
+                                <div class="loading-spinner" style="padding:20px 0;">
+                                    <div class="spinner" style="width:24px;height:24px;"></div>
+                                    <p style="font-size:0.85em;">加载样本数据...</p>
+                                </div>
+                            </div>
+                            <div class="model-list" id="models-${s.id}"></div>
+                        </div>
+                    </div>
+                `).join('');
+
+                // 5. 显示每个系列的产品型号
+                seriesList.forEach(s => {
+                    const modelDiv = document.getElementById(`models-${s.id}`);
+                    if (!modelDiv) return;
+                    const modelHtml = s.products.slice(0, 20).map(p => {
+                        const model = stripHtml(p.model || '');
+                        const price = p.price ? `<span class="model-price">¥${p.price}</span>` : '<span class="model-price na">暂无报价</span>';
+                        return `<div class="model-item"><span class="model-text">${esc(model)}</span>${price}</div>`;
+                    }).join('');
+                    modelDiv.innerHTML = modelHtml;
+                });
+
+                // 6. 异步加载每个系列的样本数据
+                let totalPDFs = 0;
+                const loadPromises = seriesList.map(async (s) => {
+                    try {
+                        log('加载系列 #' + s.id + ' 样本...');
+                        const samples = await getSeriesSamples(s.id);
+                        const pdfList = document.getElementById(`pdfs-${s.id}`);
+                        if (!pdfList) return;
+
+                        if (samples.length > 0) {
+                            totalPDFs += samples.length;
+                            document.getElementById('statPDFs').textContent = totalPDFs;
+                            pdfList.innerHTML = samples.map(samp => `
+                                <a class="pdf-item" href="${OSS_BASE}${samp.bk}/${samp.bl}" target="_blank" rel="noopener">
+                                    <span class="pdf-icon">📄</span>
+                                    <div class="pdf-info">
+                                        <div class="pdf-name">${esc(samp.bl)}</div>
+                                        <div class="pdf-size">${(samp.bm).toFixed(1)} MB</div>
+                                    </div>
+                                    <span class="pdf-download">下载</span>
+                                </a>
+                            `).join('');
+                            log('系列 #' + s.id + ': ' + samples.length + ' 个样本');
+                        } else {
+                            pdfList.innerHTML = '<div class="no-samples">暂无样本数据</div>';
+                        }
+                    } catch (e) {
+                        const pdfList = document.getElementById(`pdfs-${s.id}`);
+                        if (pdfList) pdfList.innerHTML = '<div class="no-samples">加载失败</div>';
+                        log('系列 #' + s.id + ' 加载失败: ' + e.message);
+                    }
+                });
+
+                // 更新 PDF 总数
+                setTimeout(() => {
+                    document.getElementById('statPDFs').textContent = totalPDFs;
+                }, 5000);
 
             } catch (error) {
                 console.error('搜索失败:', error);
@@ -319,51 +474,12 @@
             searchBtn.disabled = false;
         }
 
-        // 渲染当前页
-        function renderPage() {
-            const totalPages = Math.ceil(allProducts.length / PAGE_SIZE);
-            const start = (currentPage - 1) * PAGE_SIZE;
-            const end = Math.min(start + PAGE_SIZE, allProducts.length);
-            const pageProducts = allProducts.slice(start, end);
-
-            let h = '<div class="table-wrap"><table class="product-table">';
-            h += '<thead><tr><th>#</th><th>型号</th><th>系列</th><th>类型</th><th>参考价</th></tr></thead><tbody>';
-
-            pageProducts.forEach((p, i) => {
-                const priceStr = p.price ? `<span class="price">¥${p.price}</span>` : '<span class="price-na">暂无报价</span>';
-                const seriesStr = p.series ? `<span class="series-tag">${esc(p.series)}</span>` : '-';
-                const typeStr = p.type ? `<span class="type-tag">${esc(p.type)}</span>` : '-';
-                h += `<tr>
-                    <td style="color:#555">${start + i + 1}</td>
-                    <td class="model-text">${esc(p.model)}</td>
-                    <td>${seriesStr}</td>
-                    <td>${typeStr}</td>
-                    <td>${priceStr}</td>
-                </tr>`;
-            });
-
-            h += '</tbody></table></div>';
-
-            // 分页
-            if (totalPages > 1) {
-                h += '<div class="pagination">';
-                h += `<button class="page-btn" onclick="goPage(${currentPage - 1})" ${currentPage <= 1 ? 'disabled' : ''}>◀ 上一页</button>`;
-                h += `<span class="page-info">${currentPage} / ${totalPages} 页 · ${allProducts.length} 条</span>`;
-                h += `<button class="page-btn" onclick="goPage(${currentPage + 1})" ${currentPage >= totalPages ? 'disabled' : ''}>下一页 ▶</button>`;
-                h += '</div>';
-            } else {
-                h += `<div style="text-align:center;padding:16px;color:#666;font-size:0.85em;">共 ${allProducts.length} 条结果</div>`;
-            }
-
-            resultsDiv.innerHTML = h;
-        }
-
-        function goPage(page) {
-            const totalPages = Math.ceil(allProducts.length / PAGE_SIZE);
-            if (page < 1 || page > totalPages) return;
-            currentPage = page;
-            renderPage();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        // 展开/折叠系列
+        function toggleSeries(id) {
+            const body = document.getElementById(`body-${id}`);
+            const icon = document.getElementById(`expand-${id}`);
+            body.classList.toggle('expanded');
+            icon.classList.toggle('expanded');
         }
 
         function esc(s) {
