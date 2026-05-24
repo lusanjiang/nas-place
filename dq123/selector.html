@@ -287,7 +287,7 @@ function renderParams(product,zipData){
     if(samples.length>0){
         h+='<div class="pdf-section"><div style="color:#00d2ff;font-size:0.9em;margin-bottom:6px">📄 样本文档 ('+samples.length+'个)</div>';
         samples.forEach(function(s){
-            var url='http://datafiles.oss-cn-shanghai.aliyuncs.com/dx2_data/proddata/sp/'+s.bk+'/'+s.bl;
+            var url='https://datafiles.oss-cn-shanghai.aliyuncs.com/dx2_data/proddata/sp/'+s.bk+'/'+s.bl;
             h+='<a class="pdf-item" href="'+url+'" target="_blank">📄 '+s.bl+' ('+s.bm.toFixed(1)+'MB)</a>';
         });
         h+='</div>';
