@@ -6,8 +6,8 @@
 <title>SNEC PV+ 2026 浙江/福建/江西 电气元器件市场机会分析</title>
 <!-- 字体用系统自带 -->
 <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
-<script src="https://cdn.bootcdn.net/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdn.bootcdn.net/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<!-- GSAP removed, using native IntersectionObserver -->
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:#06081a;color:#e2e8f0;overflow-x:hidden}
@@ -58,7 +58,7 @@ tr:hover{background:rgba(255,255,255,0.03)}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px}
 @media(max-width:768px){.two-col{grid-template-columns:1fr}.customer-grid{grid-template-columns:1fr}#side-nav{display:none}.stat-num{font-size:1.8rem}}
 .footer{text-align:center;padding:60px 0;color:#64748b;font-size:0.8rem;border-top:1px solid rgba(255,255,255,0.04);margin-top:40px}
-.reveal{opacity:0;transform:translateY(40px)}
+.reveal{opacity:1;transform:translateY(0)}
 .tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
 .tab-btn{padding:8px 20px;border-radius:8px;background:rgba(255,255,255,0.06);color:#94a3b8;border:1px solid rgba(255,255,255,0.08);cursor:pointer;font-size:0.85rem;transition:all .3s}
 .tab-btn.active{background:rgba(34,211,238,0.15);color:#22d3ee;border-color:rgba(34,211,238,0.3)}
@@ -596,23 +596,39 @@ function showTab(btn, prov) {
   });
 }
 
-gsap.registerPlugin(ScrollTrigger);
-gsap.utils.toArray('.reveal').forEach(function(el){
-  gsap.fromTo(el,{opacity:0,y:40},{opacity:1,y:0,duration:0.8,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none none'}});
-});
-
+// 进度条
 window.addEventListener('scroll',function(){
   var h=document.documentElement;
   var pct=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
   document.getElementById('progress').style.width=pct+'%';
 });
 
+// 侧边导航
 var sections=['hero','stats','category','geo','target','customers','action'];
-sections.forEach(function(id,i){
-  ScrollTrigger.create({trigger:'#'+id,start:'top center',end:'bottom center',onEnter:function(){highlightNav(i)},onEnterBack:function(){highlightNav(i)}});
-});
 function highlightNav(i){document.querySelectorAll('#side-nav a').forEach(function(a,j){a.classList.toggle('active',j===i)})}
+sections.forEach(function(id,i){
+  var el=document.getElementById(id);
+  if(el){
+    var observer=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){if(e.isIntersecting)highlightNav(i)});
+    },{threshold:0.3});
+    observer.observe(el);
+  }
+});
 
+// 滚动渐入
+var revealObserver=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';revealObserver.unobserve(e.target)}
+  });
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(function(el){
+  el.style.transition='opacity 0.8s ease, transform 0.8s ease';
+  el.style.opacity='0';el.style.transform='translateY(40px)';
+  revealObserver.observe(el);
+});
+
+// 响应式
 window.addEventListener('resize',function(){[catChart,pavChart,provChart,regionChart,targetCatChart,demandChart].forEach(function(c){c.resize()})});
 </script>
 </body>
