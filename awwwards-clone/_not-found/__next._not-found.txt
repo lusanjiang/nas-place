@@ -1,5 +1,0 @@
-1:"$Sreact.fragment"
-2:I[44610,["/nas-place/awwwards-clone/_next/static/chunks/3q1hhzgqgggwc.js","/nas-place/awwwards-clone/_next/static/chunks/2tefp7rdz-h32.js"],"default"]
-3:I[16128,["/nas-place/awwwards-clone/_next/static/chunks/3q1hhzgqgggwc.js","/nas-place/awwwards-clone/_next/static/chunks/2tefp7rdz-h32.js"],"default"]
-4:[]
-0:{"rsc":["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]]}],"isPartial":false,"staleTime":300,"varyParams":"$W4","buildId":"rL89PvF5jm6LG8lxryw6_"}
