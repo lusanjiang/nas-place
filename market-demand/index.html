@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>市场需求调研表</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  min-height: 100vh;
+  padding: 20px;
+  color: #e0e0e0;
+}
+.container {
+  max-width: 1600px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 30px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+h1 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  background: linear-gradient(90deg, #64b5f6, #ce93d8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.subtitle {
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 20px;
+}
+.toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.btn {
+  padding: 8px 16px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.08);
+  color: #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+.btn:hover { background: rgba(255,255,255,0.15); border-color: rgba(100,181,246,0.5); }
+.btn-primary { background: rgba(100,181,246,0.2); border-color: rgba(100,181,246,0.4); }
+.btn-primary:hover { background: rgba(100,181,246,0.35); }
+.btn-danger { background: rgba(239,83,80,0.15); border-color: rgba(239,83,80,0.3); }
+.btn-danger:hover { background: rgba(239,83,80,0.3); }
+.table-wrap {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+thead th {
+  background: rgba(100,181,246,0.12);
+  color: #90caf9;
+  font-weight: 600;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,0.06);
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.group-header {
+  background: rgba(100,181,246,0.08);
+}
+.group-header th {
+  font-size: 12px;
+  color: #64b5f6;
+  letter-spacing: 1px;
+}
+tbody td {
+  padding: 8px 12px;
+  border: 1px solid rgba(255,255,255,0.04);
+  min-width: 80px;
+  transition: background 0.15s;
+}
+tbody tr:hover td { background: rgba(100,181,246,0.06); }
+tbody td:focus {
+  outline: 2px solid rgba(100,181,246,0.5);
+  outline-offset: -2px;
+  background: rgba(100,181,246,0.08);
+}
+td.col-seq { width: 50px; text-align: center; color: rgba(255,255,255,0.3); }
+td.col-date { width: 110px; }
+td.col-desc { min-width: 250px; }
+td.col-person { width: 80px; }
+td.col-phone { width: 110px; }
+td.col-area { width: 70px; }
+td.col-confirm { min-width: 200px; }
+td.col-dept { width: 100px; }
+td.col-opinion { min-width: 150px; }
+td.col-owner { width: 80px; }
+td.col-review { min-width: 150px; }
+td.col-result { width: 80px; }
+td.col-remark { min-width: 120px; }
+.btn-del-row {
+  background: rgba(239,83,80,0.1);
+  border: 1px solid rgba(239,83,80,0.2);
+  color: #ef5350;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 2px 8px;
+  font-size: 12px;
+}
+.btn-del-row:hover { background: rgba(239,83,80,0.25); }
+.status-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 500;
+}
+.status-processing { background: rgba(255,183,77,0.15); color: #ffb74d; }
+.status-done { background: rgba(102,187,106,0.15); color: #66bb6a; }
+.status-pending { background: rgba(100,181,246,0.15); color: #64b5f6; }
+.hint {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: rgba(255,183,77,0.06);
+  border: 1px solid rgba(255,183,77,0.15);
+  border-radius: 8px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.8;
+}
+.hint strong { color: #ffb74d; }
+@media (max-width: 768px) {
+  body { padding: 10px; }
+  .container { padding: 15px; }
+  h1 { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📋 市场需求调研表</h1>
+  <p class="subtitle">所有单元格均可直接点击编辑 · 数据自动保存到浏览器本地</p>
+
+  <div class="toolbar">
+    <button class="btn btn-primary" onclick="addRow()">＋ 添加行</button>
+    <button class="btn" onclick="exportCSV()">📥 导出CSV</button>
+    <button class="btn btn-danger" onclick="clearAll()">🗑 清空数据</button>
+  </div>
+
+  <div class="table-wrap">
+    <table id="mainTable">
+      <thead>
+        <tr class="group-header">
+          <th colspan="6">市场需求信息（销售及OPS填写）</th>
+          <th colspan="2">市场需求信息确认（中后台填写）</th>
+          <th colspan="6">市场需求跟踪闭环（责任部门填写）</th>
+          <th rowspan="2" style="vertical-align:middle; width:40px;">操作</th>
+        </tr>
+        <tr>
+          <th>序号</th>
+          <th>反馈时间</th>
+          <th>需求描述</th>
+          <th>反馈人</th>
+          <th>联系方式</th>
+          <th>片区</th>
+          <th>信息确认</th>
+          <th>信息确认人</th>
+          <th>所属部门</th>
+          <th>处理意见</th>
+          <th>责任人</th>
+          <th>进度回顾</th>
+          <th>跟踪结果</th>
+          <th>备注</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+      </tbody>
+    </table>
+  </div>
+
+  <div class="hint">
+    <strong>💡 使用说明：</strong><br>
+    • 点击任意单元格即可编辑内容<br>
+    • 描述请尽量具体清晰，减少后台与提出人的反复沟通<br>
+    • 产品质量/售后问题请提交EAP流程/TENGEN天正小程序，不在此处填写<br>
+    • 数据自动保存在浏览器本地（localStorage），刷新不丢失<br>
+    • 同一浏览器不同标签页共享数据
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'market_demand_data';
+const COLS = 14;
+
+function loadData() {
+  try {
+    const d = localStorage.getItem(STORAGE_KEY);
+    return d ? JSON.parse(d) : [];
+  } catch { return []; }
+}
+
+function saveData() {
+  const rows = [];
+  document.querySelectorAll('#tableBody tr').forEach(tr => {
+    const cells = [];
+    tr.querySelectorAll('td[contenteditable]').forEach(td => cells.push(td.textContent.trim()));
+    rows.push(cells);
+  });
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(rows));
+}
+
+function createRow(data, idx) {
+  const tr = document.createElement('tr');
+  const defaults = [idx+1, '', '', '', '', '', '', '', '', '', '', '', '', ''];
+  for (let i = 0; i < COLS; i++) {
+    const td = document.createElement('td');
+    td.contentEditable = true;
+    td.textContent = data ? (data[i] || '') : (defaults[i] || '');
+    td.className = ['col-seq','col-date','col-desc','col-person','col-phone','col-area','col-confirm','','col-dept','col-opinion','col-owner','col-review','col-result','col-remark'][i] || '';
+    td.addEventListener('input', saveData);
+    td.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); td.blur(); }
+    });
+    tr.appendChild(td);
+  }
+  // action col
+  const tdAct = document.createElement('td');
+  tdAct.innerHTML = '<button class="btn-del-row" onclick="this.closest(\'tr\').remove();renumber();saveData();">✕</button>';
+  tdAct.style.textAlign = 'center';
+  tr.appendChild(tdAct);
+  return tr;
+}
+
+function renderTable() {
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+  const data = loadData();
+  if (data.length === 0) {
+    // start with 5 empty rows
+    for (let i = 0; i < 5; i++) tbody.appendChild(createRow(null, i));
+  } else {
+    data.forEach((row, i) => tbody.appendChild(createRow(row, i)));
+  }
+}
+
+function addRow() {
+  const tbody = document.getElementById('tableBody');
+  const idx = tbody.querySelectorAll('tr').length;
+  tbody.appendChild(createRow(null, idx));
+  renumber();
+  saveData();
+  // scroll to bottom
+  document.querySelector('.table-wrap').scrollTop = document.querySelector('.table-wrap').scrollHeight;
+}
+
+function renumber() {
+  document.querySelectorAll('#tableBody tr').forEach((tr, i) => {
+    tr.querySelector('td').textContent = i + 1;
+  });
+}
+
+function clearAll() {
+  if (!confirm('确定清空所有数据？此操作不可撤销。')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  renderTable();
+}
+
+function exportCSV() {
+  const headers = ['序号','反馈时间','需求描述','反馈人','联系方式','片区','信息确认','信息确认人','所属部门','处理意见','责任人','进度回顾','跟踪结果','备注'];
+  let csv = '\uFEFF' + headers.join(',') + '\n';
+  document.querySelectorAll('#tableBody tr').forEach(tr => {
+    const cells = [];
+    tr.querySelectorAll('td[contenteditable]').forEach(td => {
+      let v = td.textContent.trim().replace(/"/g, '""');
+      cells.push('"' + v + '"');
+    });
+    csv += cells.join(',') + '\n';
+  });
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = '市场需求调研表_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+}
+
+renderTable();
+</script>
+</body>
+</html>
