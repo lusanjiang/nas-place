@@ -3,13 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>江西畜牧业（养猪）行业调研报告 | 2026年4月</title>
+<title>江西畜牧业调研报告 · 精选汇编</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <script>
 tailwind.config = {
   theme: {
@@ -21,7 +19,7 @@ tailwind.config = {
       },
       fontFamily: {
         serif: ['"Noto Serif SC"', 'serif'],
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Inter', '"Noto Sans SC"', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'monospace']
       }
     }
@@ -29,6 +27,9 @@ tailwind.config = {
 }
 </script>
 <style>
+
+/* === 江西畜牧业 Styles === */
+
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { background: #060e24; }
@@ -206,6 +207,12 @@ footer { position: relative; z-index: 1; }
 /* Animate-in helper */
 .anim-in { opacity: 0; transform: translateY(40px); }
 
+/* Hero overlay animation */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* TOC sidebar */
 #toc {
   position: fixed; right: 1.5rem; top: 50%; transform: translateY(-50%);
@@ -222,126 +229,682 @@ footer { position: relative; z-index: 1; }
 /* Responsive chart height */
 .chart-h { height: 420px; }
 @media(max-width:768px) { .chart-h { height: 320px; } }
+
+
+/* === 展会数据分析 Styles === */
+
+:root {
+  --bg-deep: #0a0e1a;
+  --bg-card: rgba(15, 22, 42, 0.85);
+  --accent-cyan: #00e5ff;
+  --accent-pink: #ff2d75;
+  --accent-gold: #ffd600;
+  --accent-green: #39ff14;
+  --text-primary: #e8eaf6;
+  --text-secondary: #90a4ae;
+  --glow-cyan: 0 0 20px rgba(0,229,255,0.3);
+  --glow-pink: 0 0 20px rgba(255,45,117,0.3);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+.font-mono { font-family: 'JetBrains Mono', monospace; }
+#progress-bar {
+  position: fixed; top:0; left:0; height:3px; z-index:9999;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-pink));
+  transform-origin: left; transform: scaleX(0);
+}
+body::before {
+  content:''; position:fixed; top:0;left:0;width:100%;height:100%;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:1;
+}
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.hero-section {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  position: relative;
+  background: radial-gradient(ellipse at 50% 30%, rgba(0,229,255,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 70%, rgba(255,45,117,0.05) 0%, transparent 50%);
+}
+.hero-title {
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  font-weight: 900; line-height: 1.15;
+  background: linear-gradient(135deg, #e8eaf6 30%, var(--accent-cyan) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hero-sub { font-size: clamp(1rem, 2vw, 1.3rem); color: var(--text-secondary); margin-top: 1.5rem; }
+.hero-stats { display: flex; gap: 2rem; margin-top: 3rem; flex-wrap: wrap; justify-content: center; }
+.hero-stat {
+  text-align: center; padding: 1.2rem 2rem;
+  border: 1px solid rgba(0,229,255,0.15); border-radius: 12px;
+  background: var(--bg-card); backdrop-filter: blur(10px); min-width: 140px; transition: all 0.3s;
+}
+.hero-stat:hover { border-color: var(--accent-cyan); box-shadow: var(--glow-cyan); }
+.hero-stat .num { font-size: 2.2rem; font-weight: 900; color: var(--accent-cyan); }
+.hero-stat .label { font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.3rem; }
+.scroll-hint { position: absolute; bottom: 2rem; animation: bounce 2s infinite; }
+@keyframes bounce {
+  0%,100% { transform: translateY(0); opacity:0.5; }
+  50% { transform: translateY(10px); opacity:1; }
+}
+.report-section { max-width: 1200px; margin: 0 auto; padding: 4rem 1.5rem; position: relative; }
+.section-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+  color: var(--accent-pink); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.5rem;
+}
+.section-title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700;
+  background: linear-gradient(90deg, var(--text-primary), var(--accent-cyan));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.section-desc { color: var(--text-secondary); margin-top: 0.5rem; font-size: 0.95rem; }
+.chart-card {
+  background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem;
+  backdrop-filter: blur(8px); transition: border-color 0.3s;
+}
+.chart-card:hover { border-color: rgba(0,229,255,0.2); }
+.chart-card-title {
+  font-size: 1rem; font-weight: 500; color: var(--text-secondary);
+  margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;
+}
+.chart-card-title .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-cyan); box-shadow: 0 0 8px var(--accent-cyan); }
+.insight-box {
+  background: linear-gradient(135deg, rgba(0,229,255,0.08), rgba(255,45,117,0.05));
+  border-left: 3px solid var(--accent-cyan); border-radius: 0 12px 12px 0;
+  padding: 1.2rem 1.5rem; margin: 1.5rem 0; font-size: 0.9rem;
+  color: var(--text-secondary); line-height: 1.7;
+}
+.insight-box strong { color: var(--accent-cyan); font-weight: 500; }
+.section-divider { width:100%; height:1px; background: linear-gradient(90deg, transparent, rgba(0,229,255,0.2), transparent); margin: 2rem 0; }
+.data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.data-table th {
+  padding: 0.75rem 1rem; text-align: left; color: var(--accent-cyan); font-weight: 500;
+  border-bottom: 1px solid rgba(0,229,255,0.15);
+  font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.05em;
+}
+.data-table td { padding: 0.6rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.04); color: var(--text-secondary); }
+.data-table tr:hover td { background: rgba(0,229,255,0.03); }
+.data-table .rank { color: var(--accent-gold); font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+.data-table .val { color: var(--text-primary); font-weight: 500; }
+.bar-inline { height: 6px; border-radius: 3px; background: linear-gradient(90deg, var(--accent-cyan), var(--accent-pink)); transition: width 1s ease; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; }
+@media (max-width: 768px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .hero-stats { gap: 1rem; }
+  .hero-stat { min-width: 120px; padding: 0.8rem 1.2rem; }
+}
+.anim-item { opacity: 0; transform: translateY(40px); }
+.report-footer {
+  text-align: center; padding: 3rem 1.5rem; color: var(--text-secondary);
+  font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05);
+}
+/* === NEW: Tengen Opportunity Styles === */
+.tz-banner {
+  background: linear-gradient(135deg, rgba(0,229,255,0.12) 0%, rgba(255,45,117,0.08) 50%, rgba(255,214,0,0.06) 100%);
+  border: 1px solid rgba(0,229,255,0.25); border-radius: 16px;
+  padding: 2.5rem 2rem; margin-bottom: 2.5rem; position: relative; overflow: hidden;
+}
+.tz-banner::before {
+  content:''; position:absolute; top:-50%; right:-20%; width:300px; height:300px;
+  background: radial-gradient(circle, rgba(0,229,255,0.08), transparent 70%);
+  pointer-events: none;
+}
+.tz-banner-title { font-size: 1.6rem; font-weight: 700; color: var(--accent-cyan); margin-bottom: 0.5rem; }
+.tz-banner-sub { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7; }
+.province-card {
+  background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px; padding: 1.8rem; margin-bottom: 1.5rem;
+  backdrop-filter: blur(8px); transition: border-color 0.3s, transform 0.2s;
+}
+.province-card:hover { border-color: rgba(0,229,255,0.25); transform: translateY(-2px); }
+.province-card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 1.2rem; flex-wrap: wrap; gap: 0.8rem;
+}
+.province-name { font-size: 1.3rem; font-weight: 700; color: var(--text-primary); }
+.province-badge {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+  padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 700;
+}
+.badge-s { background: rgba(0,229,255,0.15); color: var(--accent-cyan); border: 1px solid rgba(0,229,255,0.3); }
+.badge-a { background: rgba(255,45,117,0.15); color: var(--accent-pink); border: 1px solid rgba(255,45,117,0.3); }
+.badge-b { background: rgba(255,214,0,0.15); color: var(--accent-gold); border: 1px solid rgba(255,214,0,0.3); }
+.badge-c { background: rgba(57,255,20,0.15); color: var(--accent-green); border: 1px solid rgba(57,255,20,0.3); }
+.company-list { list-style: none; padding: 0; }
+.company-item {
+  display: flex; align-items: center; gap: 0.8rem; padding: 0.65rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.85rem;
+  transition: background 0.2s;
+}
+.company-item:hover { background: rgba(0,229,255,0.03); border-radius: 6px; padding-left: 0.5rem; }
+.company-item:last-child { border-bottom: none; }
+.company-rank {
+  min-width: 26px; height: 26px; display: flex; align-items: center; justify-content: center;
+  border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 700;
+}
+.rank-top { background: rgba(255,214,0,0.2); color: var(--accent-gold); }
+.rank-mid { background: rgba(0,229,255,0.15); color: var(--accent-cyan); }
+.rank-low { background: rgba(255,255,255,0.06); color: var(--text-secondary); }
+.company-name-cell { flex: 1; color: var(--text-primary); font-weight: 400; }
+.company-tag {
+  font-size: 0.65rem; padding: 0.15rem 0.45rem; border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.tag-scale-large { background: rgba(255,214,0,0.12); color: var(--accent-gold); }
+.tag-scale-mid { background: rgba(0,229,255,0.1); color: var(--accent-cyan); }
+.tag-zone { background: rgba(255,255,255,0.06); color: var(--text-secondary); }
+.opp-meter {
+  width: 60px; height: 6px; background: rgba(255,255,255,0.06);
+  border-radius: 3px; overflow: hidden; flex-shrink: 0;
+}
+.opp-meter-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease; }
+.opp-high { background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green)); }
+.opp-mid { background: linear-gradient(90deg, var(--accent-cyan), var(--accent-gold)); }
+.opp-low { background: linear-gradient(90deg, rgba(144,164,174,0.3), rgba(144,164,174,0.6)); }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.5rem 0; }
+@media (max-width: 768px) { .summary-grid { grid-template-columns: repeat(2, 1fr); } }
+.summary-card {
+  background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px; padding: 1.2rem; text-align: center; transition: all 0.3s;
+}
+.summary-card:hover { border-color: rgba(0,229,255,0.2); box-shadow: var(--glow-cyan); }
+.summary-num { font-size: 2rem; font-weight: 900; font-family: 'JetBrains Mono', monospace; }
+.summary-label { font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.3rem; }
+.filter-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.filter-tab {
+  padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.8rem; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.1); color: var(--text-secondary);
+  background: transparent; transition: all 0.3s; font-family: 'Noto Sans SC', sans-serif;
+}
+.filter-tab:hover, .filter-tab.active {
+  border-color: var(--accent-cyan); color: var(--accent-cyan);
+  background: rgba(0,229,255,0.08);
+}
+.province-stats { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.province-stat-item {
+  font-size: 0.78rem; color: var(--text-secondary);
+  display: flex; align-items: center; gap: 0.3rem;
+}
+.province-stat-item .dot-sm { width: 6px; height: 6px; border-radius: 50%; }
+.top-targets-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+@media (max-width: 768px) { .top-targets-grid { grid-template-columns: 1fr; } }
+.target-card {
+  background: linear-gradient(135deg, rgba(0,229,255,0.06), rgba(255,45,117,0.04));
+  border: 1px solid rgba(0,229,255,0.15); border-radius: 12px; padding: 1.2rem;
+  transition: all 0.3s;
+}
+.target-card:hover { border-color: rgba(0,229,255,0.35); box-shadow: var(--glow-cyan); transform: translateY(-2px); }
+.target-card-name { font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem; }
+.target-card-info { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.6; }
+.target-card-info span { color: var(--accent-cyan); font-weight: 500; }
+
+
+/* === Override === */
+body { background: #060e24; }
+.section-divider { width:100%; height:1px; background: linear-gradient(90deg, transparent, rgba(249,115,22,0.2), transparent); margin: 2rem 0; }
+
+/* === Cover Page Styles === */
+#cover {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  z-index: 10000; user-select: none; cursor: pointer;
+  transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+}
+#cover.dismissed { opacity: 0; transform: scale(1.03); pointer-events: none; }
+#cover::before {
+  content: ''; position: absolute; top: -40%; left: -20%; width: 80vw; height: 80vw;
+  background: radial-gradient(circle, rgba(56,189,248,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+#cover::after {
+  content: ''; position: absolute; bottom: -30%; right: -10%; width: 60vw; height: 60vw;
+  background: radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cover-step-indicator {
+  position: absolute; top: 28px; right: 36px;
+  font-size: 13px; color: rgba(148,163,184,0.6);
+  letter-spacing: 1px; z-index: 10;
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+}
+.cover-hint {
+  position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+  font-size: 14px; color: rgba(148,163,184,0.7);
+  letter-spacing: 2px;
+  animation: cover-pulse 2s ease-in-out infinite;
+  transition: opacity 0.4s; z-index: 10;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+.cover-hint.hidden { opacity: 0; pointer-events: none; }
+@keyframes cover-pulse { 0%,100%{ opacity:.5 } 50%{ opacity:1 } }
+.cover-container {
+  width: 90%; max-width: 1100px;
+  display: flex; flex-direction: column; align-items: center; gap: 40px;
+  position: relative; z-index: 1;
+}
+.cover-step1, .cover-step2, .cover-step3 {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(.4,0,.2,1), transform 0.8s cubic-bezier(.4,0,.2,1);
+}
+.cover-step1.visible, .cover-step2.visible, .cover-step3.visible {
+  opacity: 1; transform: translateY(0);
+}
+.cover-step1 { text-align: center; }
+.cover-step1 h1 {
+  font-size: clamp(32px, 5vw, 56px); font-weight: 700;
+  background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; line-height: 1.3;
+  font-family: 'Noto Serif SC', serif;
+}
+.cover-step2 {
+  display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;
+  transition-delay: 0.1s;
+}
+.cover-q-tag {
+  padding: 12px 32px; border-radius: 100px;
+  font-size: clamp(15px, 2vw, 19px); font-weight: 500;
+  letter-spacing: 2px;
+  border: 1px solid rgba(148,163,184,0.2);
+  background: rgba(30,41,59,0.6);
+  backdrop-filter: blur(8px);
+  color: #93c5fd;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+.cover-step3 {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px; width: 100%; transition-delay: 0.1s;
+}
+.cover-col-card {
+  background: rgba(30,41,59,0.55);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(148,163,184,0.12);
+  border-radius: 18px; padding: 28px 20px 32px;
+  display: flex; flex-direction: column; align-items: center;
+  position: relative; overflow: hidden;
+}
+.cover-col-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  border-radius: 18px 18px 0 0;
+}
+.cover-col-card:nth-child(1)::before { background: linear-gradient(90deg, #38bdf8, #22d3ee); }
+.cover-col-card:nth-child(2)::before { background: linear-gradient(90deg, #818cf8, #a78bfa); }
+.cover-col-card:nth-child(3)::before { background: linear-gradient(90deg, #f472b6, #fb923c); }
+.cover-col-header {
+  font-size: clamp(14px, 1.6vw, 17px); font-weight: 600;
+  letter-spacing: 3px; margin-bottom: 20px; padding-bottom: 14px;
+  border-bottom: 1px solid rgba(148,163,184,0.15);
+  width: 100%; text-align: center;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+.cover-col-card:nth-child(1) .cover-col-header { color: #38bdf8; }
+.cover-col-card:nth-child(2) .cover-col-header { color: #a78bfa; }
+.cover-col-card:nth-child(3) .cover-col-header { color: #f472b6; }
+.cover-col-item {
+  width: 100%; padding: 13px 0; text-align: center;
+  font-size: clamp(16px, 2vw, 22px); font-weight: 400;
+  color: #cbd5e1; font-family: 'Noto Sans SC', sans-serif;
+}
+.cover-col-item + .cover-col-item { border-top: 1px solid rgba(148,163,184,0.08); }
+.cover-dots { color: rgba(148,163,184,0.35); font-size: 24px; letter-spacing: 6px; padding-top: 6px; }
+body.cover-active { overflow: hidden; }
+@media (max-width: 700px) {
+  .cover-step3 { grid-template-columns: 1fr; gap: 16px; }
+  .cover-container { gap: 28px; }
+  .cover-q-tag { padding: 10px 22px; }
+}
+
+/* === Slide Navigation (PPT Mode) === */
+html, body { height: 100%; overflow: hidden; margin: 0; }
+#slide-wrapper {
+  position: relative; width: 100%; height: 100vh; overflow: hidden;
+}
+#slide-wrapper > section {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100vh;
+  overflow-y: auto; overflow-x: hidden;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity 0.45s ease, visibility 0.45s ease;
+  scrollbar-width: none; -ms-overflow-style: none;
+}
+#slide-wrapper > section::-webkit-scrollbar { width: 0; display: none; }
+#slide-wrapper > section.slide-active {
+  opacity: 1; visibility: visible; pointer-events: auto; z-index: 1;
+}
+#slide-wrapper > .section-divider { display: none; }
+#slide-wrapper > div { display: none !important; }
+/* Slide animations */
+#slide-wrapper > section.slide-active .anim-in,
+#slide-wrapper > section.slide-active .anim-item {
+  opacity: 1 !important; transform: translateY(0) !important;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+/* Fallback: ensure slide content is always visible when active */
+#slide-wrapper > section.slide-active * {
+  visibility: visible;
+}
+.slide-indicator {
+  position: fixed; bottom: 28px; right: 36px;
+  font-size: 13px; color: rgba(188,204,220,0.5);
+  letter-spacing: 2px; z-index: 9998;
+  font-family: 'JetBrains Mono', monospace;
+  opacity: 0; transition: opacity 0.6s;
+  pointer-events: none;
+  background: rgba(6,14,36,0.6);
+  backdrop-filter: blur(6px);
+  padding: 6px 14px; border-radius: 20px;
+  border: 1px solid rgba(148,163,184,0.1);
+}
+.slide-indicator.active { opacity: 1; }
+
+/* ============================================================
+   === Unified PPT Optimization Layer (v2)  ===
+   ============================================================ */
+
+:root {
+  --accent-cyan: #fb923c;
+  --accent-pink: #f97316;
+  --accent-gold: #facc15;
+  --accent-green: #22c55e;
+  --bg-deep: #060e24;
+  --bg-card: rgba(15, 22, 42, 0.85);
+  --text-primary: #f0f4f8;
+  --text-secondary: #9fb3c8;
+  --glow-cyan: 0 0 20px rgba(251,146,60,0.25);
+  --glow-pink: 0 0 20px rgba(249,115,22,0.25);
+}
+
+body { background: #060e24 !important; }
+body::before {
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 8%, rgba(59,97,159,0.14) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 60% at 85% 92%, rgba(249,115,22,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(59,97,159,0.04) 0%, transparent 70%) !important;
+}
+
+#slide-wrapper > section { padding: 2.4rem 2rem 2rem !important; }
+#slide-wrapper > section > div.max-w-6xl,
+#slide-wrapper > section.report-section { max-width: 1280px !important; margin: 0 auto !important; }
+
+.sec-label, .section-tag {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.7rem !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  color: #fb923c !important;
+  margin-bottom: 0.4rem !important;
+}
+.sec-title, .section-title {
+  font-family: 'Noto Serif SC', serif !important;
+  font-weight: 900 !important;
+  font-size: clamp(1.5rem, 2.6vw, 2.05rem) !important;
+  line-height: 1.25 !important;
+  margin-bottom: 0.5rem !important;
+  background: linear-gradient(95deg, #f0f4f8 20%, #fb923c 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+.sec-title span, .section-title span {
+  background: linear-gradient(95deg, #fb923c, #facc15) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+.sec-desc, .section-desc {
+  color: #9fb3c8 !important;
+  font-size: 0.92rem !important;
+  line-height: 1.6 !important;
+  margin-bottom: 1rem !important;
+  max-width: 56rem !important;
+}
+
+.stat-card { padding: 0.95rem 1rem !important; border-radius: 0.75rem !important; }
+.stat-card .stat-num { font-size: 1.6rem !important; }
+.stat-card .stat-label { font-size: 0.78rem !important; margin-top: 0.2rem !important; }
+
+.glass-card { padding: 1rem 1.1rem !important; border-radius: 0.85rem !important; }
+.chart-wrap { padding: 0.75rem 0.9rem !important; border-radius: 0.85rem !important; }
+.chart-h { height: 260px !important; }
+
+/* slide-section internal vertical spacing compaction */
+#slide-wrapper .mb-10 { margin-bottom: 0.85rem !important; }
+#slide-wrapper .mb-8 { margin-bottom: 0.7rem !important; }
+#slide-wrapper .mb-6 { margin-bottom: 0.55rem !important; }
+#slide-wrapper .mt-8 { margin-top: 0.7rem !important; }
+#slide-wrapper .mt-6 { margin-top: 0.55rem !important; }
+#slide-wrapper .gap-6 { gap: 0.65rem !important; }
+#slide-wrapper .gap-4 { gap: 0.5rem !important; }
+#slide-wrapper .py-2 { padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; }
+
+/* default chart heights inside slides */
+#slide-wrapper [id^="chart-"] { max-height: 280px !important; }
+#chart-top10 { height: 320px !important; max-height: 320px !important; }
+#chart-tz-scatter { height: 320px !important; max-height: 320px !important; }
+#chart-compete { height: 420px !important; max-height: 420px !important; }
+
+/* image inside sec-power compaction */
+#sec-power img { max-height: 220px !important; width: auto !important; margin: 0 auto !important; display: block !important; }
+#sec-power .grid > div > img { max-height: 220px !important; }
+
+.glass-card table.min-w-full { table-layout: fixed; width: 100%; }
+table.min-w-full thead th {
+  padding: 0.38rem 0.45rem !important;
+  font-size: 0.7rem !important;
+  background: rgba(10, 26, 63, 0.85) !important;
+  color: #fb923c !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  letter-spacing: 0.04em !important;
+  position: sticky; top: 0; z-index: 2;
+}
+table.min-w-full tbody td {
+  padding: 0.28rem 0.45rem !important;
+  font-size: 0.68rem !important;
+  line-height: 1.3 !important;
+  color: #cbd5e1 !important;
+}
+table.min-w-full tbody tr { transition: background 0.2s; }
+table.min-w-full tbody tr:hover { background: rgba(251,146,60,0.06) !important; }
+
+.bom-split { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; align-items: start; }
+.bom-split .bom-half { background: rgba(6,14,36,0.4); border: 1px solid rgba(98,125,152,0.12); border-radius: 0.6rem; overflow: hidden; }
+.bom-split table { width: 100% !important; border-collapse: collapse; }
+.bom-summary {
+  margin-top: 0.5rem;
+  background: linear-gradient(135deg, rgba(251,146,60,0.08), rgba(16,42,67,0.55));
+  border: 1px solid rgba(251,146,60,0.25); border-radius: 0.6rem;
+  padding: 0.7rem 1rem;
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.6rem; align-items: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.74rem;
+}
+.bom-summary .item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2px; }
+.bom-summary .item .lbl { color: #9fb3c8; font-size: 0.65rem; }
+.bom-summary .item .val { color: #fdba74; font-weight: 700; font-size: 0.88rem; }
+.bom-summary .item.total .val { color: #facc15; font-size: 1rem; }
+
+.pain-table th { padding: 0.55rem 0.75rem !important; }
+.pain-table td { padding: 0.55rem 0.75rem !important; font-size: 0.82rem !important; }
+
+.top-targets-grid {
+  grid-template-columns: repeat(5, 1fr) !important;
+  gap: 0.7rem !important;
+}
+@media (max-width: 1100px) { .top-targets-grid { grid-template-columns: repeat(2, 1fr) !important; } }
+.target-card {
+  padding: 0.9rem !important;
+  background: linear-gradient(140deg, rgba(16,42,67,0.7), rgba(6,14,36,0.85)) !important;
+  border: 1px solid rgba(98,125,152,0.2) !important;
+  border-radius: 0.75rem !important;
+  transition: all 0.3s !important;
+  position: relative; overflow: hidden;
+}
+.target-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, #fb923c, transparent);
+}
+.target-card:hover {
+  border-color: rgba(251,146,60,0.55) !important;
+  box-shadow: 0 8px 28px rgba(251,146,60,0.18), inset 0 0 16px rgba(251,146,60,0.06) !important;
+  transform: translateY(-3px) !important;
+}
+.target-card-name { font-size: 0.85rem !important; line-height: 1.3 !important; color: #f0f4f8 !important; }
+.target-card-info { font-size: 0.72rem !important; line-height: 1.55 !important; color: #9fb3c8 !important; }
+.target-card-info span { color: #fb923c !important; font-weight: 600; }
+.company-rank { min-width: 26px !important; height: 26px !important; font-size: 0.7rem !important; }
+.company-rank.rank-top { background: rgba(251,146,60,0.22) !important; color: #fb923c !important; }
+
+.insight-box {
+  background: linear-gradient(135deg, rgba(251,146,60,0.08), rgba(16,42,67,0.55)) !important;
+  border-left: 3px solid #fb923c !important;
+  font-size: 0.86rem !important;
+  padding: 1rem 1.2rem !important;
+  color: #cbd5e1 !important;
+  border-radius: 0 10px 10px 0;
+  line-height: 1.7 !important;
+}
+.insight-box strong { color: #fb923c !important; }
+
+.section-divider {
+  background: linear-gradient(90deg, transparent, rgba(251,146,60,0.25), transparent) !important;
+}
+
+.slide-indicator {
+  font-size: 13px !important; padding: 7px 16px !important;
+  border: 1px solid rgba(251,146,60,0.25) !important;
+  color: #fdba74 !important;
+  background: rgba(6,14,36,0.75) !important;
+}
+
+#progress-bar {
+  background: linear-gradient(90deg, #fb923c, #facc15) !important;
+  height: 3px !important;
+}
+
+.slide-header-bar {
+  position: fixed; top: 0; left: 0; right: 0; height: 38px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px 0 28px; z-index: 9997; pointer-events: none;
+  background: linear-gradient(180deg, rgba(6,14,36,0.85), rgba(6,14,36,0));
+  opacity: 0; transition: opacity 0.5s;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em;
+  color: rgba(159,179,200,0.65);
+}
+.slide-header-bar.visible { opacity: 1; }
+.slide-header-bar .left { color: #fb923c; font-weight: 600; }
+.slide-header-bar .right { color: rgba(159,179,200,0.55); }
+
+.nav-arrow {
+  position: fixed; top: 50%; transform: translateY(-50%);
+  width: 44px; height: 44px; z-index: 9996;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(6,14,36,0.65); backdrop-filter: blur(10px);
+  border: 1px solid rgba(251,146,60,0.3); border-radius: 50%;
+  color: #fb923c; cursor: pointer; font-size: 20px;
+  opacity: 0; transition: all 0.3s; user-select: none;
+}
+.nav-arrow.visible { opacity: 0.55; }
+.nav-arrow.visible:hover { opacity: 1; background: rgba(251,146,60,0.18); transform: translateY(-50%) scale(1.08); box-shadow: 0 4px 24px rgba(251,146,60,0.3); }
+.nav-arrow.prev { left: 20px; }
+.nav-arrow.next { right: 20px; }
+.nav-arrow.disabled { opacity: 0.15 !important; cursor: default; pointer-events: none; }
+
+.cover-hint {
+  color: rgba(251,146,60,0.85) !important;
+  text-shadow: 0 0 12px rgba(251,146,60,0.4);
+}
+
+.slide-fit-inner { transform-origin: top center; transition: transform 0.3s ease; }
+
+#toc { display: none !important; }
+
+#slide-wrapper > section { scrollbar-width: none; }
+#slide-wrapper > section::-webkit-scrollbar { width: 0; height: 0; display: none; }
+
+.bg-navy-800.text-steel-200 { background: rgba(15,30,60,0.7) !important; border: 1px solid rgba(98,125,152,0.18); }
+
+#sec-power .grid-cols-1.md\:grid-cols-4 > div { padding: 0.55rem 0.7rem !important; }
+#sec-power .grid-cols-1.md\:grid-cols-4 .text-sm,
+#sec-power .grid-cols-1.md\:grid-cols-4 .text-xs { font-size: 0.7rem !important; line-height: 1.45 !important; }
+
+#sec-power .glass-card > .overflow-x-auto { overflow: visible !important; max-height: none !important; }
+
+@media print {
+  #slide-wrapper > section { position: static !important; opacity: 1 !important; visibility: visible !important; page-break-after: always; height: auto !important; }
+  .nav-arrow, .slide-indicator, .slide-header-bar, #progress-bar, #cover { display: none !important; }
+}
+
 </style>
 </head>
-<body class="bg-navy-950 text-steel-100 font-sans antialiased">
+<body class="bg-navy-950 text-steel-100 font-sans antialiased cover-active">
 
-<!-- Reading Progress Bar -->
-<div id="progress-bar" class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-accent-500 to-accent-300 z-[9999] transition-none" style="width:0%"></div>
-
-<!-- TOC dots -->
-<nav id="toc">
-  <a href="#hero" title="首页"></a>
-  <a href="#sec-toc" title="目录"></a>
-  <a href="#sec-market" title="市场概况"></a>
-  <a href="#sec-price" title="价格走势"></a>
-  <a href="#sec-models" title="养猪模式"></a>
-  <a href="#sec-client" title="双胞胎集团"></a>
-  <a href="#sec-power" title="配电体系"></a>
-  <a href="#sec-compete" title="竞争格局"></a>
-  <a href="#sec-supply" title="上下游"></a>
-  <a href="#sec-geo" title="地域分布"></a>
-  <a href="#sec-advice" title="发展建议"></a>
-  <a href="#sec-strategy" title="策略启示"></a>
-</nav>
-
-<!-- HERO SECTION -->
-<section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
-  <div class="absolute inset-0">
-    <div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-accent-500/[0.04] blur-[120px]"></div>
-    <div class="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-navy-500/[0.08] blur-[100px]"></div>
-  </div>
-  <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
-    <div class="inline-block mb-6">
-      <span class="font-mono text-xs tracking-[0.2em] text-accent-400 bg-accent-500/10 px-4 py-1.5 rounded-full border border-accent-500/20">JIANGXI LIVESTOCK INDUSTRY · 2026.04</span>
+<!-- ===== Cover Page ===== -->
+<div id="cover">
+  <div class="cover-step-indicator">STEP <span id="coverStepNum">0</span> / 3</div>
+  <div class="cover-hint" id="coverHint">点击或按 → 键继续</div>
+  <div class="cover-container">
+    <div class="cover-step1" id="coverS1">
+      <h1>什么是畜牧业？</h1>
     </div>
-    <h1 class="font-serif font-black text-4xl md:text-6xl lg:text-7xl leading-tight text-steel-50 mb-2">
-      江西畜牧业
-    </h1>
-    <p class="font-sans text-lg md:text-xl text-steel-400 tracking-wide mb-8">
-      Jiangxi Livestock Industry
-    </p>
-    <h2 class="font-serif font-bold text-2xl md:text-4xl text-accent-400 mb-2">
-      行业调研报告
-    </h2>
-    <p class="font-sans text-base md:text-lg text-steel-400 tracking-wide mb-10">
-      Industry Research Report
-    </p>
-    <p class="text-steel-300 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed mb-10">
-      深入剖析全国畜牧产业格局、市场周期、配电体系需求与竞争态势，<br class="hidden md:block">聚焦江西市场机遇与核心客户突破路径
-    </p>
-    <div class="animate-bounce text-steel-500">
-      <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
-      <span class="text-xs font-mono tracking-wider">SCROLL</span>
+    <div class="cover-step2" id="coverS2">
+      <div class="cover-q-tag">养殖品种分类？</div>
+      <div class="cover-q-tag">客户分类？</div>
+      <div class="cover-q-tag">业务分类？</div>
     </div>
-  </div>
-</section>
-
-<!-- TABLE OF CONTENTS -->
-<section id="sec-toc" class="relative py-16 px-4">
-<div class="max-w-4xl mx-auto">
-  <div class="anim-in">
-    <div class="sec-label">CONTENTS / 目录</div>
-    <h2 class="sec-title">报告<span>目录</span></h2>
-  </div>
-  <div class="glass-card anim-in">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-0">
-      <a href="#sec-market" class="group flex items-baseline gap-3 py-3 border-b border-navy-800 hover:border-accent-500/40 transition-colors">
-        <span class="font-mono text-xs text-accent-400 w-6 flex-shrink-0">01</span>
-        <span class="text-steel-200 group-hover:text-accent-300 transition-colors text-sm">全国生猪行业市场概况</span>
-        <span class="flex-1 border-b border-dotted border-steel-700/40 mx-2 mb-1"></span>
-      </a>
-      <a href="#sec-price" class="group flex items-baseline gap-3 py-3 border-b border-navy-800 hover:border-accent-500/40 transition-colors">
-        <span class="font-mono text-xs text-accent-400 w-6 flex-shrink-0">02</span>
-        <span class="text-steel-200 group-hover:text-accent-300 transition-colors text-sm">2026年生猪价格走势分析</span>
-        <span class="flex-1 border-b border-dotted border-steel-700/40 mx-2 mb-1"></span>
-      </a>
-      <a href="#sec-models" class="group flex items-baseline gap-3 py-3 border-b border-navy-800 hover:border-accent-500/40 transition-colors">
-        <span class="font-mono text-xs text-accent-400 w-6 flex-shrink-0">03</span>
-        <span class="text-steel-200 group-hover:text-accent-300 transition-colors text-sm">养猪模式对比分析</span>
-        <span class="flex-1 border-b border-dotted border-steel-700/40 mx-2 mb-1"></span>
-      </a>
-      <a href="#sec-client" class="group flex items-baseline gap-3 py-3 border-b border-navy-800 hover:border-accent-500/40 transition-colors">
-        <span class="font-mono text-xs text-accent-400 w-6 flex-shrink-0">04</span>
-        <span class="text-steel-200 group-hover:text-accent-300 transition-colors text-sm">核心客户双胞胎集团业务进展</span>
-        <span class="flex-1 border-b border-dotted border-steel-700/40 mx-2 mb-1"></span>
-      </a>
-      <a href="#sec-power" class="group flex items-baseline gap-3 py-3 border-b border-navy-800 hover:border-accent-500/40 transition-colors">
-        <span class="font-mono text-xs text-accent-400 w-6 flex-shrink-0">05</span>
-        <span class="text-steel-200 group-hover:text-accent-300 transition-colors text-sm">养猪场配电体系深度分析</span>
-        <span class="flex-1 border-b border-dotted border-steel-700/40 mx-2 mb-1"></span>
-      </a>
-      <a href="#sec-compete" class="group flex items-baseline gap-3 py-3 border-b border-navy-800 hover:border-accent-500/40 transition-colors">
-        <span class="font-mono text-xs text-accent-400 w-6 flex-shrink-0">06</span>
-        <span class="text-steel-200 group-hover:text-accent-300 transition-colors text-sm">竞争格局分析</span>
-        <span class="flex-1 border-b border-dotted border-steel-700/40 mx-2 mb-1"></span>
-      </a>
-      <a href="#sec-supply" class="group flex items-baseline gap-3 py-3 border-b border-navy-800 hover:border-accent-500/40 transition-colors">
-        <span class="font-mono text-xs text-accent-400 w-6 flex-shrink-0">07</span>
-        <span class="text-steel-200 group-hover:text-accent-300 transition-colors text-sm">上下游及配套厂商</span>
-        <span class="flex-1 border-b border-dotted border-steel-700/40 mx-2 mb-1"></span>
-      </a>
-      <a href="#sec-geo" class="group flex items-baseline gap-3 py-3 border-b border-navy-800 hover:border-accent-500/40 transition-colors">
-        <span class="font-mono text-xs text-accent-400 w-6 flex-shrink-0">08</span>
-        <span class="text-steel-200 group-hover:text-accent-300 transition-colors text-sm">江西省畜牧业地域分布</span>
-        <span class="flex-1 border-b border-dotted border-steel-700/40 mx-2 mb-1"></span>
-      </a>
-      <a href="#sec-advice" class="group flex items-baseline gap-3 py-3 border-b border-navy-800 hover:border-accent-500/40 transition-colors">
-        <span class="font-mono text-xs text-accent-400 w-6 flex-shrink-0">09</span>
-        <span class="text-steel-200 group-hover:text-accent-300 transition-colors text-sm">行业发展建议</span>
-        <span class="flex-1 border-b border-dotted border-steel-700/40 mx-2 mb-1"></span>
-      </a>
-      <a href="#sec-strategy" class="group flex items-baseline gap-3 py-3 border-b border-navy-800 hover:border-accent-500/40 transition-colors">
-        <span class="font-mono text-xs text-accent-400 w-6 flex-shrink-0">10</span>
-        <span class="text-steel-200 group-hover:text-accent-300 transition-colors text-sm">行业头部效应与策略启示</span>
-        <span class="flex-1 border-b border-dotted border-steel-700/40 mx-2 mb-1"></span>
-      </a>
+    <div class="cover-step3" id="coverS3">
+      <div class="cover-col-card">
+        <div class="cover-col-header">养殖品种分类</div>
+        <div class="cover-col-item">养鸡</div>
+        <div class="cover-col-item">养鸭</div>
+        <div class="cover-col-item">养猪</div>
+        <div class="cover-col-item">养牛</div>
+        <div class="cover-col-item cover-dots">...</div>
+      </div>
+      <div class="cover-col-card">
+        <div class="cover-col-header">客户分类</div>
+        <div class="cover-col-item">牧原</div>
+        <div class="cover-col-item">新希望</div>
+        <div class="cover-col-item">大牧人</div>
+        <div class="cover-col-item">增鑫科技</div>
+        <div class="cover-col-item cover-dots">...</div>
+      </div>
+      <div class="cover-col-card">
+        <div class="cover-col-header">业务分类</div>
+        <div class="cover-col-item">核心设备</div>
+        <div class="cover-col-item">养殖社区</div>
+        <div class="cover-col-item">配套设备</div>
+        <div class="cover-col-item">外延业务</div>
+        <div class="cover-col-item cover-dots">...</div>
+      </div>
     </div>
   </div>
 </div>
-</section>
 
-<!-- SECTION 1: 全国生猪行业市场概况 -->
+<!-- Reading Progress Bar -->
+<div id="progress-bar" class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-accent-500 to-accent-300 z-[9999]" style="width:0%"></div>
+
+<!-- Slide Indicator -->
+<div class="slide-indicator" id="slideIndicator"><span id="slideNum">1</span> / <span id="slideTotal">6</span></div>
+
+<!-- ===== Slide Wrapper ===== -->
+<div id="slide-wrapper">
+
+<!-- Page 1: 全国生猪行业市场概况 -->
 <section id="sec-market" class="relative py-24 px-4">
 <div class="max-w-6xl mx-auto">
   <div class="anim-in">
@@ -364,370 +927,54 @@ footer { position: relative; z-index: 1; }
   </div>
 </div>
 </section>
-
-<!-- SECTION 2: 生猪价格走势 -->
-<section id="sec-price" class="relative py-24 px-4">
-<div class="max-w-6xl mx-auto">
-  <div class="anim-in">
-    <div class="sec-label">02 / PRICE ANALYSIS</div>
-    <h2 class="sec-title">2026年生猪价格<span>走势分析</span></h2>
-    <p class="sec-desc mb-8">2026年4月15日，全国外三元生猪出栏均价跌至 <strong class="text-red-400">8.77元/公斤（4.39元/斤）</strong>，创近20年历史最低。4月15日后触底反弹，截至4月22日已回升至9.7元/公斤，11个省市重回10元以上。生猪期货主力合约最低触及9,815元/吨，为2021年上市以来最低。全行业已进入过度下跌一级预警区间。</p>
+<div style="width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(249,115,22,0.2),transparent);margin:0 auto;max-width:72rem;padding:0 1rem;"></div>
+<!-- Page 2: x元器件用量 -->
+<section id="sec-compete" class="relative py-16 px-4" style="display:flex;flex-direction:column;justify-content:center;min-height:100vh;">
+<div class="max-w-6xl mx-auto" style="width:100%">
+  <div class="anim-in" style="margin-bottom:1.2rem">
+    <div class="sec-label">06 / COMPONENT USAGE</div>
+    <h2 class="sec-title">x元器件<span>用量</span></h2>
   </div>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 anim-in">
-    <div class="stat-card border-l-4 border-l-red-500">
-      <div class="stat-num text-red-400">8.77</div>
-      <div class="stat-label">元/公斤 · 4月15日历史低位</div>
-      <div class="text-xs text-red-400/70 mt-1">近20年最低 ↑ 已反弹至9.7（4月22日）</div>
-    </div>
-    <div class="stat-card border-l-4 border-l-red-500">
-      <div class="stat-num text-red-400">-30.7%</div>
-      <div class="stat-label">3月均价同比跌幅</div>
-      <div class="text-xs text-red-400/70 mt-1">牧原3月商品猪均价9.91元/kg</div>
-    </div>
-    <div class="stat-card border-l-4 border-l-red-500">
-      <div class="stat-num text-red-400">9,815</div>
-      <div class="stat-label">元/吨 · 期货主力低点</div>
-      <div class="text-xs text-red-400/70 mt-1">2021年生猪期货上市以来最低</div>
-    </div>
-  </div>
-  <div class="chart-wrap anim-in">
-    <div class="flex items-center justify-between mb-2">
-      <h3 class="text-steel-200 font-semibold text-sm">全国生猪均价走势（2020-2026年4月）</h3>
-      <span class="font-mono text-xs text-steel-500">单位：元/公斤</span>
-    </div>
-    <div id="chart-price" class="chart-h"></div>
-  </div>
-  <div class="glass-card mt-6 anim-in">
-    <h4 class="text-accent-400 font-mono text-xs tracking-wider mb-3">▎下跌原因分析</h4>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-steel-300">
-      <div class="flex gap-3"><span class="text-accent-500 font-bold text-lg">01</span><div><strong class="text-steel-100">供应高企</strong><br>能繁母猪存栏处于高位，产能传导周期约10个月</div></div>
-      <div class="flex gap-3"><span class="text-accent-500 font-bold text-lg">02</span><div><strong class="text-steel-100">需求回落</strong><br>节后消费需求季节性回落，终端消费疲软</div></div>
-      <div class="flex gap-3"><span class="text-accent-500 font-bold text-lg">03</span><div><strong class="text-steel-100">效率提升</strong><br>非洲猪瘟后企业种猪改良、圈舍升级，生产效率大幅提高</div></div>
-      <div class="flex gap-3 bg-red-500/10 border border-red-500/20 rounded-lg p-3"><span class="text-red-400 font-bold text-lg">04</span><div><strong class="text-steel-100">行业洗牌（洗走散户）</strong><br>规模化养殖成本优势明显，中小散户因抗风险能力弱加速退出市场 <span class="text-xs text-steel-500">(信息来源：湖南唐人神陈总)</span></div></div>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-5 text-xs text-steel-400">
-      <div class="bg-green-900/20 border border-green-500/20 rounded-lg p-3">
-        <div class="text-green-400 font-semibold mb-1">▲ 4月15日触底反弹</div>
-        全国外三元均价 8.77元/kg 历史低点 → 4月22日回升至 9.7元/kg，11省市重回10元以上
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <!-- 饼图 -->
+    <div class="chart-wrap anim-in" style="flex:1">
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="text-steel-200 font-semibold text-sm">双胞胎集团配电供应商份额</h3>
+        <span class="font-mono text-xs text-steel-500">单位：万元</span>
       </div>
-      <div class="bg-blue-900/20 border border-blue-500/20 rounded-lg p-3">
-        <div class="text-blue-400 font-semibold mb-1">🏛 政策托底</div>
-        4月3日三部委联合启动冻猪肉收储；多省发布过度下跌一级预警；4月17日农业农村部召开产业座谈会
+      <div id="chart-compete" style="height:420px"></div>
+    </div>
+    <!-- 正泰核心产品 -->
+    <div class="glass-card anim-in" style="display:flex;flex-direction:column;justify-content:center">
+      <h3 class="font-serif font-bold text-xl text-steel-50 mb-5">正泰核心产品型号</h3>
+      <div class="flex flex-wrap gap-2 mb-8">
+        <span class="bg-navy-800 text-steel-200 px-4 py-2 rounded-lg font-mono text-base">NXM</span>
+        <span class="bg-navy-800 text-steel-200 px-4 py-2 rounded-lg font-mono text-base">NXC</span>
+        <span class="bg-navy-800 text-steel-200 px-4 py-2 rounded-lg font-mono text-base">NXB</span>
+        <span class="bg-navy-800 text-steel-200 px-4 py-2 rounded-lg font-mono text-base">NCH8</span>
+        <span class="bg-navy-800 text-steel-200 px-4 py-2 rounded-lg font-mono text-base">NXJ</span>
+        <span class="bg-navy-800 text-steel-200 px-4 py-2 rounded-lg font-mono text-base">NC1 <span class="text-accent-400 text-sm">畜牧专供</span></span>
+        <span class="bg-navy-800 text-steel-200 px-4 py-2 rounded-lg font-mono text-base">NS2 <span class="text-accent-400 text-sm">电动机启动器</span></span>
       </div>
-      <div class="bg-accent-900/20 border border-accent-500/20 rounded-lg p-3">
-        <div class="text-accent-400 font-semibold mb-1">📅 全年预判</div>
-        农业农村部及业界预判全年呈"<strong class="text-steel-100">前低后高、窄幅波动</strong>"，均价约14.9元/公斤，拐点预计Q3
+      <div class="text-base text-steel-300 space-y-4">
+        <p class="text-steel-400 font-mono text-sm mb-3">产品参数要求</p>
+        <p>无特殊参数要求，<strong class="text-steel-100">常规产品居多</strong></p>
+        <p>价格内卷程度一般，正泰德力西<strong class="text-steel-100">价格体系维护较好</strong></p>
+        <p>近几年<strong class="text-accent-300">降本需求明显</strong>，需入品牌库方可供货</p>
       </div>
     </div>
   </div>
 
-  <!-- 龙头企业Q1财务表现 -->
-  <div class="glass-card mt-6 anim-in">
-    <h4 class="text-accent-400 font-mono text-xs tracking-wider mb-4">▎2026年Q1龙头企业财务表现</h4>
-    <div class="overflow-x-auto">
-      <table class="pain-table min-w-[580px]">
-        <thead>
-          <tr>
-            <th>企业</th>
-            <th>Q1营收</th>
-            <th>Q1净利润</th>
-            <th>同比变化</th>
-            <th>关键注解</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="font-semibold text-steel-50">牧原股份</td>
-            <td>298.94亿元</td>
-            <td class="text-red-400 font-mono font-bold">-12.15亿元</td>
-            <td><span class="status-badge badge-paused">同比转亏 -127%</span></td>
-            <td>完全成本5.8元/斤（行业最低，北方养猪成本低，豆粕、玉米、麸皮成本较低）；负债率50.73%（历史低）；H股上市补充资本</td>
-          </tr>
-          <tr>
-            <td class="font-semibold text-steel-50">双胞胎集团</td>
-            <td>-</td>
-            <td>-</td>
-            <td><span class="status-badge badge-paused">日亏损 2000万</span></td>
-            <td>非上市公司，2026年Q1财报未公开披露</td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="text-xs text-steel-500 mt-3">数据来源：上市公司2026年一季报（2026-04-21披露）</p>
-    </div>
-  </div>
 </div>
 </section>
-
-<!-- SECTION 3: 养猪模式分析 -->
-<section id="sec-models" class="relative py-24 px-4">
-<div class="max-w-6xl mx-auto">
-  <div class="anim-in">
-    <div class="sec-label">03 / BUSINESS MODELS</div>
-    <h2 class="sec-title">养猪模式<span>对比分析</span></h2>
-    <p class="sec-desc mb-10">中国规模化养猪主要分为两大模式，代表企业在经营策略、资产结构和规模扩张路径上存在显著差异。</p>
-  </div>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 anim-in">
-    <!-- 模式一 -->
-    <div class="glass-card relative overflow-hidden">
-      <div class="absolute top-0 right-0 w-32 h-32 bg-accent-500/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-      <span class="font-mono text-xs tracking-wider text-accent-400 bg-accent-500/10 px-3 py-1 rounded-full">模式一</span>
-      <h3 class="text-xl font-serif font-bold text-steel-50 mt-4 mb-1">养肉猪模式（全产业链自营）</h3>
-      <p class="text-accent-400 font-mono text-sm mb-4">代表企业：牧原股份</p>
-      <table class="w-full text-sm">
-        <tr class="border-b border-navy-800"><td class="py-2 text-steel-400 w-28">资产模式</td><td class="py-2 text-steel-200 font-medium">重资产投入</td></tr>
-        <tr class="border-b border-navy-800"><td class="py-2 text-steel-400">出栏规模</td><td class="py-2 text-steel-200 font-medium">7,798万头/年（2025）</td></tr>
-        <tr class="border-b border-navy-800"><td class="py-2 text-steel-400">经营特点</td><td class="py-2 text-steel-200">全产业链自营：饲料→育种→养殖→屠宰</td></tr>
-        <tr class="border-b border-navy-800"><td class="py-2 text-steel-400">技术投入</td><td class="py-2 text-steel-200">AI大模型+智慧养殖，高度自动化；研发团队6,486人，年研发投入17.47亿元</td></tr>
-        <tr class="border-b border-navy-800"><td class="py-2 text-steel-400">电气化</td><td class="py-2 text-steel-200">1,000+养殖场部署330万台套智能装备；光伏装机823MW</td></tr>
-        <tr><td class="py-2 text-steel-400">增长率</td><td class="py-2 text-steel-200">+8.91% YoY <span class="text-xs text-steel-500">(信息来源：杨映赫)</span></td></tr>
-      </table>
-      <div class="mt-4 p-3 rounded-lg bg-blue-500/5 border border-blue-500/10 text-xs text-steel-400">
-        <span class="text-blue-400 font-mono">NOTE</span> — 我们在牧原光伏并网板块已有成功案例
-      </div>
-    </div>
-    <!-- 模式二 -->
-    <div class="glass-card relative overflow-hidden">
-      <div class="absolute top-0 right-0 w-32 h-32 bg-navy-500/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-      <span class="font-mono text-xs tracking-wider text-blue-400 bg-blue-500/10 px-3 py-1 rounded-full">模式二</span>
-      <h3 class="text-xl font-serif font-bold text-steel-50 mt-4 mb-1">养母猪+孵化模式（合作养殖）</h3>
-      <p class="text-blue-400 font-mono text-sm mb-4">代表企业：双胞胎集团</p>
-      <table class="w-full text-sm">
-        <tr class="border-b border-navy-800"><td class="py-2 text-steel-400 w-28">资产模式</td><td class="py-2 text-steel-200 font-medium">轻资产+合作养殖</td></tr>
-        <tr class="border-b border-navy-800"><td class="py-2 text-steel-400">出栏规模</td><td class="py-2 text-steel-200 font-medium">2,643万头/年（2025）</td></tr>
-        <tr class="border-b border-navy-800"><td class="py-2 text-steel-400">经营特点</td><td class="py-2 text-steel-200">以母猪繁育+仔猪孵化为核心，合作农户育肥</td></tr>
-        <tr class="border-b border-navy-800"><td class="py-2 text-steel-400">扩张速度</td><td class="py-2 text-steel-200">增速行业最快（+49.32% YoY）</td></tr>
-        <tr><td class="py-2 text-steel-400">总部</td><td class="py-2 text-steel-200">南昌，养殖场遍布全国</td></tr>
-      </table>
-    </div>
-  </div>
-</div>
-</section>
-
-<!-- SECTION 4: 双胞胎集团业务 -->
-<section id="sec-client" class="relative py-24 px-4">
-<div class="max-w-6xl mx-auto">
-  <div class="anim-in">
-    <div class="sec-label">04 / KEY CLIENT</div>
-    <h2 class="sec-title">核心客户<span>双胞胎集团</span>业务进展</h2>
-  </div>
-
-  <!-- 4.1 客户概况 -->
-  <div class="glass-card mb-8 anim-in">
-    <h3 class="font-serif font-bold text-lg text-steel-50 mb-4">4.1 客户概况与当前困境</h3>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div>
-        <div class="text-steel-400 text-xs font-mono mb-1">企业排名</div>
-        <div class="text-steel-100 font-semibold">全国第三 · 出栏2,643万头</div>
-        <div class="text-accent-400 text-sm">同比增长 +49.32%</div>
-      </div>
-      <div>
-        <div class="text-steel-400 text-xs font-mono mb-1">4月15日全国均价低点</div>
-        <div class="text-red-400 font-semibold">8.77元/公斤（4.39元/斤）</div>
-        <div class="text-red-400/70 text-sm">近20年最低 · 出栏1头猪亏约350-500元</div>
-      </div>
-      <div>
-        <div class="text-steel-400 text-xs font-mono mb-1">影响</div>
-        <div class="text-steel-100 font-semibold">内部资金紧张</div>
-        <div class="text-yellow-400/70 text-sm">改造项目全面暂停</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 4.2 一季度复盘 -->
-  <div class="glass-card mb-8 anim-in">
-    <h3 class="font-serif font-bold text-lg text-steel-50 mb-4">4.2 一季度业务复盘</h3>
-    <div class="space-y-3 text-sm text-steel-300">
-      <div class="flex gap-3 items-start">
-        <span class="inline-block w-5 h-5 rounded bg-red-500/20 text-red-400 text-xs flex-shrink-0 flex items-center justify-center font-bold">!</span>
-        <p><strong class="text-steel-100">一季度推动缓慢</strong>：我方业务关系核心人员为技术，核心技术人员保猪，开年第一季度均在全国各大养猪场驻扎，未有机会进行快速拓展</p>
-      </div>
-      <div class="flex gap-3 items-start">
-        <span class="inline-block w-5 h-5 rounded bg-red-500/20 text-red-400 text-xs flex-shrink-0 flex items-center justify-center font-bold">!</span>
-        <p><strong class="text-steel-100">方案被竞对模仿</strong>：去年定制的双电源柜方案被正泰获取并模仿，正泰深耕触动较大</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- 4.3 五大推动项目 -->
-  <div class="anim-in mb-6">
-    <h3 class="font-serif font-bold text-lg text-steel-50 mb-6">4.3 五大在推项目</h3>
-  </div>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
-    <!-- P1 高压计量柜 -->
-    <div class="proj-card status-delayed anim-in">
-      <div class="flex items-center justify-between mb-3">
-        <span class="font-mono text-xs text-steel-400">PROJECT 01</span>
-        <span class="status-badge badge-delayed">暂缓</span>
-      </div>
-      <h4 class="text-steel-50 font-bold text-base mb-3">高压计量柜（高压成套）</h4>
-      <div class="text-sm text-steel-300 space-y-2">
-        <div>
-          <span class="text-steel-400 font-mono text-sm font-semibold">需求来源</span>
-          <p class="mt-0.5">已双胞胎天津一个养猪场为例，按照低压部分10~11%损耗计算还多收<strong class="text-accent-400">20万/月</strong>的电费。</p>
-        </div>
-        <div>
-          <span class="text-steel-400 font-mono text-sm font-semibold">原因分析</span>
-          <p class="mt-0.5">电网外包出去的，不属于国家电网，最开始要他们交30万押金，后面给他们押金都省掉了；很多猪场在第三方电网购买的电</p>
-        </div>
-        <div>
-          <span class="text-steel-400 font-mono text-sm font-semibold">内部构成</span>
-          <p class="mt-0.5">3个电流互感器 + 2个电压互感器 + 天e智慧仪表 + 系统后台</p>
-        </div>
-        <div class="flex gap-6">
-          <div>
-            <span class="text-steel-400 font-mono text-sm font-semibold">初步体量</span>
-            <p class="mt-0.5"><strong class="text-accent-400">70套</strong>高压成套柜</p>
-          </div>
-        </div>
-        <div>
-          <span class="text-steel-400 font-mono text-sm font-semibold">目前进度</span>
-          <p class="mt-0.5">多次交流沟通、公司成套部门已经输出高压成套方案及报价</p>
-        </div>
-      </div>
-    </div>
-    <!-- P2 补偿柜改造 -->
-    <div class="proj-card status-ready anim-in">
-      <div class="flex items-center justify-between mb-3">
-        <span class="font-mono text-xs text-steel-400">PROJECT 02</span>
-        <span class="status-badge badge-ready">待启动</span>
-      </div>
-      <h4 class="text-steel-50 font-bold text-base mb-3">养猪场内部补偿柜改造</h4>
-      <div class="text-sm text-steel-300 space-y-2">
-        <div>
-          <span class="text-steel-400 font-mono text-sm font-semibold">需求来源</span>
-          <p class="mt-0.5">现有养猪场的电气设备老旧，正泰常规补偿类产品事故频发</p>
-        </div>
-        <div>
-          <span class="text-steel-400 font-mono text-sm font-semibold">原因分析</span>
-          <p class="mt-0.5">现场环境恶劣，氨气类腐蚀性气体，尤其在潮湿环境下氨气腐蚀性更明显</p>
-        </div>
-        <div class="flex gap-6">
-          <div>
-            <span class="text-steel-400 font-mono text-sm font-semibold">初步体量</span>
-            <p class="mt-0.5"><strong class="text-accent-400">~300万</strong></p>
-          </div>
-          <div>
-            <span class="text-steel-400 font-mono text-sm font-semibold">竞争对手</span>
-            <p class="mt-0.5 text-red-400/80">正泰</p>
-          </div>
-        </div>
-        <div>
-          <span class="text-steel-400 font-mono text-sm font-semibold">目前进度</span>
-          <p class="mt-0.5">年初跟电容产品经理对接过并有初步方案，会议拉通交流一次</p>
-        </div>
-      </div>
-    </div>
-    <!-- P3 无线测温 -->
-    <div class="proj-card status-testing anim-in">
-      <div class="flex items-center justify-between mb-3">
-        <span class="font-mono text-xs text-steel-400">PROJECT 03</span>
-        <span class="status-badge badge-testing">试用中</span>
-      </div>
-      <h4 class="text-steel-50 font-bold text-base mb-3">无线测温板块</h4>
-      <div class="text-sm text-steel-300 space-y-2">
-        <div>
-          <span class="text-steel-400 font-mono text-sm font-semibold">需求来源</span>
-          <p class="mt-0.5">在养猪场，测温这个板块是必须的，但是现有养猪场内部主要为有线，走线混乱的形式，很多形同虚设，也增加了安全风险</p>
-        </div>
-        <div>
-          <span class="text-steel-400 font-mono text-sm font-semibold">初步体量</span>
-          <p class="mt-0.5">全国210个养猪场，框架+ATS触头位置均需增设</p>
-        </div>
-        <div>
-          <span class="text-steel-400 font-mono text-sm font-semibold">目前进度</span>
-          <p class="mt-0.5">试用产品目前已经调试安装上线，试用期限大概为4个月，Q3~Q4可能批量采购</p>
-        </div>
-      </div>
-    </div>
-    <!-- P4 智能化改造 -->
-    <div class="proj-card status-testing anim-in">
-      <div class="flex items-center justify-between mb-3">
-        <span class="font-mono text-xs text-steel-400">PROJECT 04</span>
-        <span class="status-badge badge-testing">试用中</span>
-      </div>
-      <h4 class="text-steel-50 font-bold text-base mb-3">智能化改造板块</h4>
-      <div class="text-sm text-steel-300 space-y-2">
-        <div>
-          <span class="text-steel-400 font-mono text-sm font-semibold">需求来源</span>
-          <p class="mt-0.5">客户现有系统板块杂乱，未打通且需要本地部署，适配风机断路器、暖灯断路器、饲喂断路器</p>
-        </div>
-        <div>
-          <span class="text-steel-400 font-mono text-sm font-semibold">需求产品</span>
-          <p class="mt-0.5">智慧微断<strong class="text-steel-100">TeB7E</strong> 和 智慧塑壳<strong class="text-steel-100">TeM5Z</strong>（485通讯）</p>
-        </div>
-        <div class="flex gap-6">
-          <div>
-            <span class="text-steel-400 font-mono text-sm font-semibold">需求体量</span>
-            <p class="mt-0.5">目前无法精准计算，存在<strong class="text-yellow-400">大批量</strong>替换需求</p>
-          </div>
-          <div>
-            <span class="text-steel-400 font-mono text-sm font-semibold">竞争对手</span>
-            <p class="mt-0.5 text-red-400/80">正泰、安科瑞仪表</p>
-          </div>
-        </div>
-        <div>
-          <span class="text-steel-400 font-mono text-sm font-semibold">目前进度</span>
-          <p class="mt-0.5">客户技术部已经输出并反馈试用报告，客户明确报告提出我们此类产品适用性较高，适配高危场景</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 4.4 新机会 -->
-  <div class="proj-card status-new anim-in">
-    <div class="flex items-center justify-between mb-3">
-      <span class="font-mono text-xs text-green-400 font-semibold">PROJECT 05 · NEW OPPORTUNITY</span>
-      <span class="status-badge" style="background: rgba(34,197,94,0.35); color: #22c55e; font-weight: 600;">✨ 新发现</span>
-    </div>
-    <h4 class="text-steel-50 font-bold text-base mb-2">恒温控制智慧项目</h4>
-    <div class="text-sm text-steel-300 space-y-1.5">
-      <p>刚出生小猪需恒定温度保证存活率，通过<strong class="text-green-400">智慧开关 + 温度传感器 + 后台软件</strong>配合实现自动恒温控制。</p>
-      <p>Q1已有相关使用案例，可作为切入点持续推动。<span class="text-xs text-steel-500">(信息来源：天e左鹏)</span></p>
-    </div>
-  </div>
-</div>
-</section>
-
-<!-- SECTION 5: 配电体系分析 -->
+<div style="width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(249,115,22,0.2),transparent);margin:0 auto;max-width:72rem;padding:0 1rem;"></div>
+<!-- Pages 3-5: 养猪场配电体系深度分析 -->
 <section id="sec-power" class="relative py-24 px-4">
 <div class="max-w-6xl mx-auto">
   <div class="anim-in">
     <div class="sec-label">05 / POWER DISTRIBUTION</div>
     <h2 class="sec-title">养猪场配电体系<span>深度分析</span></h2>
   </div>
-
-  <!-- 5.1 采购特点 & 场区管理 -->
-  <div class="glass-card mb-8 anim-in">
-    <h3 class="font-serif font-bold text-lg text-steel-50 mb-4">5.1 采购决策特点</h3>
-    <div class="text-sm text-steel-300">
-      <div class="flex gap-3">
-        <div class="w-10 h-10 rounded-lg bg-accent-500/10 flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
-        <div><strong class="text-steel-100">采购话语权较大</strong><br>推广会都必须采购牵头，技术侧影响力有限</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="glass-card mb-8 anim-in">
-    <h3 class="font-serif font-bold text-lg text-steel-50 mb-4">5.2 场区管理特点</h3>
-    <div class="text-sm text-steel-300">
-      <div class="flex gap-3">
-        <div class="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></div>
-        <div>
-          <strong class="text-steel-100">极其严苛的封闭式管理</strong><br>
-          大型养殖场实行全封闭管理，对外来人员和物品有严格的生物安全管控：
-          <ul class="mt-2 space-y-1 text-steel-400 list-none">
-            <li>&#x2022; 进入厂区需进行核酸检测</li>
-            <li>&#x2022; 食物必须煮熟后才能带入</li>
-            <li>&#x2022; 外来人员须经过 3-4 次消毒清洗</li>
-            <li>&#x2022; 禁止携带任何首饰，香烟须泡消毒水</li>
-          </ul>
-          <p class="mt-2 text-accent-300/80">影响：现场勘察、设备安装和售后服务的沟通成本与准入门槛较高，需提前规划拜访流程。</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 5.2 配电板块构成 -->
   <div class="glass-card mb-8 anim-in">
     <h3 class="font-serif font-bold text-lg text-steel-50 mb-5">5.3 配电板块构成</h3>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -788,8 +1035,6 @@ footer { position: relative; z-index: 1; }
       </div>
     </div>
   </div>
-  
-  <!-- 环控箱配置清单 -->
   <div class="mt-8 anim-in">
     <div class="glass-card p-6">
       <div class="font-mono text-xs text-accent-400 mb-4">1600头1控2 环控箱配置清单</div>
@@ -1072,8 +1317,6 @@ footer { position: relative; z-index: 1; }
       </div>
     </div>
   </div>
-
-  <!-- 环控箱元器件品牌占比图 -->
   <div class="mt-8 anim-in">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="chart-wrap">
@@ -1092,180 +1335,10 @@ footer { position: relative; z-index: 1; }
       </div>
     </div>
   </div>
-
-  <!-- 5.3.1 行业配电技术标准参考 -->
-  <div class="glass-card mb-8 anim-in">
-    <h3 class="font-serif font-bold text-lg text-steel-50 mb-4">5.3.1 行业配电技术标准参考 <span class="text-xs font-mono text-steel-500 font-normal ml-2">参考河南省头部企业实践</span></h3>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
-      <div class="bg-navy-900/50 rounded-lg p-4 border border-navy-800">
-        <div class="text-accent-400 font-mono text-2xl font-bold mb-1">IP55</div>
-        <div class="text-steel-300">主配电柜防护等级要求，抵御高湿、氨气、粉尘腐蚀环境</div>
-      </div>
-      <div class="bg-navy-900/50 rounded-lg p-4 border border-navy-800">
-        <div class="text-accent-400 font-mono text-2xl font-bold mb-1">≤15s</div>
-        <div class="text-steel-300">ATS自动切换时间标准，确保核心负荷（通风、温控）不断电</div>
-      </div>
-      <div class="bg-navy-900/50 rounded-lg p-4 border border-navy-800">
-        <div class="text-accent-400 font-mono text-2xl font-bold mb-1">+30%</div>
-        <div class="text-steel-300">变压器容量冗余要求，200kVA变压器实际负载控制在140kVA以内</div>
-      </div>
-      <div class="bg-navy-900/50 rounded-lg p-4 border border-navy-800">
-        <div class="text-accent-400 font-mono text-2xl font-bold mb-1">UPS</div>
-        <div class="text-steel-300">产房加热板、精液储存等敏感负荷需配置独立不间断电源</div>
-      </div>
-    </div>
-  </div>
-
-    
-  <!-- 5.3 痛点与机会矩阵 -->
-  <div class="anim-in">
-    <h3 class="font-serif font-bold text-lg text-steel-50 mb-5">5.4 八大痛点与机会矩阵</h3>
-    <div class="chart-wrap overflow-x-auto">
-      <table class="pain-table min-w-[700px]">
-        <thead>
-          <tr>
-            <th style="width:5%">#</th>
-            <th style="width:28%">行业痛点</th>
-            <th style="width:35%">机会分析</th>
-            <th style="width:32%">我方方案 / 状态</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="font-mono text-accent-400">01</td>
-            <td>全国养猪场设备偏老旧，急需改造升级</td>
-            <td>全面改造升级机会，存量市场巨大</td>
-            <td><span class="status-badge badge-new">高潜力</span> 全产品线机会</td>
-          </tr>
-          <tr>
-            <td class="font-mono text-accent-400">02</td>
-            <td>变频器要求极高（西门子级别）</td>
-            <td>环控核心，技术门槛高</td>
-            <td><span class="status-badge badge-paused">暂无替代</span> 需合作伙伴</td>
-          </tr>
-          <tr>
-            <td class="font-mono text-accent-400">03</td>
-            <td>电机故障率较高</td>
-            <td>智慧产品监控电机需求</td>
-            <td><span class="status-badge badge-paused">暂无法满足</span> 需研发</td>
-          </tr>
-          <tr>
-            <td class="font-mono text-accent-400">04</td>
-            <td>补偿类产品故障率高（环境恶劣）</td>
-            <td>高防护智能电容替代机会</td>
-            <td><span class="status-badge badge-ready">重点推动</span> 解决恶劣环境寿命</td>
-          </tr>
-          <tr>
-            <td class="font-mono text-accent-400">05</td>
-            <td>电费消耗大，错收乱收（年损数百万）</td>
-            <td>高压计量成套机会</td>
-            <td><span class="status-badge badge-ready">方案就绪</span> 70台计量柜</td>
-          </tr>
-          <tr>
-            <td class="font-mono text-accent-400">06</td>
-            <td>运维难度大（手动分合闸）</td>
-            <td>双电源柜+延时重合闸</td>
-            <td><span class="status-badge badge-ready">方案就绪</span> 正泰德力西已有样板房</td>
-          </tr>
-          <tr>
-            <td class="font-mono text-accent-400">07</td>
-            <td>系统混乱多且杂（安科瑞/正泰/测温）</td>
-            <td>智慧微断统一方案</td>
-            <td><span class="status-badge badge-delayed">待解决</span> 需对接报警点</td>
-          </tr>
-          <tr>
-            <td class="font-mono text-accent-400">08</td>
-            <td>谐波大（变频器+补偿无电抗）</td>
-            <td>谐波治理市场</td>
-            <td><span class="status-badge badge-testing">调研中</span> 端子发热严重</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- 痛点总结大标签 -->
-    <div class="flex flex-wrap gap-3 mt-6">
-      <span class="px-5 py-2.5 rounded-full text-sm font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">☁️ 环境恶劣</span>
-      <span class="px-5 py-2.5 rounded-full text-sm font-semibold bg-red-500/15 text-red-400 border border-red-500/30">🛠️ 设备老旧</span>
-      <span class="px-5 py-2.5 rounded-full text-sm font-semibold bg-orange-500/15 text-orange-400 border border-orange-500/30">⚡ 电费损失严重</span>
-      <span class="px-5 py-2.5 rounded-full text-sm font-semibold bg-amber-500/15 text-amber-400 border border-amber-500/30">  系统混乱</span>
-      <span class="px-5 py-2.5 rounded-full text-sm font-semibold bg-yellow-500/15 text-yellow-400 border border-yellow-500/30">🔩 电机故障率高</span>
-    </div>
-  </div>
-
-
 </div>
 </section>
-
-<!-- SECTION 6: 竞争格局 -->
-<section id="sec-compete" class="relative py-24 px-4">
-<div class="max-w-6xl mx-auto">
-  <div class="anim-in">
-    <div class="sec-label">06 / COMPETITIVE LANDSCAPE</div>
-    <h2 class="sec-title">竞争格局<span>分析</span></h2>
-  </div>
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-    <!-- 饼图 -->
-    <div class="chart-wrap anim-in">
-      <div class="flex items-center justify-between mb-2">
-        <h3 class="text-steel-200 font-semibold text-sm">双胞胎集团配电供应商份额</h3>
-        <span class="font-mono text-xs text-steel-500">单位：万元</span>
-      </div>
-      <div id="chart-compete" style="height:340px"></div>
-    </div>
-    <!-- 正泰核心产品 -->
-    <div class="glass-card anim-in">
-      <h3 class="font-serif font-bold text-lg text-steel-50 mb-4">正泰核心产品型号</h3>
-      <div class="flex flex-wrap gap-2 mb-6">
-        <span class="bg-navy-800 text-steel-200 px-3 py-1.5 rounded-lg font-mono text-sm">NXM</span>
-        <span class="bg-navy-800 text-steel-200 px-3 py-1.5 rounded-lg font-mono text-sm">NXC</span>
-        <span class="bg-navy-800 text-steel-200 px-3 py-1.5 rounded-lg font-mono text-sm">NXB</span>
-        <span class="bg-navy-800 text-steel-200 px-3 py-1.5 rounded-lg font-mono text-sm">NCH8</span>
-        <span class="bg-navy-800 text-steel-200 px-3 py-1.5 rounded-lg font-mono text-sm">NXJ</span>
-        <span class="bg-navy-800 text-steel-200 px-3 py-1.5 rounded-lg font-mono text-sm">NC1 <span class="text-accent-400 text-xs">畜牧专供</span></span>
-        <span class="bg-navy-800 text-steel-200 px-3 py-1.5 rounded-lg font-mono text-sm">NS2 <span class="text-accent-400 text-xs">电动机启动器</span></span>
-      </div>
-      <div class="text-sm text-steel-300 space-y-2">
-        <p class="text-steel-400 font-mono text-xs mb-2">产品参数要求</p>
-        <p>无特殊参数要求，<strong class="text-steel-100">常规产品居多</strong></p>
-        <p>价格内卷程度一般，正泰德力西<strong class="text-steel-100">价格体系维护较好</strong></p>
-        <p>近几年<strong class="text-accent-300">降本需求明显</strong>，需入品牌库方可供货</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- 友商策略 -->
-  <div class="anim-in">
-    <h3 class="font-serif font-bold text-lg text-steel-50 mb-5">友商策略对比</h3>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-      <div class="glass-card border-l-4 border-l-red-500">
-        <h4 class="text-red-400 font-bold mb-3">正泰电器</h4>
-        <ul class="text-sm text-steel-300 space-y-2 list-none pl-4">
-          <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-steel-500">多年前即开始重点推动养猪行业</li>
-          <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-steel-500">在南昌举行过超大型推广会，邀约当地所有相关公司</li>
-          <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-steel-500"><strong class="text-steel-100">与牧原联合成立成套厂</strong>（河南正泰牧原智能电气科技有限公司，2022年成立），高度绑定</li>
-          <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-steel-500"><strong class="text-steel-100">联合开发牧原专供控制器及集中控制柜</strong></li>
-          <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-steel-500">提供适合畜牧行业特殊环境要求的产品，如<strong class="text-accent-300">NC1 畜牧专供接触器</strong>（防尘罩） <span class="text-xs text-steel-500">(信息来源：杨映赫 正泰400热线核准差异)</span></li>
-          <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-steel-500">在养猪芯片领域有相关产品布局</li>
-          <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-steel-500">双胞胎内部<strong class="text-steel-100">单元器件</strong>份额约<strong class="text-accent-400">4,000万/年</strong></li>
-        </ul>
-      </div>
-      <div class="glass-card border-l-4 border-l-blue-500">
-        <h4 class="text-blue-400 font-bold mb-3">德力西</h4>
-        <ul class="text-sm text-steel-300 space-y-2 list-none pl-4">
-          <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-steel-500">设有<strong class="text-steel-100">专攻畜牧业部门</strong></li>
-          <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-steel-500">每次山东畜牧业展会均有参展</li>
-          <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-steel-500">以<strong class="text-accent-300">价格优势</strong>切入市场</li>
-          <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-steel-500">双胞胎内部份额约<strong class="text-accent-400">1,000万/年</strong></li>
-          <li class="relative before:content-['•'] before:absolute before:-left-4 before:text-steel-500">已在增鑫科技低价抢走风机配套市场</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
-</section>
-
-<!-- SECTION 7: 上下游厂商 -->
+<div style="width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(249,115,22,0.2),transparent);margin:0 auto;max-width:72rem;padding:0 1rem;"></div>
+<!-- Page 6: 上下游及配套厂商 -->
 <section id="sec-supply" class="relative py-24 px-4">
 <div class="max-w-6xl mx-auto">
   <div class="anim-in">
@@ -1384,10 +1457,6 @@ footer { position: relative; z-index: 1; }
             <span>畜禽舍环境监控系统</span>
           </li>
         </ul>
-        <div class="mt-3 bg-green-500/20 border border-green-500/40 rounded-lg px-3 py-2 text-sm text-green-300 flex items-center gap-2">
-          <span>📌</span>
-          <span>信息已传递江西行业江伟康，相约下个月进行走访了解</span>
-        </div>
       </div>
       
       <!-- 湖北大鹏畜禽股份 -->
@@ -1427,254 +1496,185 @@ footer { position: relative; z-index: 1; }
         <p class="flex items-center gap-2"><span class="text-green-400">✔</span> 已获取相关资源</p>
         <p class="flex items-center gap-2"><span class="text-green-400">✔</span> 通过傲龙指定可提升联大机会</p>
       </div>
-      <div class="mt-3 bg-green-500/20 border border-green-500/40 rounded-lg px-3 py-2 text-sm text-green-300">
-        已传递福建销售何超阳报备客户情况
-      </div>
     </div>
   </div>
 
   </div>
 </div>
 </section>
+<div style="width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(249,115,22,0.2),transparent);margin:0 auto;max-width:72rem;padding:0 1rem;"></div>
+<!-- Page 7: 重点必访企业 TOP 10 -->
+<section class="report-section" id="sec-top10">
+  <div class="section-header anim-item">
+    <p class="section-tag">// 08 · Priority Targets</p>
+    <h2 class="section-title">重点必访企业 TOP 10</h2>
+    <p class="section-desc">综合企业规模、设备复杂度、电气元器件采购量评估</p>
+  </div>
 
-<!-- SECTION 9: 行业建议 -->
-<section id="sec-advice" class="relative py-24 px-4">
-<div class="max-w-6xl mx-auto">
-  <div class="anim-in">
-    <div class="sec-label">09 / RECOMMENDATIONS</div>
-    <h2 class="sec-title">行业发展<span>建议</span></h2>
-    <p class="sec-desc mb-10">基于本次调研分析及河南省行业对标，提出以下八项核心建议，助力公司在养猪行业配电市场实现突破。</p>
+  <div class="top-targets-grid anim-item">
+    <div class="target-card">
+      <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.6rem">
+        <span class="company-rank rank-top">01</span>
+        <div class="target-card-name">青岛大牧人机械股份有限公司</div>
+      </div>
+      <div class="target-card-info">
+        <span>山东·青岛</span> · 禽业展区 · S3号馆<br>
+        国内最大畜牧装备制造商之一，产品线涵盖整栋禽舍环控、喂料、清粪全套系统，<span>电气元器件年采购量极大</span>，配电柜、断路器、接触器为核心需求。
+      </div>
+    </div>
+    <div class="target-card">
+      <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.6rem">
+        <span class="company-rank rank-top">02</span>
+        <div class="target-card-name">广州广兴牧业设备集团有限公司</div>
+      </div>
+      <div class="target-card-info">
+        <span>广东·广州</span> · 猪业展区 · 16号馆<br>
+        华南最大畜牧设备集团，生产猪场全套自动化设备，<span>配电系统、控制柜需求量大</span>，具备长期战略合作潜力。
+      </div>
+    </div>
+    <div class="target-card">
+      <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.6rem">
+        <span class="company-rank rank-top">03</span>
+        <div class="target-card-name">四川晟兴智能科技集团有限公司</div>
+      </div>
+      <div class="target-card-info">
+        <span>四川·成都</span> · 集团展区 · 6号馆<br>
+        西南智能养殖装备龙头，集成PLC、传感器、变频器等系统，<span>对高端电气元器件有精准需求</span>。
+      </div>
+    </div>
+    <div class="target-card">
+      <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.6rem">
+        <span class="company-rank rank-top">04</span>
+        <div class="target-card-name">江苏华丽智能科技股份有限公司</div>
+      </div>
+      <div class="target-card-info">
+        <span>江苏</span> · 国际展区 · 4号馆<br>
+        上市公司，智能畜牧装备领军企业，自动化产线对断路器、继电器、<span>低压电器成套产品需求稳定</span>。
+      </div>
+    </div>
+    <div class="target-card">
+      <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.6rem">
+        <span class="company-rank rank-top">05</span>
+        <div class="target-card-name">万牧春（山东）自动化设备有限公司</div>
+      </div>
+      <div class="target-card-info">
+        <span>山东</span> · 集团展区+猪业展区 · 9/14号馆<br>
+        双展位参展，自动化设备核心厂商，<span>配电箱、接触器、温控组件为刚需</span>，合作空间大。
+      </div>
+    </div>
+    <div class="target-card">
+      <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.6rem">
+        <span class="company-rank rank-top">06</span>
+        <div class="target-card-name">深圳市振野蛋品智能设备股份有限公司</div>
+      </div>
+      <div class="target-card-info">
+        <span>广东·深圳</span> · 禽业展区 · S2号馆<br>
+        蛋品加工智能设备领域龙头，自动化产线集成度高，<span>PLC配套、低压电器用量可观</span>。
+      </div>
+    </div>
+    <div class="target-card">
+      <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.6rem">
+        <span class="company-rank rank-top">07</span>
+        <div class="target-card-name">河南金凤牧业设备股份有限公司</div>
+      </div>
+      <div class="target-card-info">
+        <span>河南</span> · 禽业展区 · S1号馆<br>
+        中原地区养殖设备龙头股份制企业，<span>环控系统电气组件、温控器需求持续增长</span>。
+      </div>
+    </div>
+    <div class="target-card">
+      <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.6rem">
+        <span class="company-rank rank-top">08</span>
+        <div class="target-card-name">广东纽恩泰新能源科技股份有限公司</div>
+      </div>
+      <div class="target-card-info">
+        <span>广东</span> · 猪业展区 · 16号馆<br>
+        新能源热泵设备上市企业，<span>逆变器、断路器、配电保护元件需求量大</span>，高价值客户。
+      </div>
+    </div>
+    <div class="target-card">
+      <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.6rem">
+        <span class="company-rank rank-top">09</span>
+        <div class="target-card-name">广东凌霄泵业股份有限公司</div>
+      </div>
+      <div class="target-card-info">
+        <span>广东</span> · 猪业展区 · 16号馆<br>
+        泵业上市公司，电机驱动系统核心用户，<span>接触器、热继电器、断路器为标配采购件</span>。
+      </div>
+    </div>
+    <div class="target-card">
+      <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.6rem">
+        <span class="company-rank rank-top">10</span>
+        <div class="target-card-name">北京大北农科技集团股份有限公司</div>
+      </div>
+      <div class="target-card-info">
+        <span>北京</span> · 猪业展区 · 16号馆<br>
+        大型农牧上市企业，饲料+种猪+动保全产业链布局，全国猪场配电设备采购规模可观。
+      </div>
+    </div>
   </div>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 anim-in">
-    <div class="advice-card">
-      <div class="advice-num">01</div>
-      <h4 class="text-steel-50 font-bold mt-2 mb-2">重点关注养猪行业</h4>
-      <p class="text-sm text-steel-300">市场体量巨大，与天正现有产品高度匹配，是公司中长期增长的重要行业方向。</p>
+</section>
+<div class="section-divider" style="width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(0,229,255,0.2),transparent);margin:2rem 0;"></div>
+<!-- Page 8: 配套策略建议 -->
+<section class="report-section" id="sec-strategy">
+  <div class="section-header anim-item">
+    <p class="section-tag">// 10 · Strategic Summary</p>
+    <h2 class="section-title">配套策略建议</h2>
+    <p class="section-desc">天正电气畜牧行业市场进入路径与优先级建议</p>
+  </div>
+
+  <div class="chart-card anim-item">
+    <div class="chart-card-title"><span class="dot"></span>各省机会价值矩阵（客户数量 × 平均规模）</div>
+    <div id="chart-tz-scatter" style="height:420px;"></div>
+  </div>
+
+  <div class="grid-2 anim-item">
+    <div class="insight-box" style="border-left-color:var(--accent-cyan)">
+      <strong style="font-size:1rem">第一梯队 — 立即进入</strong><br><br>
+      <strong>山东省</strong>：75家客户，沧州-青岛-潍坊产业带，建议设立鲁东办事处/经销商网络，重点攻关大牧人、万牧春、连科智能等头部企业。<br><br>
+      <strong>广东省</strong>：35家客户但单体规模最大，广兴集团、纽恩泰、凌霄泵业等上市企业采购量大，适合高端产品线推广。
     </div>
-    <div class="advice-card">
-      <div class="advice-num">02</div>
-      <h4 class="text-steel-50 font-bold mt-2 mb-2">增加行业展会参与</h4>
-      <p class="text-sm text-steel-300">积极参与山东畜牧业展会等行业盛会，提升品牌在畜牧行业的知名度和影响力。</p>
-    </div>
-    <div class="advice-card">
-      <div class="advice-num">03</div>
-      <h4 class="text-steel-50 font-bold mt-2 mb-2">重点开拓改造市场</h4>
-      <p class="text-sm text-steel-300">市场价格维护较好，存量改造需求大，正泰德力西价格体系稳定，竞争环境可控。</p>
-    </div>
-    <div class="advice-card">
-      <div class="advice-num">04</div>
-      <h4 class="text-steel-50 font-bold mt-2 mb-2">邀约行业专家</h4>
-      <p class="text-sm text-steel-300">邀请养殖行业专家入公司讲解行业特性，帮助团队深入理解行业需求与痛点。</p>
-    </div>
-    <div class="advice-card">
-      <div class="advice-num">05</div>
-      <h4 class="text-steel-50 font-bold mt-2 mb-2">研发环控控制器产品</h4>
-      <p class="text-sm text-steel-300">环控控制器是养猪场配电的核心，填补此空白将大幅增强行业竞争力。</p>
-    </div>
-    <div class="advice-card">
-      <div class="advice-num">06</div>
-      <h4 class="text-steel-50 font-bold mt-2 mb-2">聚焦稳定增长</h4>
-      <p class="text-sm text-steel-300">猪肉需求刚性稳定，养猪行业具备持续性，符合公司稳定发展战略需求。</p>
+    <div class="insight-box" style="border-left-color:var(--accent-pink)">
+      <strong style="font-size:1rem">第二梯队 — 渠道覆盖</strong><br><br>
+      <strong>河北省</strong>：38家客户集中沧州，中小企业密集，适合通过经销商/代理商批量覆盖，以性价比产品切入。<br><br>
+      <strong>河南省</strong>：28家客户，新乡-郑州走廊，设备自动化升级带来增量需求，可与当地代理商合作拓展。
     </div>
   </div>
-</div>
+  <div class="grid-2 anim-item">
+    <div class="insight-box" style="border-left-color:var(--accent-gold)">
+      <strong style="font-size:1rem">第三梯队 — 守土深耕</strong><br><br>
+      <strong>浙江省</strong>：本省26家客户，重点防御正泰竞争，利用地缘优势强化客户粘性，在宁波-温州-杭州三角区建立标杆案例。
+    </div>
+    <div class="insight-box" style="border-left-color:var(--accent-green)">
+      <strong style="font-size:1rem">第四梯队 — 精准狙击</strong><br><br>
+      <strong>江苏+上海</strong>：18家客户数量少但质量极高（华丽智能、正昌粮机、熊猫集团等），适合点对点商务拜访，以技术方案打动客户。
+    </div>
+  </div>
 </section>
 
-<!-- SECTION 10: 策略启示 -->
-<section id="sec-strategy" class="relative py-24 px-4">
-<div class="max-w-6xl mx-auto">
-  <div class="anim-in">
-    <div class="sec-label">10 / STRATEGIC INSIGHTS</div>
-    <h2 class="sec-title">行业头部效应与<span>策略启示</span></h2>
-  </div>
-  <div class="glass-card mb-8 anim-in">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div>
-        <h3 class="font-serif font-bold text-lg text-steel-50 mb-4">头部效应分析</h3>
-        <div class="text-sm text-steel-300 space-y-3">
-          <div class="flex gap-3">
-            <span class="text-accent-400 font-mono font-bold">1</span>
-            <p>双胞胎大量技术人员来自牧原，方案体系借鉴牧原模式，<strong class="text-steel-100">头部效应极为明显</strong></p>
-          </div>
-          <div class="flex gap-3">
-            <span class="text-accent-400 font-mono font-bold">2</span>
-            <p>养猪行业各企业<strong class="text-steel-100">高度追随头部企业做法</strong>，突破一家标杆即可辐射全行业</p>
-          </div>
-          <div class="flex gap-3">
-            <span class="text-accent-400 font-mono font-bold">3</span>
-            <p>正泰已与牧原联合成立成套厂（河南正泰牧原智能电气科技有限公司，2022年成立）实现深度绑定，<strong class="text-red-400">值得高度警惕</strong></p>
-          </div>
-        </div>
-      </div>
-      <div>
-        <h3 class="font-serif font-bold text-lg text-steel-50 mb-4">战略路径建议</h3>
-        <div class="relative pl-6 border-l-2 border-accent-500/30 text-sm text-steel-300 space-y-6">
-          <div class="relative">
-            <div class="absolute -left-[1.65rem] top-0 w-3 h-3 rounded-full bg-accent-500 border-2 border-navy-950"></div>
-            <p class="font-semibold text-steel-100">第一步：稳固双胞胎</p>
-            <p class="text-steel-400 mt-1">集中推进五大项目，尤其是补偿柜和智慧板块</p>
-          </div>
-          <div class="relative">
-            <div class="absolute -left-[1.65rem] top-0 w-3 h-3 rounded-full bg-accent-400 border-2 border-navy-950"></div>
-            <p class="font-semibold text-steel-100">第二步：建立标杆案例</p>
-            <p class="text-steel-400 mt-1">在双胞胎内部形成标杆项目和测试数据，为行业推广奠定基础</p>
-          </div>
-          <div class="relative">
-            <div class="absolute -left-[1.65rem] top-0 w-3 h-3 rounded-full bg-accent-300 border-2 border-navy-950"></div>
-            <p class="font-semibold text-steel-100">第三步：行业辐射</p>
-            <p class="text-steel-400 mt-1">以双胞胎为标杆，借助行业展会和技术交流，向其他养殖企业快速复制推广</p>
-          </div>
-          <div class="relative">
-            <div class="absolute -left-[1.65rem] top-0 w-3 h-3 rounded-full bg-accent-200 border-2 border-navy-950"></div>
-            <p class="font-semibold text-steel-100">第四步：生态布局</p>
-            <p class="text-steel-400 mt-1">逐步完善环控控制器等核心产品研发，构建养殖配电完整解决方案</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-</section>
+</div><!-- /slide-wrapper -->
 
-<!-- SECTION 10: 全国龙头企业 -->
-<section id="sec-leaders" class="relative py-24 px-4">
-<div class="max-w-6xl mx-auto">
-  <div class="anim-in">
-    <div class="sec-label">10 / INDUSTRY LEADERS</div>
-    <h2 class="sec-title">全国龙头<span>企业</span></h2>
-    <p class="sec-desc mb-10">"第二十三届中国畜牧业博览会 赞助商"</p>
-  </div>
-  
-  <div class="anim-in">
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">牧原集团</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">温氏股份</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">正大集团</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">通威农业发展有限公司</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">山东新希望六和集团有限公司</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">广东海大集团股份有限公司</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">北京首农食品集团有限公司</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">中国牧工商集团有限公司</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">双胞胎(集团)股份有限公司</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">四川德康集团</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">福建傲龙生物科技集团股份有限公司</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">神农集团</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">铁骑力士集团</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">广东德兴食品股份有限公司</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">广西扬翔集团股份有限公司</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">四川巨星集团</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">嘉吉投资(中国)有限公司</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">河南万华畜牧设备有限公司</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">上海祥欣畜禽有限公司</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">安佑生物科技集团股份有限公司</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">播恩集团股份有限公司</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">北京市华都峪口禽业有限责任公司</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">华特农业科技有限公司</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">山东益生种畜禽股份有限公司</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">北大荒科技股份有限公司</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">宁夏晓鸣农牧股份有限公司</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">东阿阿胶集团</p>
-      </div>
-      <div class="bg-navy-900/40 border border-navy-800 rounded-lg p-3 text-center text-steel-300 hover:bg-accent-900/30 hover:border-accent-500/30 transition-colors">
-        <p class="text-sm">新疆旺源集团</p>
-      </div>
-    </div>
-  </div>
-</div>
-</section>
 
 <!-- FOOTER -->
-<footer class="py-12 text-center text-steel-500 text-sm border-t border-navy-800">
-<p class="mb-2">汇报人：闽赣区域售前技术 <strong class="text-steel-300">鲁三江</strong></p>
-<p>江西畜牧业（养猪）行业调研报告 &copy; 2026年4月 &middot; 内部资料 · 请勿外传</p>
+<footer class="py-12 text-center text-steel-500 text-sm border-t border-navy-800" style="position:relative;z-index:1">
+<p>江西畜牧业（养猪）调研报告 · 精选汇编 &copy; 2026年</p>
 </footer>
 
 <script>
-// ===== GSAP & ScrollTrigger =====
-gsap.registerPlugin(ScrollTrigger);
-
-// Reading progress bar
-window.addEventListener('scroll', () => {
-  const h = document.documentElement;
-  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
-  document.getElementById('progress-bar').style.width = pct + '%';
+// ===== Animations (slide-based) =====
+// Initial state for animated elements
+document.querySelectorAll('.anim-in, .anim-item').forEach(function(el) {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(40px)';
+  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
 });
+</script>
 
-// Animate sections on scroll
-document.querySelectorAll('.anim-in').forEach(el => {
-  gsap.fromTo(el, { opacity: 0, y: 40 }, {
-    opacity: 1, y: 0, duration: 0.8, ease: 'power2.out',
-    scrollTrigger: { trigger: el, start: 'top 88%', once: true }
-  });
-});
-
-// TOC active dot
-const tocLinks = document.querySelectorAll('#toc a');
-const sections = ['hero','sec-toc','sec-market','sec-price','sec-models','sec-client','sec-power','sec-compete','sec-supply','sec-geo','sec-advice','sec-strategy'];
-sections.forEach((id, i) => {
-  ScrollTrigger.create({
-    trigger: '#' + id, start: 'top center', end: 'bottom center',
-    onEnter: () => { tocLinks.forEach(a => a.classList.remove('active')); if(tocLinks[i]) tocLinks[i].classList.add('active'); },
-    onEnterBack: () => { tocLinks.forEach(a => a.classList.remove('active')); if(tocLinks[i]) tocLinks[i].classList.add('active'); }
-  });
-});
-
+<script>
 // ===== ECharts Common =====
-const COLORS = { orange: '#fb923c', deepOrange: '#ea580c', blue: '#3b82f6', navy: '#1e3a5f', steel: '#9fb3c8', red: '#ef4444', green: '#22c55e', yellow: '#facc15', purple: '#a78bfa' };
-const chartFont = 'Inter, system-ui, sans-serif';
+var allCharts = [];
+var COLORS = { orange: '#fb923c', deepOrange: '#ea580c', blue: '#3b82f6', navy: '#1e3a5f', steel: '#9fb3c8', red: '#ef4444', green: '#22c55e', yellow: '#facc15', purple: '#a78bfa' };
+var chartFont = 'Inter, "Noto Sans SC", system-ui, sans-serif';
 function baseTooltip() {
   return {
     backgroundColor: 'rgba(6,14,36,0.92)', borderColor: 'rgba(98,125,152,0.2)', borderWidth: 1,
@@ -1683,222 +1683,571 @@ function baseTooltip() {
   };
 }
 
-// ===== Chart: 环控箱元器件品牌占比 =====
-(function(){
-  const el = document.getElementById('chart-brand-share');
-  if(!el) return;
-  const chart = echarts.init(el, null, { renderer: 'svg' });
-  chart.setOption({
-    tooltip: Object.assign(baseTooltip(), {
-      trigger: 'item',
-      formatter: p => '<div style="font-weight:600;margin-bottom:4px">' + p.name + '</div><div style="color:#fb923c;font-size:18px;font-family:JetBrains Mono">' + p.value.toFixed(2) + ' <span style="font-size:12px;color:#9fb3c8">元</span></div><div style="color:#9fb3c8;font-size:12px">占比 ' + p.percent.toFixed(1) + '%</div>'
-    }),
-    legend: { show: false },
-    series: [{
-      type: 'pie',
-      radius: ['45%', '72%'],
-      center: ['50%', '52%'],
-      avoidLabelOverlap: true,
-      itemStyle: { borderColor: '#060e24', borderWidth: 3, borderRadius: 4 },
-      label: { color: '#bcccdc', fontSize: 11, fontFamily: chartFont, formatter: '{b}\n{d}%', lineHeight: 16 },
-      labelLine: { lineStyle: { color: '#486581' } },
-      emphasis: { label: { fontSize: 13, fontWeight: 'bold' }, itemStyle: { shadowBlur: 20, shadowColor: 'rgba(249,115,22,0.3)' } },
-      data: [
-        { value: 2595.00, name: '西门子（变频器）', itemStyle: { color: '#3b82f6' } },
-        { value: 1478.38, name: '天正元器件', itemStyle: { color: '#fb923c' } },
-        { value: 810.50, name: '壳体', itemStyle: { color: '#a78bfa' } },
-        { value: 541.10, name: '其它元器件', itemStyle: { color: '#22c55e' } },
-        { value: 438.00, name: '安科瑞', itemStyle: { color: '#facc15' } },
-        { value: 327.00, name: '辅料', itemStyle: { color: '#64748b' } },
-        { value: 81.11, name: '美特亚等(甲供)', itemStyle: { color: '#334e68' } }
-      ]
-    }]
-  });
-  window.addEventListener('resize', () => chart.resize());
-})();
-
-// ===== Chart: 天正元器件产品占比 TOP5 =====
-(function(){
-  const el = document.getElementById('chart-tianzheng-top5');
-  if(!el) return;
-  const chart = echarts.init(el, null, { renderer: 'svg' });
-  chart.setOption({
-    tooltip: Object.assign(baseTooltip(), {
-      trigger: 'item',
-      formatter: p => '<div style="font-weight:600;margin-bottom:4px">' + p.name + '</div><div style="color:#fb923c;font-size:18px;font-family:JetBrains Mono">' + p.value.toFixed(2) + ' <span style="font-size:12px;color:#9fb3c8">元</span></div><div style="color:#9fb3c8;font-size:12px">占比 ' + p.percent.toFixed(1) + '%</div>'
-    }),
-    legend: { show: false },
-    series: [{
-      type: 'pie',
-      radius: ['45%', '72%'],
-      center: ['50%', '52%'],
-      avoidLabelOverlap: true,
-      itemStyle: { borderColor: '#060e24', borderWidth: 3, borderRadius: 4 },
-      label: { color: '#bcccdc', fontSize: 11, fontFamily: chartFont, formatter: '{b}\n{d}%', lineHeight: 16 },
-      labelLine: { lineStyle: { color: '#486581' } },
-      emphasis: { label: { fontSize: 13, fontWeight: 'bold' }, itemStyle: { shadowBlur: 20, shadowColor: 'rgba(249,115,22,0.3)' } },
-      data: [
-        { value: 427.04, name: '电动机保护器 TGD1', itemStyle: { color: '#fb923c' } },
-        { value: 239.06, name: '交流接触器 TGC1', itemStyle: { color: '#3b82f6' } },
-        { value: 199.78, name: '小型断路器 TGB1N', itemStyle: { color: '#a78bfa' } },
-        { value: 152.88, name: '塑壳断路器 TGM1N', itemStyle: { color: '#22c55e' } },
-        { value: 127.89, name: '小型继电器 TGJC1', itemStyle: { color: '#facc15' } },
-        { value: 331.73, name: '其它天正产品', itemStyle: { color: '#64748b' } }
-      ]
-    }]
-  });
-  window.addEventListener('resize', () => chart.resize());
-})();
-
 // ===== Chart 1: TOP10 Bar =====
 (function(){
-  const el = document.getElementById('chart-top10');
+  var el = document.getElementById('chart-top10');
   if(!el) return;
-  const chart = echarts.init(el, null, { renderer: 'svg' });
-  const names = ['牧原股份','温氏股份','双胞胎','新希望','正大集团','德康农牧','正邦科技(已被双胞胎收购)','中粮家佳康','天邦食品','海大集团'];
-  const vals = [7798, 4048, 2643, 1852, 1520, 1032, 854, 623, 580, 520];
-  const growths = ['+8.9%','+34.1%','+49.3%','+12.5%','+15.8%','+28.6%','+105.8%','+69.4%','+18.2%','+22.1%'];
+  var chart = echarts.init(el, null, { renderer: 'svg' });
+  allCharts.push(chart);
+  var names = ['牧原股份','温氏股份','双胞胎','新希望','正大集团','德康农牧','正邦科技','中粮家佳康','天邦食品','海大集团'];
+  var vals = [7798, 4048, 2643, 1852, 1520, 1032, 854, 623, 580, 520];
+  var growths = ['+8.9%','+34.1%','+49.3%','+12.5%','+15.8%','+28.6%','+105.8%','+69.4%','+18.2%','+22.1%'];
   chart.setOption({
     tooltip: Object.assign(baseTooltip(), {
-      trigger: 'axis', axisPointer: { type: 'shadow', shadowStyle: { color: 'rgba(249,115,22,0.04)' } },
-      formatter: p => { const d = p[0]; return '<div style="font-weight:600;margin-bottom:4px">' + d.name + '</div><div style="color:#fb923c;font-size:18px;font-family:JetBrains Mono">' + d.value.toLocaleString() + ' <span style="font-size:12px;color:#9fb3c8">万头</span></div><div style="color:#4ade80;font-size:12px;margin-top:2px">同比 ' + growths[d.dataIndex] + '</div>'; }
+      trigger: 'axis', axisPointer: { type: 'shadow' },
+      formatter: function(p) { var d = p[0]; return '<div style="font-weight:600;margin-bottom:4px">' + d.name + '</div><div style="color:#fb923c;font-size:18px">' + d.value.toLocaleString() + ' 万头</div>'; }
     }),
     grid: { left: 100, right: 60, top: 20, bottom: 30 },
-    xAxis: { type: 'value', splitLine: { lineStyle: { color: 'rgba(98,125,152,0.08)' } }, axisLabel: { color: '#627d98', fontFamily: chartFont, fontSize: 11 } },
-    yAxis: { type: 'category', data: names.reverse(), axisLabel: { color: '#bcccdc', fontFamily: chartFont, fontSize: 12 }, axisLine: { show: false }, axisTick: { show: false } },
+    xAxis: { type: 'value', splitLine: { lineStyle: { color: 'rgba(98,125,152,0.08)' } }, axisLabel: { color: '#627d98', fontSize: 11 } },
+    yAxis: { type: 'category', data: names.slice().reverse(), axisLabel: { color: '#bcccdc', fontSize: 12 }, axisLine: { show: false }, axisTick: { show: false } },
     series: [{
-      type: 'bar', data: vals.reverse(), barWidth: 22,
-      itemStyle: { borderRadius: [0, 6, 6, 0], color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{ offset: 0, color: '#305197' }, { offset: 1, color: '#fb923c' }]) },
-      emphasis: { itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{ offset: 0, color: '#3b619f' }, { offset: 1, color: '#fdba74' }]) } },
-      label: { show: true, position: 'right', color: '#fb923c', fontFamily: '"JetBrains Mono"', fontSize: 12, formatter: p => p.value.toLocaleString() },
-      animationDelay: idx => idx * 80
-    }],
-    animationEasing: 'cubicOut', animationDuration: 1200
+      type: 'bar', data: vals.slice().reverse(), barWidth: 22,
+      itemStyle: { borderRadius: [0,6,6,0], color: new echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:'#305197'},{offset:1,color:'#fb923c'}]) },
+      label: { show: true, position: 'right', color: '#fb923c', fontFamily: '"JetBrains Mono"', fontSize: 12, formatter: function(p){return p.value.toLocaleString();} }
+    }]
   });
-  window.addEventListener('resize', () => chart.resize());
+  window.addEventListener('resize', function(){ chart.resize(); });
 })();
 
-// ===== Chart 2: Price Trend =====
+// ===== Chart: Competition Pie =====
 (function(){
-  const el = document.getElementById('chart-price');
+  var el = document.getElementById('chart-compete');
   if(!el) return;
-  const chart = echarts.init(el, null, { renderer: 'svg' });
-  const months = [];
-  const prices = [];
-  // Simulated monthly data 2020-01 to 2026-03
-  const raw = [
-    36.0,35.5,28.0,26.0,27.5,30.0,36.5,37.0,36.5,33.0,30.0,29.0, // 2020
-    27.0,25.0,23.0,22.0,18.0,15.5,14.0,14.5,12.5,12.0,14.0,16.0, // 2021
-    15.0,14.5,13.0,14.0,15.0,16.5,21.0,22.0,23.5,24.0,24.5,22.0, // 2022
-    15.5,15.0,14.0,14.5,14.5,14.0,14.2,16.0,16.5,15.5,14.5,14.0, // 2023
-    14.5,13.5,15.0,15.0,14.5,17.0,19.0,20.5,19.5,17.0,16.0,15.5, // 2024
-    15.0,14.5,14.0,14.5,15.0,17.0,18.5,17.0,16.5,15.0,13.5,12.5, // 2025
-    13.95,11.59,9.91,8.77 // 2026 Q1+Apr low
-  ];
-  const startY = 2020;
-  raw.forEach((v, i) => {
-    const y = startY + Math.floor(i / 12);
-    const m = (i % 12) + 1;
-    months.push(y + '-' + String(m).padStart(2, '0'));
-    prices.push(v);
-  });
-  // Add April 22 rebound as separate visual point label
-
+  var chart = echarts.init(el, null, { renderer: 'svg' });
+  allCharts.push(chart);
   chart.setOption({
-    tooltip: Object.assign(baseTooltip(), {
-      trigger: 'axis',
-      formatter: p => { const d = p[0]; return '<div style="font-weight:600;margin-bottom:4px">' + d.name + '</div><div style="color:#fb923c;font-size:20px;font-family:JetBrains Mono">' + d.value.toFixed(2) + ' <span style="font-size:12px;color:#9fb3c8">元/公斤</span></div>'; }
-    }),
-    grid: { left: 55, right: 30, top: 40, bottom: 40 },
-    xAxis: { type: 'category', data: months, axisLabel: { color: '#627d98', fontFamily: chartFont, fontSize: 10, interval: 5, rotate: 30 }, axisLine: { lineStyle: { color: 'rgba(98,125,152,0.15)' } }, axisTick: { show: false } },
-    yAxis: { type: 'value', min: 7, splitLine: { lineStyle: { color: 'rgba(98,125,152,0.08)' } }, axisLabel: { color: '#627d98', fontFamily: chartFont, fontSize: 11 } },
+    tooltip: Object.assign(baseTooltip(), { trigger: 'item' }),
     series: [{
-      type: 'line', data: prices, smooth: 0.3, symbol: 'none', lineStyle: { width: 2.5, color: COLORS.orange },
-      areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(249,115,22,0.25)' }, { offset: 1, color: 'rgba(249,115,22,0)' }]) },
-      markPoint: {
-        symbol: 'circle', symbolSize: 8,
-        data: [
-          { name: '历史高点', coord: ['2020-01', 36.0], itemStyle: { color: COLORS.red } },
-          { name: '历史低点', coord: ['2026-04', 8.77], itemStyle: { color: COLORS.red } }
-        ],
-        label: { show: true, color: '#f87171', fontSize: 10, fontFamily: '"JetBrains Mono"', formatter: p => p.value + '元/kg', position: 'top' }
-      },
-      markLine: {
-        silent: true,
-        data: [
-          { yAxis: 14, label: { color: '#627d98', fontSize: 10, formatter: '盈亏线 ~14元/kg' }, lineStyle: { color: 'rgba(239,68,68,0.3)', type: 'dashed' } },
-          { yAxis: 9.7, label: { color: '#4ade80', fontSize: 10, formatter: '4月22日反弹 9.7元/kg' }, lineStyle: { color: 'rgba(34,197,94,0.25)', type: 'dashed' } }
-        ]
-      }
-    }],
-    animationDuration: 1500, animationEasing: 'cubicOut'
-  });
-  window.addEventListener('resize', () => chart.resize());
-})();
-
-// ===== Chart 3: Competition Pie =====
-(function(){
-  const el = document.getElementById('chart-compete');
-  if(!el) return;
-  const chart = echarts.init(el, null, { renderer: 'svg' });
-  chart.setOption({
-    tooltip: Object.assign(baseTooltip(), { trigger: 'item', formatter: p => '<div style="font-weight:600">' + p.name + '</div><div style="color:#fb923c;font-size:18px;font-family:JetBrains Mono;margin-top:4px">' + p.value.toLocaleString() + ' <span style="font-size:12px;color:#9fb3c8">万元</span></div><div style="color:#9fb3c8;font-size:12px">' + p.percent + '%</div>' }),
-    series: [{
-      type: 'pie', radius: ['42%', '72%'], center: ['50%', '52%'],
+      type: 'pie', radius: ['42%','72%'], center: ['50%','52%'],
       data: [
         { value: 4000, name: '正泰电器', itemStyle: { color: '#ef4444' } },
         { value: 1000, name: '德力西', itemStyle: { color: '#3b82f6' } },
         { value: 500, name: '其他品牌', itemStyle: { color: '#627d98' } }
       ],
-      label: { color: '#bcccdc', fontFamily: chartFont, fontSize: 12, formatter: '{b}\n{d}%' },
-      labelLine: { lineStyle: { color: 'rgba(98,125,152,0.3)' } },
-      emphasis: { scaleSize: 8 },
-      animationType: 'expansion', animationDuration: 1200
+      label: { color: '#bcccdc', fontSize: 12, formatter: '{b}\n{d}%' },
+      labelLine: { lineStyle: { color: 'rgba(98,125,152,0.3)' } }
     }]
   });
-  window.addEventListener('resize', () => chart.resize());
+  window.addEventListener('resize', function(){ chart.resize(); });
 })();
 
-// ===== Chart 4: Jiangxi Geo Bar =====
+// ===== Chart: 环控箱品牌占比 =====
 (function(){
-  const el = document.getElementById('chart-geo');
+  var el = document.getElementById('chart-brand-share');
   if(!el) return;
-  const chart = echarts.init(el, null, { renderer: 'svg' });
-  const cities = ['赣州市','宜春市','吉安市','上饶市','抚州市','南昌市','九江市','萍乡市','新余市','鹰潭市','景德镇'];
-  const slaughter = [520, 450, 380, 350, 310, 280, 200, 120, 80, 65, 56];
-  const breeding = [480, 420, 360, 320, 290, 250, 180, 100, 70, 55, 48];
+  var chart = echarts.init(el, null, { renderer: 'svg' });
+  allCharts.push(chart);
+  chart.setOption({
+    tooltip: Object.assign(baseTooltip(), { trigger: 'item' }),
+    series: [{
+      type: 'pie', radius: ['45%','72%'], center: ['50%','52%'],
+      itemStyle: { borderColor: '#060e24', borderWidth: 3, borderRadius: 4 },
+      label: { color: '#bcccdc', fontSize: 11, formatter: '{b}\n{d}%' },
+      labelLine: { lineStyle: { color: '#486581' } },
+      data: [
+        { value:2595, name:'西门子（变频器）', itemStyle:{color:'#3b82f6'} },
+        { value:1478.38, name:'天正元器件', itemStyle:{color:'#fb923c'} },
+        { value:810.50, name:'壳体', itemStyle:{color:'#a78bfa'} },
+        { value:541.10, name:'其它元器件', itemStyle:{color:'#22c55e'} },
+        { value:438, name:'安科瑞', itemStyle:{color:'#facc15'} },
+        { value:327, name:'辅料', itemStyle:{color:'#64748b'} },
+        { value:81.11, name:'美特亚等(甲供)', itemStyle:{color:'#334e68'} }
+      ]
+    }]
+  });
+  window.addEventListener('resize', function(){ chart.resize(); });
+})();
+
+// ===== Chart: 天正 TOP5 =====
+(function(){
+  var el = document.getElementById('chart-tianzheng-top5');
+  if(!el) return;
+  var chart = echarts.init(el, null, { renderer: 'svg' });
+  allCharts.push(chart);
+  chart.setOption({
+    tooltip: Object.assign(baseTooltip(), { trigger: 'item' }),
+    series: [{
+      type: 'pie', radius: ['45%','72%'], center: ['50%','52%'],
+      itemStyle: { borderColor: '#060e24', borderWidth: 3, borderRadius: 4 },
+      label: { color: '#bcccdc', fontSize: 11, formatter: '{b}\n{d}%' },
+      labelLine: { lineStyle: { color: '#486581' } },
+      data: [
+        { value:427.04, name:'电动机保护器 TGD1', itemStyle:{color:'#fb923c'} },
+        { value:239.06, name:'交流接触器 TGC1', itemStyle:{color:'#3b82f6'} },
+        { value:199.78, name:'小型断路器 TGB1N', itemStyle:{color:'#a78bfa'} },
+        { value:152.88, name:'塑壳断路器 TGM1N', itemStyle:{color:'#22c55e'} },
+        { value:127.89, name:'小型继电器 TGJC1', itemStyle:{color:'#facc15'} },
+        { value:331.73, name:'其它天正产品', itemStyle:{color:'#64748b'} }
+      ]
+    }]
+  });
+  window.addEventListener('resize', function(){ chart.resize(); });
+})();
+
+// ===== Chart: 区域价值散点图 =====
+(function(){
+  var el = document.getElementById('chart-tz-scatter');
+  if(!el) return;
+  var chart = echarts.init(el, null, { renderer: 'svg' });
+  allCharts.push(chart);
   chart.setOption({
     tooltip: Object.assign(baseTooltip(), {
-      trigger: 'axis', axisPointer: { type: 'shadow' },
-      formatter: p => '<div style="font-weight:600;margin-bottom:4px">' + p[0].name + '</div>' + p.map(d => '<div style="margin-top:2px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + d.color + ';margin-right:6px"></span>' + d.seriesName + ': <strong style="color:#fb923c">' + d.value + '</strong> 万头</div>').join('')
+      formatter: function(p) {
+        return '<div style="font-weight:700;margin-bottom:4px">' + p.data[3] + '</div>' +
+          '客户数量: <span style="color:#fb923c;font-weight:900">' + p.data[0] + '</span><br/>' +
+          '平均规模指数: <span style="color:#facc15;font-weight:900">' + p.data[1] + '</span><br/>' +
+          '综合价值: <span style="color:#22c55e;font-weight:900">' + p.data[2] + '</span>';
+      }
     }),
-    legend: { data: ['屠宰产能','养殖规模'], textStyle: { color: '#9fb3c8', fontFamily: chartFont, fontSize: 11 }, top: 0, right: 0 },
-    grid: { left: 80, right: 30, top: 40, bottom: 30 },
-    xAxis: { type: 'value', splitLine: { lineStyle: { color: 'rgba(98,125,152,0.08)' } }, axisLabel: { color: '#627d98', fontFamily: chartFont, fontSize: 11 } },
-    yAxis: { type: 'category', data: cities.reverse(), axisLabel: { color: '#bcccdc', fontFamily: chartFont, fontSize: 12 }, axisLine: { show: false }, axisTick: { show: false } },
-    series: [
-      { name: '屠宰产能', type: 'bar', data: slaughter.reverse(), barWidth: 14, itemStyle: { borderRadius: [0,4,4,0], color: new echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:'#305197'},{offset:1,color:'#3b82f6'}]) } },
-      { name: '养殖规模', type: 'bar', data: breeding.reverse(), barWidth: 14, itemStyle: { borderRadius: [0,4,4,0], color: new echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:'#7c2d12'},{offset:1,color:'#fb923c'}]) } }
-    ],
-    animationDuration: 1200, animationEasing: 'cubicOut'
+    grid: { left: 60, right: 40, top: 30, bottom: 50 },
+    xAxis: {
+      type: 'value', name: '客户数量',
+      nameTextStyle: { color: '#90a4ae', fontSize: 11 },
+      axisLabel: { color: '#627d98', fontSize: 11 },
+      splitLine: { lineStyle: { color: 'rgba(98,125,152,0.08)' } },
+      axisLine: { lineStyle: { color: 'rgba(98,125,152,0.15)' } }
+    },
+    yAxis: {
+      type: 'value', name: '平均客户规模指数',
+      nameTextStyle: { color: '#90a4ae', fontSize: 11 },
+      axisLabel: { color: '#627d98', fontSize: 11 },
+      splitLine: { lineStyle: { color: 'rgba(98,125,152,0.08)' } },
+      axisLine: { lineStyle: { color: 'rgba(98,125,152,0.15)' } }
+    },
+    series: [{
+      type: 'scatter', symbolSize: function(d){ return Math.sqrt(d[2]) * 3; },
+      data: [
+        [75, 65, 800, '山东'],
+        [38, 55, 450, '河北'],
+        [35, 82, 600, '广东'],
+        [28, 60, 350, '河南'],
+        [26, 70, 380, '浙江'],
+        [10, 88, 250, '江苏'],
+        [8, 90, 200, '上海'],
+        [8, 75, 180, '其他']
+      ],
+      label: { show: true, formatter: function(p){ return p.data[3]; }, color: '#bcccdc', fontSize: 12, fontWeight: 700, position: 'top' },
+      itemStyle: {
+        color: function(p) { return ['#fb923c','#ea580c','#22c55e','#facc15','#ef4444','#a78bfa','#3b82f6','#627d98'][p.dataIndex]; },
+        shadowBlur: 10, shadowColor: 'rgba(251,146,60,0.3)'
+      }
+    }]
   });
-  window.addEventListener('resize', () => chart.resize());
+  window.addEventListener('resize', function(){ chart.resize(); });
 })();
 
-// Hero parallax
-gsap.to('#hero', {
-  scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true },
-  opacity: 0.3, y: -80
-});
-
-// ===== Project Card Click Highlight =====
-document.querySelectorAll('.proj-card').forEach(card => {
-  card.addEventListener('click', () => {
-    document.querySelectorAll('.proj-card').forEach(c => c.classList.remove('proj-active'));
+// Project card click
+document.querySelectorAll('.proj-card').forEach(function(card) {
+  card.addEventListener('click', function() {
+    document.querySelectorAll('.proj-card').forEach(function(c) { c.classList.remove('proj-active'); });
     card.classList.add('proj-active');
   });
 });
 </script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+
+<script>
+// ===== Cover + PPT Slide Navigation =====
+(function(){
+  var sectionIds = ['sec-market','sec-compete','sec-power','sec-supply','sec-top10','sec-strategy'];
+  var totalSlides = sectionIds.length;
+  var currentSec = 0;
+  var lock = false;
+
+  // --- Cover ---
+  var coverStep = 0, coverDone = false;
+  var coverEls = [document.getElementById('coverS1'), document.getElementById('coverS2'), document.getElementById('coverS3')];
+  var cover = document.getElementById('cover');
+
+  function showSlide(idx) {
+    for (var i = 0; i < sectionIds.length; i++) {
+      var s = document.getElementById(sectionIds[i]);
+      if (!s) continue;
+      if (i === idx) {
+        s.classList.add('slide-active');
+        s.style.opacity = '1';
+        s.style.visibility = 'visible';
+        s.style.pointerEvents = 'auto';
+        s.style.zIndex = '1';
+        s.scrollTop = 0;
+        var items = s.querySelectorAll('.anim-in, .anim-item');
+        for (var j = 0; j < items.length; j++) {
+          items[j].style.opacity = '1';
+          items[j].style.transform = 'translateY(0)';
+        }
+      } else {
+        s.classList.remove('slide-active');
+        s.style.opacity = '0';
+        s.style.visibility = 'hidden';
+        s.style.pointerEvents = 'none';
+        s.style.zIndex = '0';
+      }
+    }
+    document.getElementById('slideNum').textContent = idx + 1;
+    // Resize charts
+    setTimeout(function() {
+      if (window.allCharts) {
+        for (var k = 0; k < allCharts.length; k++) {
+          try { allCharts[k].resize(); } catch(e) {}
+        }
+      }
+    }, 150);
+  }
+
+  function next() {
+    if (lock) return;
+    var sec = document.getElementById(sectionIds[currentSec]);
+    if (sec) {
+      var maxScroll = sec.scrollHeight - sec.clientHeight;
+      if (maxScroll > 10 && sec.scrollTop < maxScroll - 10) {
+        sec.scrollBy({ top: Math.min(sec.clientHeight * 0.9, maxScroll - sec.scrollTop), behavior: 'smooth' });
+        return;
+      }
+    }
+    if (currentSec >= totalSlides - 1) return;
+    lock = true;
+    currentSec++;
+    showSlide(currentSec);
+    setTimeout(function() { lock = false; }, 500);
+  }
+
+  function prev() {
+    if (lock) return;
+    var sec = document.getElementById(sectionIds[currentSec]);
+    if (sec && sec.scrollTop > 10) {
+      sec.scrollBy({ top: -sec.clientHeight * 0.9, behavior: 'smooth' });
+      return;
+    }
+    if (currentSec <= 0) return;
+    lock = true;
+    currentSec--;
+    showSlide(currentSec);
+    setTimeout(function() { lock = false; }, 500);
+  }
+
+  function dismissCover() {
+    coverDone = true;
+    cover.classList.add('dismissed');
+    document.body.classList.remove('cover-active');
+    document.getElementById('slideIndicator').classList.add('active');
+    showSlide(0);
+    setTimeout(function() { cover.style.display = 'none'; }, 800);
+  }
+
+  function coverForward() {
+    if (coverDone) return;
+    if (coverStep < 3) {
+      coverStep++;
+      document.getElementById('coverStepNum').textContent = coverStep;
+      coverEls[coverStep - 1].classList.add('visible');
+      if (coverStep >= 3) {
+        document.getElementById('coverHint').textContent = '点击或按 → 键进入报告';
+      }
+    } else {
+      dismissCover();
+    }
+  }
+
+  function coverBackward() {
+    if (coverDone || coverStep <= 0) return;
+    coverEls[coverStep - 1].classList.remove('visible');
+    coverStep--;
+    document.getElementById('coverStepNum').textContent = coverStep;
+    document.getElementById('coverHint').textContent = '点击或按 → 键继续';
+  }
+
+  // Cover click
+  cover.addEventListener('click', function(e) { e.stopPropagation(); coverForward(); });
+
+  // Keyboard
+  document.addEventListener('keydown', function(e) {
+    var k = e.key;
+    if (!coverDone) {
+      if (k==='ArrowRight'||k===' '||k==='Enter'||k==='PageDown') { e.preventDefault(); coverForward(); }
+      else if (k==='ArrowLeft'||k==='PageUp'||k==='Backspace') { e.preventDefault(); coverBackward(); }
+      return;
+    }
+    if (k==='ArrowRight'||k==='ArrowDown'||k===' '||k==='PageDown') { e.preventDefault(); next(); }
+    else if (k==='ArrowLeft'||k==='ArrowUp'||k==='PageUp'||k==='Backspace') { e.preventDefault(); prev(); }
+  });
+
+  // Mouse wheel
+  var wheelLock = false;
+  document.addEventListener('wheel', function(e) {
+    if (!coverDone) return;
+    e.preventDefault();
+    if (wheelLock) return;
+    wheelLock = true;
+    setTimeout(function() { wheelLock = false; }, 700);
+    if (e.deltaY > 0) next(); else prev();
+  }, { passive: false });
+
+  // Touch
+  var ty = 0;
+  document.addEventListener('touchstart', function(e) { ty = e.touches[0].clientY; });
+  document.addEventListener('touchend', function(e) {
+    if (!coverDone) return;
+    var d = ty - e.changedTouches[0].clientY;
+    if (Math.abs(d) > 50) { d > 0 ? next() : prev(); }
+  });
+
+  document.getElementById('slideTotal').textContent = totalSlides;
+})();
+</script>
+
+<!-- ===== PPT Enhancement Layer (v2) ===== -->
+<div class="slide-header-bar" id="slideHeaderBar">
+  <div class="left" id="shbLeft">JIANGXI · LIVESTOCK</div>
+  <div class="right" id="shbRight"></div>
+</div>
+<div class="nav-arrow prev" id="navPrev" title="上一页 (←)">‹</div>
+<div class="nav-arrow next" id="navNext" title="下一页 (→)">›</div>
+
+<script>
+(function(){
+  // ===== 1. Split the giant BOM table in sec-power into two columns =====
+  function splitBomTable() {
+    var sec = document.getElementById('sec-power');
+    if (!sec) return;
+    var tbl = sec.querySelector('table.min-w-full');
+    if (!tbl || tbl.dataset.bomSplit === '1') return;
+    var allRows = Array.from(tbl.tBodies[0].rows);
+    if (allRows.length < 20) return;
+
+    // Identify summary rows (those that use colspan)
+    var itemRows = [];
+    var summaryRows = [];
+    allRows.forEach(function(r){
+      var hasColspan = Array.from(r.cells).some(function(c){ return c.colSpan && c.colSpan > 1; });
+      if (hasColspan) summaryRows.push(r); else itemRows.push(r);
+    });
+
+    var half = Math.ceil(itemRows.length / 2);
+    var leftRows = itemRows.slice(0, half);
+    var rightRows = itemRows.slice(half);
+
+    // Build wrapper
+    var wrap = document.createElement('div');
+    wrap.className = 'bom-split';
+
+    function buildHalf(rows){
+      var holder = document.createElement('div');
+      holder.className = 'bom-half';
+      var t = document.createElement('table');
+      t.className = 'min-w-full text-xs text-left';
+      var thead = tbl.tHead.cloneNode(true);
+      t.appendChild(thead);
+      var tbody = document.createElement('tbody');
+      rows.forEach(function(r){ tbody.appendChild(r.cloneNode(true)); });
+      t.appendChild(tbody);
+      holder.appendChild(t);
+      return holder;
+    }
+    wrap.appendChild(buildHalf(leftRows));
+    wrap.appendChild(buildHalf(rightRows));
+
+    // Build a compact summary block from summaryRows
+    var summary = document.createElement('div');
+    summary.className = 'bom-summary';
+    var summaryData = [];
+    summaryRows.forEach(function(r){
+      // first cell = label, last cell = value
+      var label = r.cells[0] ? r.cells[0].textContent.trim().replace(/[:：]$/,'') : '';
+      var val = r.cells[r.cells.length-1] ? r.cells[r.cells.length-1].textContent.trim() : '';
+      if (label && val) summaryData.push({label: label, value: val});
+    });
+    summaryData.forEach(function(item, i){
+      var el = document.createElement('div');
+      el.className = 'item' + (i === summaryData.length - 1 ? ' total' : '');
+      el.innerHTML = '<span class="lbl">' + item.label + '</span><span class="val">' + item.value + '</span>';
+      summary.appendChild(el);
+    });
+
+    // Replace the original .overflow-x-auto container
+    var oldWrap = tbl.closest('.overflow-x-auto') || tbl.parentNode;
+    var parent = oldWrap.parentNode;
+    parent.insertBefore(wrap, oldWrap);
+    parent.insertBefore(summary, oldWrap);
+    oldWrap.remove();
+    tbl.dataset.bomSplit = '1';
+  }
+
+  // ===== 2. Scale-to-fit any oversized slide =====
+  var fitObserver;
+  function fitSlide(sec) {
+    if (!sec) return;
+    // Wrap content in a .slide-fit-inner if not already
+    var inner = sec.querySelector(':scope > .slide-fit-inner');
+    if (!inner) {
+      inner = document.createElement('div');
+      inner.className = 'slide-fit-inner';
+      while (sec.firstChild) inner.appendChild(sec.firstChild);
+      sec.appendChild(inner);
+    }
+    // Reset and re-measure natural size
+    inner.style.transform = '';
+    inner.style.height = '';
+    inner.style.width = '';
+    inner.style.marginLeft = '';
+    var cs = getComputedStyle(sec);
+    var padTop = parseFloat(cs.paddingTop) || 0;
+    var padBot = parseFloat(cs.paddingBottom) || 0;
+    var availH = sec.clientHeight - padTop - padBot - 20;
+    var contentH = inner.scrollHeight;
+    if (contentH > availH && contentH > 0 && availH > 0) {
+      var scale = Math.max(0.40, availH / contentH);
+      inner.style.transform = 'scale(' + scale + ')';
+      inner.style.transformOrigin = 'top center';
+      inner.style.width = (100 / scale) + '%';
+      inner.style.marginLeft = '-' + ((100/scale - 100) / 2) + '%';
+      inner.style.height = (contentH * scale) + 'px';
+    }
+    sec.style.overflow = 'hidden';
+    sec.scrollTop = 0;
+  }
+
+  function fitAllSlides() {
+    document.querySelectorAll('#slide-wrapper > section').forEach(fitSlide);
+  }
+
+  // ===== 3. Override slide navigation: click anywhere advances; no inline scroll =====
+  var sectionIds = ['sec-market','sec-compete','sec-power','sec-supply','sec-top10','sec-strategy'];
+  var sectionTitles = ['市场概况', 'x元器件用量', '配电体系', '配套厂商', '重点必访 TOP10', '策略建议'];
+
+  function currentIndex() {
+    for (var i=0;i<sectionIds.length;i++){
+      var s=document.getElementById(sectionIds[i]);
+      if (s && s.classList.contains('slide-active')) return i;
+    }
+    return 0;
+  }
+  function gotoSlide(idx) {
+    if (idx < 0 || idx >= sectionIds.length) return;
+    // Trigger underlying showSlide via keyboard arrow simulation? Simpler: call directly by toggling classes
+    sectionIds.forEach(function(id, i){
+      var s = document.getElementById(id);
+      if (!s) return;
+      if (i === idx) {
+        s.classList.add('slide-active');
+        s.style.opacity='1'; s.style.visibility='visible'; s.style.pointerEvents='auto'; s.style.zIndex='1';
+        s.scrollTop = 0;
+        var items = s.querySelectorAll('.anim-in, .anim-item');
+        items.forEach(function(it){ it.style.opacity='1'; it.style.transform='translateY(0)'; });
+        setTimeout(function(){ fitSlide(s); if (window.allCharts) window.allCharts.forEach(function(c){ try{c.resize();}catch(e){} }); }, 80);
+        setTimeout(function(){ fitSlide(s); }, 350);
+      } else {
+        s.classList.remove('slide-active');
+        s.style.opacity='0'; s.style.visibility='hidden'; s.style.pointerEvents='none'; s.style.zIndex='0';
+      }
+    });
+    updateUI(idx);
+  }
+
+  function updateUI(idx) {
+    var ind = document.getElementById('slideNum');
+    if (ind) ind.textContent = idx + 1;
+    var shbL = document.getElementById('shbLeft');
+    if (shbL) shbL.textContent = ('0' + (idx + 1)).slice(-2) + ' · ' + sectionTitles[idx];
+    document.getElementById('navPrev').classList.toggle('disabled', idx === 0);
+    document.getElementById('navNext').classList.toggle('disabled', idx === sectionIds.length - 1);
+  }
+
+  function nextSlide(){ gotoSlide(Math.min(sectionIds.length - 1, currentIndex() + 1)); }
+  function prevSlide(){ gotoSlide(Math.max(0, currentIndex() - 1)); }
+
+  // Show enhancement UI only after cover is dismissed
+  function watchCover() {
+    var cover = document.getElementById('cover');
+    if (!cover) { showNavUI(); return; }
+    var iv = setInterval(function(){
+      if (cover.classList.contains('dismissed') || cover.style.display === 'none') {
+        clearInterval(iv);
+        setTimeout(function(){
+          showNavUI();
+          splitBomTable();
+          fitAllSlides();
+          updateUI(currentIndex());
+        }, 700);
+      }
+    }, 200);
+  }
+  function showNavUI() {
+    document.getElementById('slideHeaderBar').classList.add('visible');
+    document.getElementById('navPrev').classList.add('visible');
+    document.getElementById('navNext').classList.add('visible');
+  }
+
+  // Hook nav arrows
+  document.getElementById('navPrev').addEventListener('click', function(e){ e.stopPropagation(); prevSlide(); });
+  document.getElementById('navNext').addEventListener('click', function(e){ e.stopPropagation(); nextSlide(); });
+
+  // ===== Click anywhere advances (consistent across all pages) =====
+  document.addEventListener('click', function(e){
+    var cover = document.getElementById('cover');
+    if (cover && !cover.classList.contains('dismissed') && cover.style.display !== 'none') return;
+    if (e.target.closest('a, button, input, select, textarea, .nav-arrow, #cover')) return;
+    e.stopPropagation();
+    nextSlide();
+  }, true); // capture phase to run before original handlers
+
+  // Right-click for previous slide
+  document.addEventListener('contextmenu', function(e){
+    var cover = document.getElementById('cover');
+    if (cover && !cover.classList.contains('dismissed') && cover.style.display !== 'none') return;
+    e.preventDefault(); e.stopPropagation(); prevSlide();
+  }, true);
+
+  // Keyboard override (capture phase) — no inline scroll, always advance/back
+  document.addEventListener('keydown', function(e){
+    var cover = document.getElementById('cover');
+    if (cover && !cover.classList.contains('dismissed') && cover.style.display !== 'none') return;
+    var k = e.key;
+    if (k==='ArrowRight'||k==='ArrowDown'||k===' '||k==='PageDown'||k==='Enter') {
+      e.preventDefault(); e.stopPropagation(); nextSlide();
+    } else if (k==='ArrowLeft'||k==='ArrowUp'||k==='PageUp'||k==='Backspace') {
+      e.preventDefault(); e.stopPropagation(); prevSlide();
+    } else if (k==='Home') { e.preventDefault(); gotoSlide(0); }
+    else if (k==='End') { e.preventDefault(); gotoSlide(sectionIds.length - 1); }
+  }, true);
+
+  // Wheel override (capture phase) — one advance per gesture
+  var wheelLock = false;
+  document.addEventListener('wheel', function(e){
+    var cover = document.getElementById('cover');
+    if (cover && !cover.classList.contains('dismissed') && cover.style.display !== 'none') return;
+    e.preventDefault(); e.stopPropagation();
+    if (wheelLock) return;
+    wheelLock = true;
+    setTimeout(function(){ wheelLock = false; }, 700);
+    if (e.deltaY > 0) nextSlide(); else prevSlide();
+  }, { passive: false, capture: true });
+
+  // Resize handler
+  var rzT;
+  window.addEventListener('resize', function(){
+    clearTimeout(rzT);
+    rzT = setTimeout(function(){
+      fitAllSlides();
+      if (window.allCharts) window.allCharts.forEach(function(c){ try{c.resize();}catch(e){} });
+    }, 200);
+  });
+
+  // Update progress bar based on slide position
+  function updateProgress() {
+    var bar = document.getElementById('progress-bar');
+    if (!bar) return;
+    var pct = ((currentIndex() + 1) / sectionIds.length) * 100;
+    bar.style.width = pct + '%';
+  }
+  var origGoto = gotoSlide;
+  gotoSlide = function(idx){ origGoto(idx); updateProgress(); };
+
+  // Start observing
+  watchCover();
+
+  // Initial fit on load (in case cover already dismissed)
+  setTimeout(function(){ splitBomTable(); fitAllSlides(); updateUI(currentIndex()); updateProgress(); }, 500);
+})();
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
