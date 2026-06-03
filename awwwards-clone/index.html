@@ -838,9 +838,9 @@ table.min-w-full tbody tr:hover { background: rgba(251,146,60,0.06) !important; 
 
 .bg-navy-800.text-steel-200 { background: rgba(15,30,60,0.7) !important; border: 1px solid rgba(98,125,152,0.18); }
 
-#sec-power-a .grid-cols-1.md\:grid-cols-4 > div, #sec-power-b .grid-cols-1.md\:grid-cols-4 > div, #sec-power-c .grid-cols-1.md\:grid-cols-4 > div { padding: 0.55rem 0.7rem !important; }
-#sec-power-a .grid-cols-1.md\:grid-cols-4 .text-sm, #sec-power-b .grid-cols-1.md\:grid-cols-4 .text-sm, #sec-power-c .grid-cols-1.md\:grid-cols-4 .text-sm,
-#sec-power-a .grid-cols-1.md\:grid-cols-4 .text-xs, #sec-power-b .grid-cols-1.md\:grid-cols-4 .text-xs, #sec-power-c .grid-cols-1.md\:grid-cols-4 .text-xs { font-size: 0.7rem !important; line-height: 1.45 !important; }
+#sec-power .grid-cols-1.md\:grid-cols-4 > div { padding: 0.55rem 0.7rem !important; }
+#sec-power .grid-cols-1.md\:grid-cols-4 .text-sm,
+#sec-power .grid-cols-1.md\:grid-cols-4 .text-xs { font-size: 0.7rem !important; line-height: 1.45 !important; }
 
 #sec-power-a .glass-card > .overflow-x-auto, #sec-power-b .glass-card > .overflow-x-auto, #sec-power-c .glass-card > .overflow-x-auto { overflow: visible !important; max-height: none !important; }
 
@@ -1360,8 +1360,11 @@ table.min-w-full tbody tr:hover { background: rgba(251,146,60,0.06) !important; 
 </section>
 </div>
 </section>
+<div style="width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(249,115,22,0.2),transparent);margin:0 auto;max-width:72rem;padding:0 1rem;"></div>
 <!-- Page 6: 上下游及配套厂商 -->
-<section id="sec-supply" class="relative py-24 px-4">
+
+<!-- Page 4a: 成套配套概况 -->
+<section id="sec-supply-a" class="relative py-24 px-4">
 <div class="max-w-6xl mx-auto">
   <div class="anim-in">
     <div class="sec-label">07 / SUPPLY CHAIN</div>
@@ -1388,6 +1391,16 @@ table.min-w-full tbody tr:hover { background: rgba(251,146,60,0.06) !important; 
   <div class="mb-10 anim-in">
     <div class="glass-card p-4">
       <div class="flex items-center justify-between flex-wrap gap-3 mb-4">
+</div>
+</section>
+
+<!-- Page 4b: 饲料设备配套 -->
+<section id="sec-supply-b" class="relative py-24 px-4">
+<div class="max-w-6xl mx-auto">
+  <div class="anim-in">
+    <div class="sec-label">06b / FEED EQUIPMENT</div>
+    <h2 class="sec-title">饲料设备<span>配套体系</span></h2>
+  </div>
         <div class="flex items-center gap-3">
           <div class="font-mono text-xs text-accent-400">饲料设备</div>
           <h4 class="text-steel-50 font-bold">江西联大高科</h4>
@@ -1448,6 +1461,16 @@ table.min-w-full tbody tr:hover { background: rgba(251,146,60,0.06) !important; 
       <div class="w-0.5 h-6 bg-accent-500"></div>
       <div class="text-accent-500 font-semibold text-sm">分支一：从江西联大高科挖掘的客户</div>
     </div>
+  </div>
+</div>
+</section>
+
+<!-- Page 4c: 优质客户 -->
+<section id="sec-supply-c" class="relative py-24 px-4">
+<div class="max-w-6xl mx-auto">
+  <div class="anim-in">
+    <div class="sec-label">06c / KEY CLIENTS</div>
+    <h2 class="sec-title">优质<span>客户</span></h2>
   </div>
   
   <!-- 走访机会点发现优质客户 -->
@@ -1522,6 +1545,8 @@ table.min-w-full tbody tr:hover { background: rgba(251,146,60,0.06) !important; 
   </div>
 
   </div>
+</div>
+</section>
 </div>
 </section>
 <div style="width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(249,115,22,0.2),transparent);margin:0 auto;max-width:72rem;padding:0 1rem;"></div>
@@ -1870,7 +1895,7 @@ document.querySelectorAll('.proj-card').forEach(function(card) {
 <script>
 // ===== Cover + PPT Slide Navigation =====
 (function(){
-  var sectionIds = ['sec-market','sec-compete','sec-power-a','sec-power-b','sec-power-c','sec-supply','sec-top10','sec-strategy'];
+  var sectionIds = ['sec-market','sec-compete','sec-power-a','sec-power-b','sec-power-c','sec-supply-a','sec-supply-b','sec-supply-c','sec-top10','sec-strategy'];
   var totalSlides = sectionIds.length;
   var currentSec = 0;
   var lock = false;
@@ -2132,7 +2157,7 @@ document.querySelectorAll('.proj-card').forEach(function(card) {
   }
 
   // ===== 3. Override slide navigation: click anywhere advances; no inline scroll =====
-  var sectionIds = ['sec-market','sec-compete','sec-power-a','sec-power-b','sec-power-c','sec-supply','sec-top10','sec-strategy'];
+  var sectionIds = ['sec-market','sec-compete','sec-power-a','sec-power-b','sec-power-c','sec-supply-a','sec-supply-b','sec-supply-c','sec-top10','sec-strategy'];
   var sectionTitles = ['市场概况', 'x元器件用量', '配电体系', '配套厂商', '重点必访 TOP10', '策略建议'];
 
   function currentIndex() {
