@@ -700,8 +700,8 @@ body::before {
 #chart-compete { height: 420px !important; max-height: 420px !important; }
 
 /* image inside sec-power compaction */
-#sec-power img { max-height: 220px !important; width: auto !important; margin: 0 auto !important; display: block !important; }
-#sec-power .grid > div > img { max-height: 220px !important; }
+#sec-power-a img, #sec-power-b img, #sec-power-c img { max-height: 220px !important; width: auto !important; margin: 0 auto !important; display: block !important; }
+#sec-power-a .grid > div > img, #sec-power-b .grid > div > img, #sec-power-c .grid > div > img { max-height: 220px !important; }
 
 .glass-card table.min-w-full { table-layout: fixed; width: 100%; }
 table.min-w-full thead th {
@@ -838,11 +838,11 @@ table.min-w-full tbody tr:hover { background: rgba(251,146,60,0.06) !important; 
 
 .bg-navy-800.text-steel-200 { background: rgba(15,30,60,0.7) !important; border: 1px solid rgba(98,125,152,0.18); }
 
-#sec-power .grid-cols-1.md\:grid-cols-4 > div { padding: 0.55rem 0.7rem !important; }
-#sec-power .grid-cols-1.md\:grid-cols-4 .text-sm,
-#sec-power .grid-cols-1.md\:grid-cols-4 .text-xs { font-size: 0.7rem !important; line-height: 1.45 !important; }
+#sec-power-a .grid-cols-1.md\:grid-cols-4 > div, #sec-power-b .grid-cols-1.md\:grid-cols-4 > div, #sec-power-c .grid-cols-1.md\:grid-cols-4 > div { padding: 0.55rem 0.7rem !important; }
+#sec-power-a .grid-cols-1.md\:grid-cols-4 .text-sm, #sec-power-b .grid-cols-1.md\:grid-cols-4 .text-sm, #sec-power-c .grid-cols-1.md\:grid-cols-4 .text-sm,
+#sec-power-a .grid-cols-1.md\:grid-cols-4 .text-xs, #sec-power-b .grid-cols-1.md\:grid-cols-4 .text-xs, #sec-power-c .grid-cols-1.md\:grid-cols-4 .text-xs { font-size: 0.7rem !important; line-height: 1.45 !important; }
 
-#sec-power .glass-card > .overflow-x-auto { overflow: visible !important; max-height: none !important; }
+#sec-power-a .glass-card > .overflow-x-auto, #sec-power-b .glass-card > .overflow-x-auto, #sec-power-c .glass-card > .overflow-x-auto { overflow: visible !important; max-height: none !important; }
 
 @media print {
   #slide-wrapper > section { position: static !important; opacity: 1 !important; visibility: visible !important; page-break-after: always; height: auto !important; }
@@ -969,7 +969,8 @@ table.min-w-full tbody tr:hover { background: rgba(251,146,60,0.06) !important; 
 </section>
 <div style="width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(249,115,22,0.2),transparent);margin:0 auto;max-width:72rem;padding:0 1rem;"></div>
 <!-- Pages 3-5: 养猪场配电体系深度分析 -->
-<section id="sec-power" class="relative py-24 px-4">
+<!-- Page 3a: 配电板块构成 -->
+<section id="sec-power-a" class="relative py-24 px-4">
 <div class="max-w-6xl mx-auto">
   <div class="anim-in">
     <div class="sec-label">05 / POWER DISTRIBUTION</div>
@@ -1036,6 +1037,16 @@ table.min-w-full tbody tr:hover { background: rgba(251,146,60,0.06) !important; 
     </div>
   </div>
   <div class="mt-8 anim-in">
+</div>
+</section>
+
+<!-- Page 3b: 环控箱配置清单 -->
+<section id="sec-power-b" class="relative py-24 px-4">
+<div class="max-w-6xl mx-auto">
+  <div class="anim-in">
+    <div class="sec-label">05b / COMPONENT LIST</div>
+    <h2 class="sec-title">环控箱<span>配置清单</span></h2>
+  </div>
     <div class="glass-card p-6">
       <div class="font-mono text-xs text-accent-400 mb-4">1600头1控2 环控箱配置清单</div>
       <div class="overflow-x-auto">
@@ -1318,6 +1329,16 @@ table.min-w-full tbody tr:hover { background: rgba(251,146,60,0.06) !important; 
     </div>
   </div>
   <div class="mt-8 anim-in">
+</div>
+</section>
+
+<!-- Page 3c: 品牌占比分析 -->
+<section id="sec-power-c" class="relative py-24 px-4">
+<div class="max-w-6xl mx-auto">
+  <div class="anim-in">
+    <div class="sec-label">05c / BRAND ANALYSIS</div>
+    <h2 class="sec-title">元器件<span>品牌占比</span></h2>
+  </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="chart-wrap">
         <div class="flex items-center justify-between mb-2">
@@ -1337,7 +1358,8 @@ table.min-w-full tbody tr:hover { background: rgba(251,146,60,0.06) !important; 
   </div>
 </div>
 </section>
-<div style="width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(249,115,22,0.2),transparent);margin:0 auto;max-width:72rem;padding:0 1rem;"></div>
+</div>
+</section>
 <!-- Page 6: 上下游及配套厂商 -->
 <section id="sec-supply" class="relative py-24 px-4">
 <div class="max-w-6xl mx-auto">
@@ -1848,7 +1870,7 @@ document.querySelectorAll('.proj-card').forEach(function(card) {
 <script>
 // ===== Cover + PPT Slide Navigation =====
 (function(){
-  var sectionIds = ['sec-market','sec-compete','sec-power','sec-supply','sec-top10','sec-strategy'];
+  var sectionIds = ['sec-market','sec-compete','sec-power-a','sec-power-b','sec-power-c','sec-supply','sec-top10','sec-strategy'];
   var totalSlides = sectionIds.length;
   var currentSec = 0;
   var lock = false;
@@ -2110,7 +2132,7 @@ document.querySelectorAll('.proj-card').forEach(function(card) {
   }
 
   // ===== 3. Override slide navigation: click anywhere advances; no inline scroll =====
-  var sectionIds = ['sec-market','sec-compete','sec-power','sec-supply','sec-top10','sec-strategy'];
+  var sectionIds = ['sec-market','sec-compete','sec-power-a','sec-power-b','sec-power-c','sec-supply','sec-top10','sec-strategy'];
   var sectionTitles = ['市场概况', 'x元器件用量', '配电体系', '配套厂商', '重点必访 TOP10', '策略建议'];
 
   function currentIndex() {
