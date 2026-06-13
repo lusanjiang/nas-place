@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>智慧建筑配电解决方案</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
 
@@ -23,11 +24,7 @@
   --gradient-3: linear-gradient(135deg, #10b981, #06b6d4);
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
@@ -38,7 +35,6 @@ body {
   width: 100vw;
 }
 
-/* ====== 幻灯片容器 ====== */
 .slides-container {
   position: relative;
   width: 100vw;
@@ -48,15 +44,13 @@ body {
 
 .slide {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 60px 80px;
+  padding: 50px 70px;
   opacity: 0;
   transform: translateY(30px);
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -69,14 +63,11 @@ body {
   pointer-events: auto;
 }
 
-/* ====== 背景效果 ====== */
 .slide::before {
   content: '';
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
   background: radial-gradient(circle at 30% 50%, rgba(14, 165, 233, 0.08) 0%, transparent 50%),
               radial-gradient(circle at 70% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
   animation: bgFloat 20s ease-in-out infinite;
@@ -88,11 +79,7 @@ body {
   50% { transform: translate(-2%, -2%); }
 }
 
-/* ====== 封面 ====== */
-.cover-slide {
-  text-align: center;
-  position: relative;
-}
+.cover-slide { text-align: center; }
 
 .cover-badge {
   display: inline-flex;
@@ -110,8 +97,7 @@ body {
 
 .cover-badge::before {
   content: '';
-  width: 8px;
-  height: 8px;
+  width: 8px; height: 8px;
   background: var(--primary);
   border-radius: 50%;
   animation: pulse 2s infinite;
@@ -123,7 +109,7 @@ body {
 }
 
 .cover-title {
-  font-size: 72px;
+  font-size: 68px;
   font-weight: 800;
   line-height: 1.1;
   margin-bottom: 24px;
@@ -141,9 +127,9 @@ body {
 }
 
 .cover-subtitle {
-  font-size: 20px;
+  font-size: 18px;
   color: var(--text-secondary);
-  max-width: 600px;
+  max-width: 700px;
   line-height: 1.6;
   margin-bottom: 48px;
 }
@@ -172,56 +158,9 @@ body {
   transform: translateY(-2px);
 }
 
-.scene-tag .icon {
-  margin-right: 8px;
-}
-
-/* ====== 数据卡片 ====== */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  width: 100%;
-  max-width: 1200px;
-  margin-top: 48px;
-}
-
-.stat-card {
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  border-radius: 20px;
-  padding: 32px;
-  text-align: center;
-  backdrop-filter: blur(20px);
-  transition: all 0.4s;
-}
-
-.stat-card:hover {
-  transform: translateY(-8px);
-  border-color: var(--primary);
-  background: rgba(14, 165, 233, 0.1);
-}
-
-.stat-number {
-  font-size: 48px;
-  font-weight: 800;
-  background: var(--gradient-1);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 8px;
-}
-
-.stat-label {
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: 1.4;
-}
-
-/* ====== 内容页通用 ====== */
 .slide-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 36px;
 }
 
 .slide-tag {
@@ -237,25 +176,88 @@ body {
 }
 
 .slide-title {
-  font-size: 42px;
+  font-size: 40px;
   font-weight: 700;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   line-height: 1.2;
 }
 
 .slide-desc {
-  font-size: 16px;
+  font-size: 15px;
   color: var(--text-secondary);
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
 }
 
-/* ====== 政策页 ====== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+  max-width: 1100px;
+  margin-top: 40px;
+}
+
+.stat-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 28px;
+  text-align: center;
+  backdrop-filter: blur(20px);
+  transition: all 0.4s;
+}
+
+.stat-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--primary);
+  background: rgba(14, 165, 233, 0.1);
+}
+
+.stat-number {
+  font-size: 42px;
+  font-weight: 800;
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.chart-container {
+  width: 100%;
+  max-width: 1100px;
+  height: 380px;
+  margin: 20px 0;
+}
+
+.chart-row {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.chart-half {
+  flex: 1;
+  height: 350px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 16px;
+}
+
 .policy-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  gap: 16px;
   width: 100%;
   max-width: 1100px;
 }
@@ -264,7 +266,7 @@ body {
   background: var(--glass);
   border: 1px solid var(--glass-border);
   border-radius: 16px;
-  padding: 28px;
+  padding: 24px;
   backdrop-filter: blur(20px);
   transition: all 0.3s;
   position: relative;
@@ -274,10 +276,8 @@ body {
 .policy-card::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
+  top: 0; left: 0;
+  width: 4px; height: 100%;
   background: var(--gradient-1);
   border-radius: 4px 0 0 4px;
 }
@@ -287,37 +287,31 @@ body {
   border-color: var(--primary);
 }
 
-.policy-icon {
-  font-size: 28px;
-  margin-bottom: 12px;
-}
+.policy-icon { font-size: 24px; margin-bottom: 10px; }
 
 .policy-title {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   margin-bottom: 8px;
   color: var(--text-primary);
 }
 
 .policy-desc {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-secondary);
   line-height: 1.6;
 }
 
-/* ====== 标准表格 ====== */
 .standards-table {
   width: 100%;
   max-width: 1100px;
   border-collapse: collapse;
 }
 
-.standards-table thead {
-  background: rgba(14, 165, 233, 0.1);
-}
+.standards-table thead { background: rgba(14, 165, 233, 0.1); }
 
 .standards-table th {
-  padding: 16px 20px;
+  padding: 14px 18px;
   text-align: left;
   font-size: 13px;
   font-weight: 600;
@@ -326,8 +320,8 @@ body {
 }
 
 .standards-table td {
-  padding: 16px 20px;
-  font-size: 14px;
+  padding: 14px 18px;
+  font-size: 13px;
   color: var(--text-secondary);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -349,76 +343,10 @@ body {
 .tag-green { background: rgba(16, 185, 129, 0.2); color: #34d399; }
 .tag-blue { background: rgba(14, 165, 233, 0.2); color: #38bdf8; }
 
-/* ====== 市场数据 ====== */
-.market-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 20px;
-  width: 100%;
-  max-width: 1200px;
-}
-
-.market-card {
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  border-radius: 16px;
-  padding: 28px 20px;
-  text-align: center;
-  backdrop-filter: blur(20px);
-  transition: all 0.4s;
-  position: relative;
-  overflow: hidden;
-}
-
-.market-card::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: var(--gradient-1);
-  transform: scaleX(0);
-  transition: transform 0.4s;
-}
-
-.market-card:hover::after {
-  transform: scaleX(1);
-}
-
-.market-card:hover {
-  transform: translateY(-8px);
-  border-color: var(--primary);
-}
-
-.market-icon {
-  font-size: 36px;
-  margin-bottom: 16px;
-}
-
-.market-name {
-  font-size: 15px;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
-.market-size {
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--primary);
-  margin-bottom: 4px;
-}
-
-.market-growth {
-  font-size: 13px;
-  color: #34d399;
-}
-
-/* ====== 痛点页 ====== */
 .pain-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
+  gap: 20px;
   width: 100%;
   max-width: 1100px;
 }
@@ -427,7 +355,7 @@ body {
   background: var(--glass);
   border: 1px solid rgba(244, 63, 94, 0.2);
   border-radius: 16px;
-  padding: 28px;
+  padding: 24px;
   backdrop-filter: blur(20px);
   transition: all 0.3s;
 }
@@ -441,35 +369,32 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .pain-icon {
-  width: 40px;
-  height: 40px;
+  width: 36px; height: 36px;
   background: rgba(244, 63, 94, 0.2);
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .pain-title {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--accent-light);
 }
 
-.pain-list {
-  list-style: none;
-}
+.pain-list { list-style: none; }
 
 .pain-list li {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-secondary);
-  padding: 8px 0;
-  padding-left: 20px;
+  padding: 6px 0;
+  padding-left: 18px;
   position: relative;
   line-height: 1.5;
 }
@@ -477,19 +402,16 @@ body {
 .pain-list li::before {
   content: '';
   position: absolute;
-  left: 0;
-  top: 14px;
-  width: 6px;
-  height: 6px;
+  left: 0; top: 12px;
+  width: 5px; height: 5px;
   background: var(--accent);
   border-radius: 50%;
 }
 
-/* ====== 方案页 ====== */
 .solution-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
+  gap: 20px;
   width: 100%;
   max-width: 1100px;
 }
@@ -498,7 +420,7 @@ body {
   background: var(--glass);
   border: 1px solid rgba(16, 185, 129, 0.2);
   border-radius: 16px;
-  padding: 28px;
+  padding: 24px;
   backdrop-filter: blur(20px);
   transition: all 0.3s;
 }
@@ -512,35 +434,32 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .solution-icon {
-  width: 40px;
-  height: 40px;
+  width: 36px; height: 36px;
   background: rgba(16, 185, 129, 0.2);
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .solution-title {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   color: #34d399;
 }
 
-.solution-list {
-  list-style: none;
-}
+.solution-list { list-style: none; }
 
 .solution-list li {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-secondary);
-  padding: 8px 0;
-  padding-left: 20px;
+  padding: 6px 0;
+  padding-left: 18px;
   position: relative;
   line-height: 1.5;
 }
@@ -553,27 +472,26 @@ body {
   font-weight: bold;
 }
 
-/* ====== 效果数据 ====== */
 .effect-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 20px;
   width: 100%;
-  max-width: 900px;
-  margin-top: 40px;
+  max-width: 800px;
+  margin-top: 30px;
 }
 
 .effect-card {
   background: var(--glass);
   border: 1px solid var(--glass-border);
   border-radius: 16px;
-  padding: 32px;
+  padding: 28px;
   text-align: center;
   backdrop-filter: blur(20px);
 }
 
 .effect-number {
-  font-size: 48px;
+  font-size: 42px;
   font-weight: 800;
   margin-bottom: 8px;
 }
@@ -583,54 +501,40 @@ body {
 .effect-number.purple { color: #a78bfa; }
 
 .effect-label {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-secondary);
 }
 
-/* ====== 场景导航 ====== */
-.scene-nav {
+.process-flow {
   display: flex;
-  gap: 12px;
-  margin-bottom: 40px;
-  flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
+  gap: 12px;
+  margin: 30px 0;
+  flex-wrap: wrap;
 }
 
-.scene-nav-btn {
-  padding: 12px 28px;
+.process-step {
+  padding: 14px 22px;
   background: var(--glass);
   border: 1px solid var(--glass-border);
   border-radius: 12px;
-  font-size: 15px;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.3s;
+  font-size: 13px;
+  font-weight: 500;
   backdrop-filter: blur(10px);
 }
 
-.scene-nav-btn:hover,
-.scene-nav-btn.active {
-  background: rgba(14, 165, 233, 0.2);
-  border-color: var(--primary);
-  color: var(--text-primary);
+.process-arrow {
+  font-size: 20px;
+  color: var(--primary);
 }
 
-.scene-nav-btn .icon {
-  margin-right: 8px;
-}
+.ending-slide { text-align: center; }
 
-/* ====== 结尾页 ====== */
-.ending-slide {
-  text-align: center;
-}
-
-.ending-icon {
-  font-size: 64px;
-  margin-bottom: 24px;
-}
+.ending-icon { font-size: 56px; margin-bottom: 20px; }
 
 .ending-title {
-  font-size: 48px;
+  font-size: 44px;
   font-weight: 700;
   margin-bottom: 16px;
 }
@@ -643,10 +547,10 @@ body {
 }
 
 .ending-desc {
-  font-size: 18px;
+  font-size: 16px;
   color: var(--text-secondary);
   max-width: 500px;
-  margin: 0 auto 48px;
+  margin: 0 auto 40px;
   line-height: 1.8;
 }
 
@@ -669,21 +573,19 @@ body {
   color: var(--text-secondary);
 }
 
-/* ====== 导航控制 ====== */
 .nav-controls {
   position: fixed;
-  bottom: 40px;
+  bottom: 36px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
   z-index: 100;
 }
 
 .nav-btn {
-  width: 48px;
-  height: 48px;
+  width: 44px; height: 44px;
   background: var(--glass);
   border: 1px solid var(--glass-border);
   border-radius: 50%;
@@ -694,7 +596,7 @@ body {
   transition: all 0.3s;
   backdrop-filter: blur(20px);
   color: var(--text-primary);
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .nav-btn:hover {
@@ -709,14 +611,10 @@ body {
   transform: none;
 }
 
-.page-indicator {
-  display: flex;
-  gap: 8px;
-}
+.page-indicator { display: flex; gap: 6px; }
 
 .page-dot {
-  width: 8px;
-  height: 8px;
+  width: 8px; height: 8px;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   transition: all 0.3s;
@@ -729,10 +627,9 @@ body {
   border-radius: 4px;
 }
 
-/* ====== 键盘提示 ====== */
 .keyboard-hint {
   position: fixed;
-  bottom: 100px;
+  bottom: 90px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 12px;
@@ -740,40 +637,15 @@ body {
   z-index: 100;
 }
 
-/* ====== 流程图 ====== */
-.process-flow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin: 40px 0;
-  flex-wrap: wrap;
-}
-
-.process-step {
-  padding: 16px 24px;
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  border-radius: 12px;
-  font-size: 14px;
-  font-weight: 500;
-  backdrop-filter: blur(10px);
-}
-
-.process-arrow {
-  font-size: 24px;
-  color: var(--primary);
-}
-
-/* ====== 响应式 ====== */
 @media (max-width: 1024px) {
-  .slide { padding: 40px; }
-  .cover-title { font-size: 48px; }
+  .slide { padding: 30px; }
+  .cover-title { font-size: 40px; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .market-grid { grid-template-columns: repeat(3, 1fr); }
   .policy-grid { grid-template-columns: 1fr; }
   .pain-container { grid-template-columns: 1fr; }
   .solution-container { grid-template-columns: 1fr; }
+  .chart-row { flex-direction: column; }
+  .chart-half { width: 100%; }
 }
 </style>
 </head>
@@ -781,11 +653,11 @@ body {
 
 <div class="slides-container" id="slidesContainer">
 
-  <!-- ==================== 封面 ==================== -->
+  <!-- 封面 -->
   <div class="slide cover-slide active" data-index="0">
     <div class="cover-badge">天正电气 TENGEN 战略合作伙伴</div>
     <h1 class="cover-title">智慧建筑<span class="highlight">配电</span>解决方案</h1>
-    <p class="cover-subtitle">构建安全、节能、智能的建筑配电体系，助力双碳目标实现</p>
+    <p class="cover-subtitle">构建安全、节能、智能的建筑配电体系<br>覆盖医院、商业、住宅、别墅、酒店五大场景</p>
     <div class="cover-scenes">
       <div class="scene-tag"><span class="icon">🏥</span>医院</div>
       <div class="scene-tag"><span class="icon">🏬</span>商业综合体</div>
@@ -795,170 +667,111 @@ body {
     </div>
   </div>
 
-  <!-- ==================== 核心数据 ==================== -->
+  <!-- 市场规模 -->
   <div class="slide" data-index="1">
     <div class="slide-header">
       <div class="slide-tag">市场概览</div>
-      <h2 class="slide-title">智慧配电市场蓬勃发展</h2>
-      <p class="slide-desc">政策驱动+技术成熟+成本下降，智慧配电正从"可选项"变为"必选项"</p>
+      <h2 class="slide-title">智慧建筑市场规模</h2>
+      <p class="slide-desc">政策驱动+技术成熟，智慧配电从"可选项"变为"必选项"</p>
     </div>
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-number">1.5万亿</div>
-        <div class="stat-label">2025年智慧建筑<br>市场规模</div>
+        <div class="stat-label">2025年市场规模</div>
       </div>
       <div class="stat-card">
         <div class="stat-number">12.8%</div>
-        <div class="stat-label">年均复合<br>增长率</div>
+        <div class="stat-label">年均复合增长率</div>
       </div>
       <div class="stat-card">
         <div class="stat-number">65%</div>
-        <div class="stat-label">新建建筑<br>智能化渗透率</div>
+        <div class="stat-label">新建建筑智能化率</div>
       </div>
       <div class="stat-card">
         <div class="stat-number">30%+</div>
-        <div class="stat-label">综合能耗<br>降低空间</div>
+        <div class="stat-label">综合能耗降低空间</div>
       </div>
+    </div>
+    <div id="chart_market_trend" class="chart-container"></div>
+  </div>
+
+  <!-- 五大场景市场 -->
+  <div class="slide" data-index="2">
+    <div class="slide-header">
+      <div class="slide-tag">场景分析</div>
+      <h2 class="slide-title">五大场景市场预测</h2>
+      <p class="slide-desc">2025→2030年各场景市场规模与增长潜力</p>
+    </div>
+    <div class="chart-row">
+      <div id="chart_scene_market" class="chart-half"></div>
+      <div id="chart_scene_growth" class="chart-half"></div>
     </div>
   </div>
 
-  <!-- ==================== 政策导向 ==================== -->
-  <div class="slide" data-index="2">
+  <!-- 政策导向 -->
+  <div class="slide" data-index="3">
     <div class="slide-header">
       <div class="slide-tag">政策解读</div>
       <h2 class="slide-title">国家政策强力驱动</h2>
-      <p class="slide-desc">建筑领域"电气化+智能化"双轮驱动，智慧配电成为标配</p>
+      <p class="slide-desc">建筑领域"电气化+智能化"双轮驱动</p>
     </div>
     <div class="policy-grid">
       <div class="policy-card">
         <div class="policy-icon">📋</div>
-        <div class="policy-title">《"十四五"建筑节能与绿色建筑发展规划》</div>
-        <div class="policy-desc">到2025年，城镇新建建筑全面建成绿色建筑，完成既有建筑节能改造3.5亿m²以上</div>
+        <div class="policy-title">"十四五"建筑节能规划</div>
+        <div class="policy-desc">城镇新建建筑全面建成绿色建筑，完成既有建筑节能改造3.5亿m²</div>
       </div>
       <div class="policy-card">
         <div class="policy-icon">🎯</div>
-        <div class="policy-title">《碳达峰碳中和"1+N"政策体系》</div>
+        <div class="policy-title">碳达峰碳中和1+N政策</div>
         <div class="policy-desc">2030年非化石能源消费比重达25%，建筑领域加快推进电气化</div>
       </div>
       <div class="policy-card">
         <div class="policy-icon">🏗️</div>
-        <div class="policy-title">《新型建筑工业化发展纲要》</div>
-        <div class="policy-desc">推动物联网、大数据、AI等技术在建筑领域深度融合应用</div>
+        <div class="policy-title">新型建筑工业化纲要</div>
+        <div class="policy-desc">推动物联网、大数据、AI等技术在建筑领域深度融合</div>
       </div>
       <div class="policy-card">
         <div class="policy-icon">⚡</div>
-        <div class="policy-title">《关于推动城乡建设绿色发展的意见》</div>
-        <div class="policy-desc">推进建筑领域电气化，鼓励建设屋顶光伏、储能系统</div>
+        <div class="policy-title">城乡建设绿色发展意见</div>
+        <div class="policy-desc">推进建筑电气化，鼓励屋顶光伏、储能系统建设</div>
       </div>
     </div>
+    <div id="chart_policy" class="chart-container" style="height: 260px;"></div>
   </div>
 
-  <!-- ==================== 行业标准 ==================== -->
-  <div class="slide" data-index="3">
+  <!-- 行业标准 -->
+  <div class="slide" data-index="4">
     <div class="slide-header">
       <div class="slide-tag">标准规范</div>
-      <h2 class="slide-title">行业标准体系完善</h2>
-      <p class="slide-desc">GB 55024-2022全文强制规范，对建筑电气与智能化提出更高要求</p>
+      <h2 class="slide-title">行业标准体系</h2>
+      <p class="slide-desc">GB 55024-2022全文强制规范，智慧配电成为标配</p>
     </div>
     <table class="standards-table">
       <thead>
-        <tr>
-          <th>标准编号</th>
-          <th>标准名称</th>
-          <th>核心要求</th>
-          <th>状态</th>
-        </tr>
+        <tr><th>标准编号</th><th>标准名称</th><th>核心要求</th><th>状态</th></tr>
       </thead>
       <tbody>
-        <tr>
-          <td><strong>GB 55024-2022</strong></td>
-          <td>建筑电气与智能化通用规范</td>
-          <td>全文强制，2022年10月实施</td>
-          <td><span class="tag tag-red">强制</span></td>
-        </tr>
-        <tr>
-          <td><strong>GB 50314-2015</strong></td>
-          <td>智能建筑设计标准</td>
-          <td>智能化系统设计要求，涵盖信息设施、安防、配电</td>
-          <td><span class="tag tag-green">现行</span></td>
-        </tr>
-        <tr>
-          <td><strong>GB 50054-2011</strong></td>
-          <td>低压配电设计规范</td>
-          <td>低压配电系统设计、保护、接地技术要求</td>
-          <td><span class="tag tag-green">现行</span></td>
-        </tr>
-        <tr>
-          <td><strong>JGJ 312-2013</strong></td>
-          <td>医疗建筑电气设计规范</td>
-          <td>医院供电系统、应急电源、接地专项要求</td>
-          <td><span class="tag tag-green">现行</span></td>
-        </tr>
-        <tr>
-          <td><strong>T/CECS 1189-2022</strong></td>
-          <td>智慧建筑评价标准</td>
-          <td>智慧建筑分级评价体系</td>
-          <td><span class="tag tag-blue">团标</span></td>
-        </tr>
+        <tr><td><strong>GB 55024-2022</strong></td><td>建筑电气与智能化通用规范</td><td>全文强制，2022年10月实施</td><td><span class="tag tag-red">强制</span></td></tr>
+        <tr><td><strong>GB 50314-2015</strong></td><td>智能建筑设计标准</td><td>智能化系统设计要求</td><td><span class="tag tag-green">现行</span></td></tr>
+        <tr><td><strong>GB 50054-2011</strong></td><td>低压配电设计规范</td><td>低压配电系统设计保护</td><td><span class="tag tag-green">现行</span></td></tr>
+        <tr><td><strong>JGJ 312-2013</strong></td><td>医疗建筑电气设计规范</td><td>医院供电系统专项要求</td><td><span class="tag tag-green">现行</span></td></tr>
+        <tr><td><strong>T/CECS 1189-2022</strong></td><td>智慧建筑评价标准</td><td>智慧建筑分级评价体系</td><td><span class="tag tag-blue">团标</span></td></tr>
       </tbody>
     </table>
+    <div id="chart_standard" class="chart-container" style="height: 240px;"></div>
   </div>
 
-  <!-- ==================== 五大场景市场 ==================== -->
-  <div class="slide" data-index="4">
-    <div class="slide-header">
-      <div class="slide-tag">市场洞察</div>
-      <h2 class="slide-title">五大场景市场前景</h2>
-      <p class="slide-desc">医院和商业综合体是高价值场景，住宅小区是规模场景，别墅和酒店是利润场景</p>
-    </div>
-    <div class="market-grid">
-      <div class="market-card">
-        <div class="market-icon">🏥</div>
-        <div class="market-name">医院</div>
-        <div class="market-size">3,200亿</div>
-        <div class="market-growth">↑ 78%</div>
-      </div>
-      <div class="market-card">
-        <div class="market-icon">🏬</div>
-        <div class="market-name">商业综合体</div>
-        <div class="market-size">4,800亿</div>
-        <div class="market-growth">↑ 92%</div>
-      </div>
-      <div class="market-card">
-        <div class="market-icon">🏘️</div>
-        <div class="market-name">住宅小区</div>
-        <div class="market-size">5,600亿</div>
-        <div class="market-growth">↑ 75%</div>
-      </div>
-      <div class="market-card">
-        <div class="market-icon">🏡</div>
-        <div class="market-name">别墅</div>
-        <div class="market-size">1,200亿</div>
-        <div class="market-growth">↑ 100%</div>
-      </div>
-      <div class="market-card">
-        <div class="market-icon">🏨</div>
-        <div class="market-name">酒店</div>
-        <div class="market-size">2,800亿</div>
-        <div class="market-growth">↑ 87%</div>
-      </div>
-    </div>
-    <p style="margin-top: 24px; font-size: 13px; color: var(--text-secondary);">* 2030年预测市场规模，数据来源：行业研究报告</p>
-  </div>
-
-  <!-- ==================== 医院痛点 ==================== -->
+  <!-- 医院痛点 -->
   <div class="slide" data-index="5">
     <div class="slide-header">
       <div class="slide-tag">场景一 · 医院</div>
-      <h2 class="slide-title">医院用电痛点分析</h2>
-      <p class="slide-desc">生命攸关的供电保障，对可靠性、电能质量要求极高</p>
+      <h2 class="slide-title">医院用电痛点</h2>
+      <p class="slide-desc">生命攸关的供电保障，可靠性、电能质量要求极高</p>
     </div>
     <div class="pain-container">
       <div class="pain-card">
-        <div class="pain-header">
-          <div class="pain-icon">⚡</div>
-          <div class="pain-title">供电可靠性要求极高</div>
-        </div>
+        <div class="pain-header"><div class="pain-icon">⚡</div><div class="pain-title">供电可靠性</div></div>
         <ul class="pain-list">
           <li>手术室、ICU需双电源+UPS保障</li>
           <li>供电中断可能导致医疗事故</li>
@@ -966,21 +779,15 @@ body {
         </ul>
       </div>
       <div class="pain-card">
-        <div class="pain-header">
-          <div class="pain-icon">📡</div>
-          <div class="pain-title">电能质量要求苛刻</div>
-        </div>
+        <div class="pain-header"><div class="pain-icon">📡</div><div class="pain-title">电能质量</div></div>
         <ul class="pain-list">
-          <li>CT、MRI等设备对谐波敏感</li>
+          <li>CT、MRI对谐波敏感</li>
           <li>电能问题导致设备故障率高</li>
           <li>缺乏有效治理手段</li>
         </ul>
       </div>
       <div class="pain-card">
-        <div class="pain-header">
-          <div class="pain-icon">💰</div>
-          <div class="pain-title">能耗管理粗放</div>
-        </div>
+        <div class="pain-header"><div class="pain-icon">💰</div><div class="pain-title">能耗管理</div></div>
         <ul class="pain-list">
           <li>24小时运营，能耗占运营成本15-20%</li>
           <li>空调、照明节能空间大</li>
@@ -988,10 +795,7 @@ body {
         </ul>
       </div>
       <div class="pain-card">
-        <div class="pain-header">
-          <div class="pain-icon">🔧</div>
-          <div class="pain-title">运维管理困难</div>
-        </div>
+        <div class="pain-header"><div class="pain-icon">🔧</div><div class="pain-title">运维管理</div></div>
         <ul class="pain-list">
           <li>设备分散，人工巡检效率低</li>
           <li>故障定位依赖经验</li>
@@ -999,14 +803,14 @@ body {
         </ul>
       </div>
     </div>
+    <div id="chart_hospital_pain" class="chart-container" style="height: 220px;"></div>
   </div>
 
-  <!-- ==================== 医院方案 ==================== -->
+  <!-- 医院方案 -->
   <div class="slide" data-index="6">
     <div class="slide-header">
       <div class="slide-tag">场景一 · 医院</div>
       <h2 class="slide-title">医院智慧配电方案</h2>
-      <p class="slide-desc">安全可靠、电能质量治理、精细化能耗管理</p>
     </div>
     <div class="process-flow">
       <div class="process-step">智能断路器</div>
@@ -1021,613 +825,306 @@ body {
     </div>
     <div class="solution-container">
       <div class="solution-card">
-        <div class="solution-header">
-          <div class="solution-icon">🛡️</div>
-          <div class="solution-title">一级负荷智能保障</div>
-        </div>
-        <ul class="solution-list">
-          <li>ATS自动转换，切换时间<0.5s</li>
-          <li>UPS+STS双重保障，手术室零中断</li>
-          <li>智能母线槽，载流量大、温升低</li>
-        </ul>
+        <div class="solution-header"><div class="solution-icon">🛡️</div><div class="solution-title">一级负荷保障</div></div>
+        <ul class="solution-list"><li>ATS切换时间<0.5s</li><li>UPS+STS双重保障</li><li>智能母线槽大载流</li></ul>
       </div>
       <div class="solution-card">
-        <div class="solution-header">
-          <div class="solution-icon">📊</div>
-          <div class="solution-title">电能质量综合治理</div>
-        </div>
-        <ul class="solution-list">
-          <li>APF谐波补偿，THD降至5%以下</li>
-          <li>SVG动态无功补偿，PF>0.95</li>
-          <li>电压暂降治理，保护精密设备</li>
-        </ul>
+        <div class="solution-header"><div class="solution-icon">📊</div><div class="solution-title">电能质量治理</div></div>
+        <ul class="solution-list"><li>APF谐波补偿THD<5%</li><li>SVG无功补偿PF>0.95</li><li>电压暂降保护设备</li></ul>
       </div>
       <div class="solution-card">
-        <div class="solution-header">
-          <div class="solution-icon">📈</div>
-          <div class="solution-title">分科室能耗管理</div>
-        </div>
-        <ul class="solution-list">
-          <li>按科室/区域分户计量</li>
-          <li>能耗看板可视化，异常预警</li>
-          <li>AI算法空调/照明节能控制</li>
-        </ul>
+        <div class="solution-header"><div class="solution-icon">📈</div><div class="solution-title">分科室能耗</div></div>
+        <ul class="solution-list"><li>按科室/区域分户计量</li><li>能耗看板可视化</li><li>AI算法节能控制</li></ul>
       </div>
       <div class="solution-card">
-        <div class="solution-header">
-          <div class="solution-icon">📱</div>
-          <div class="solution-title">智能运维平台</div>
-        </div>
-        <ul class="solution-list">
-          <li>设备状态在线监测，实时预警</li>
-          <li>移动端工单，响应提速60%</li>
-          <li>全生命周期档案管理</li>
-        </ul>
+        <div class="solution-header"><div class="solution-icon">📱</div><div class="solution-title">智能运维</div></div>
+        <ul class="solution-list"><li>设备状态在线监测</li><li>移动端工单响应提速60%</li><li>全生命周期管理</li></ul>
       </div>
     </div>
-    <div class="effect-grid">
-      <div class="effect-card">
-        <div class="effect-number green">99.99%</div>
-        <div class="effect-label">供电可靠性</div>
-      </div>
-      <div class="effect-card">
-        <div class="effect-number blue">15-25%</div>
-        <div class="effect-label">节能降耗</div>
-      </div>
-      <div class="effect-card">
-        <div class="effect-number purple">60%</div>
-        <div class="effect-label">响应提速</div>
-      </div>
-    </div>
+    <div id="chart_hospital_effect" class="chart-container" style="height: 200px;"></div>
   </div>
 
-  <!-- ==================== 商业综合体痛点 ==================== -->
+  <!-- 商业综合体痛点 -->
   <div class="slide" data-index="7">
     <div class="slide-header">
       <div class="slide-tag">场景二 · 商业综合体</div>
       <h2 class="slide-title">商业综合体用电痛点</h2>
-      <p class="slide-desc">大容量、高密度用电场景，负荷波动大、管理难</p>
     </div>
     <div class="pain-container">
       <div class="pain-card">
-        <div class="pain-header">
-          <div class="pain-icon">📉</div>
-          <div class="pain-title">负荷波动大、管理难</div>
-        </div>
-        <ul class="pain-list">
-          <li>空调负荷占比40-50%，季节波动明显</li>
-          <li>节假日负荷激增，变压器过载风险</li>
-          <li>租户用电不可控，峰谷电价差大</li>
-        </ul>
+        <div class="pain-header"><div class="pain-icon">📉</div><div class="pain-title">负荷波动大</div></div>
+        <ul class="pain-list"><li>空调负荷占比40-50%</li><li>节假日负荷激增</li><li>租户用电不可控</li></ul>
       </div>
       <div class="pain-card">
-        <div class="pain-header">
-          <div class="pain-icon">💸</div>
-          <div class="pain-title">能耗成本居高不下</div>
-        </div>
-        <ul class="pain-list">
-          <li>年电费占运营成本25-35%</li>
-          <li>公共区域照明、空调能耗大</li>
-          <li>租户能耗分摊争议多</li>
-        </ul>
+        <div class="pain-header"><div class="pain-icon">💸</div><div class="pain-title">能耗成本高</div></div>
+        <ul class="pain-list"><li>年电费占运营成本25-35%</li><li>公共区域能耗大</li><li>租户分摊争议多</li></ul>
       </div>
       <div class="pain-card">
-        <div class="pain-header">
-          <div class="pain-icon">🔥</div>
-          <div class="pain-title">安全隐患多、责任大</div>
-        </div>
-        <ul class="pain-list">
-          <li>人员密集，电气火灾风险高</li>
-          <li>商户私拉乱接、超负荷用电</li>
-          <li>安全监管难度大，追溯困难</li>
-        </ul>
+        <div class="pain-header"><div class="pain-icon">🔥</div><div class="pain-title">安全隐患多</div></div>
+        <ul class="pain-list"><li>人员密集火灾风险高</li><li>商户私拉乱接</li><li>安全监管难度大</li></ul>
       </div>
       <div class="pain-card">
-        <div class="pain-header">
-          <div class="pain-icon">⚙️</div>
-          <div class="pain-title">运维成本高、效率低</div>
-        </div>
-        <ul class="pain-list">
-          <li>配电房分散，人工巡检量大</li>
-          <li>设备老化导致故障率上升</li>
-          <li>缺乏数据支撑，决策依赖经验</li>
-        </ul>
+        <div class="pain-header"><div class="pain-icon">⚙️</div><div class="pain-title">运维效率低</div></div>
+        <ul class="pain-list"><li>配电房分散巡检量大</li><li>设备老化故障率升</li><li>缺乏数据支撑</li></ul>
       </div>
     </div>
+    <div id="chart_commercial_pain" class="chart-container" style="height: 220px;"></div>
   </div>
 
-  <!-- ==================== 商业综合体方案 ==================== -->
+  <!-- 商业综合体方案 -->
   <div class="slide" data-index="8">
     <div class="slide-header">
       <div class="slide-tag">场景二 · 商业综合体</div>
       <h2 class="slide-title">商业综合体智慧配电方案</h2>
-      <p class="slide-desc">智能负荷管理、租户精细化计量、电气安全监控</p>
     </div>
     <div class="solution-container">
       <div class="solution-card">
-        <div class="solution-header">
-          <div class="solution-icon">⚡</div>
-          <div class="solution-title">智能负荷管理</div>
-        </div>
-        <ul class="solution-list">
-          <li>变压器负载率实时监测，过载预警</li>
-          <li>需量控制策略，降低基本电费</li>
-          <li>峰谷平分时计量，引导错峰用电</li>
-        </ul>
+        <div class="solution-header"><div class="solution-icon">⚡</div><div class="solution-title">智能负荷管理</div></div>
+        <ul class="solution-list"><li>变压器负载率实时监测</li><li>需量控制降低基本电费</li><li>峰谷平分时计量</li></ul>
       </div>
       <div class="solution-card">
-        <div class="solution-header">
-          <div class="solution-icon">🏢</div>
-          <div class="solution-title">租户能耗精细化管理</div>
-        </div>
-        <ul class="solution-list">
-          <li>预付费智能电表，远程抄表通断</li>
-          <li>能耗数据自动分摊，减少纠纷</li>
-          <li>商户能耗排名公示，促进节能</li>
-        </ul>
+        <div class="solution-header"><div class="solution-icon">🏢</div><div class="solution-title">租户能耗管理</div></div>
+        <ul class="solution-list"><li>预付费智能电表</li><li>能耗数据自动分摊</li><li>商户能耗排名公示</li></ul>
       </div>
       <div class="solution-card">
-        <div class="solution-header">
-          <div class="solution-icon">🛡️</div>
-          <div class="solution-title">电气安全监控</div>
-        </div>
-        <ul class="solution-list">
-          <li>剩余电流监测，漏电即时报警</li>
-          <li>电缆温度在线监测，过热预警</li>
-          <li>电弧故障探测器，预防电气火灾</li>
-        </ul>
+        <div class="solution-header"><div class="solution-icon">🛡️</div><div class="solution-title">电气安全监控</div></div>
+        <ul class="solution-list"><li>剩余电流监测报警</li><li>电缆温度在线监测</li><li>电弧故障探测器</li></ul>
       </div>
       <div class="solution-card">
-        <div class="solution-header">
-          <div class="solution-icon">📱</div>
-          <div class="solution-title">智能运维降本增效</div>
-        </div>
-        <ul class="solution-list">
-          <li>无人值守配电房，远程监控巡检</li>
-          <li>设备健康度评估，预测性维护</li>
-          <li>能耗分析报告自动生成</li>
-        </ul>
+        <div class="solution-header"><div class="solution-icon">📱</div><div class="solution-title">智能运维</div></div>
+        <ul class="solution-list"><li>无人值守远程监控</li><li>设备健康度评估</li><li>能耗报告自动生成</li></ul>
       </div>
     </div>
-    <div class="effect-grid">
-      <div class="effect-card">
-        <div class="effect-number green">20-30%</div>
-        <div class="effect-label">能耗成本降低</div>
-      </div>
-      <div class="effect-card">
-        <div class="effect-number blue">80%</div>
-        <div class="effect-label">运维效率提升</div>
-      </div>
-      <div class="effect-card">
-        <div class="effect-number purple">95%</div>
-        <div class="effect-label">安全隐患消除</div>
-      </div>
-    </div>
+    <div id="chart_commercial_effect" class="chart-container" style="height: 220px;"></div>
   </div>
 
-  <!-- ==================== 住宅小区痛点 ==================== -->
+  <!-- 住宅小区痛点 -->
   <div class="slide" data-index="9">
     <div class="slide-header">
       <div class="slide-tag">场景三 · 住宅小区</div>
       <h2 class="slide-title">住宅小区用电痛点</h2>
-      <p class="slide-desc">充电设施不足、安全隐患突出、物业管理效率低</p>
     </div>
     <div class="pain-container">
       <div class="pain-card">
-        <div class="pain-header">
-          <div class="pain-icon">🔌</div>
-          <div class="pain-title">充电设施配套不足</div>
-        </div>
-        <ul class="pain-list">
-          <li>新能源车激增，充电桩需求爆发</li>
-          <li>老旧小区配电容量不足</li>
-          <li>私装充电桩安全隐患大</li>
-        </ul>
+        <div class="pain-header"><div class="pain-icon">🔌</div><div class="pain-title">充电设施不足</div></div>
+        <ul class="pain-list"><li>新能源车激增需求爆发</li><li>老旧小区容量不足</li><li>私装充电桩隐患大</li></ul>
       </div>
       <div class="pain-card">
-        <div class="pain-header">
-          <div class="pain-icon">🔥</div>
-          <div class="pain-title">用电安全隐患突出</div>
-        </div>
-        <ul class="pain-list">
-          <li>电动车入户充电引发火灾</li>
-          <li>老旧线路老化，漏电短路风险</li>
-          <li>居民安全意识薄弱</li>
-        </ul>
+        <div class="pain-header"><div class="pain-icon">🔥</div><div class="pain-title">安全隐患突出</div></div>
+        <ul class="pain-list"><li>电动车入户充电火灾</li><li>老旧线路漏电短路</li><li>居民安全意识薄弱</li></ul>
       </div>
       <div class="pain-card">
-        <div class="pain-header">
-          <div class="pain-icon">📋</div>
-          <div class="pain-title">物业管理效率低</div>
-        </div>
-        <ul class="pain-list">
-          <li>人工抄表工作量大，数据不准</li>
-          <li>公摊电费分摊不透明</li>
-          <li>故障报修响应慢</li>
-        </ul>
+        <div class="pain-header"><div class="pain-icon">📋</div><div class="pain-title">物业效率低</div></div>
+        <ul class="pain-list"><li>人工抄表工作量大</li><li>公摊电费不透明</li><li>故障报修响应慢</li></ul>
       </div>
       <div class="pain-card">
-        <div class="pain-header">
-          <div class="pain-icon">💡</div>
-          <div class="pain-title">能源浪费严重</div>
-        </div>
-        <ul class="pain-list">
-          <li>公共区域照明常亮</li>
-          <li>电梯、水泵能耗大</li>
-          <li>居民节能意识弱</li>
-        </ul>
+        <div class="pain-header"><div class="pain-icon">💡</div><div class="pain-title">能源浪费</div></div>
+        <ul class="pain-list"><li>公共照明常亮</li><li>电梯水泵能耗大</li><li>居民节能意识弱</li></ul>
       </div>
     </div>
+    <div id="chart_residential_pain" class="chart-container" style="height: 220px;"></div>
   </div>
 
-  <!-- ==================== 住宅小区方案 ==================== -->
+  <!-- 住宅小区方案 -->
   <div class="slide" data-index="10">
     <div class="slide-header">
       <div class="slide-tag">场景三 · 住宅小区</div>
       <h2 class="slide-title">住宅小区智慧配电方案</h2>
-      <p class="slide-desc">智能充电、用电安全、物业管理、社区节能</p>
     </div>
     <div class="solution-container">
       <div class="solution-card">
-        <div class="solution-header">
-          <div class="solution-icon">🚗</div>
-          <div class="solution-title">智能充电管理</div>
-        </div>
-        <ul class="solution-list">
-          <li>有序充电，根据电网负荷调节功率</li>
-          <li>扫码充电、预约充电、分时计费</li>
-          <li>充电安全监测，过温过流自动断电</li>
-        </ul>
+        <div class="solution-header"><div class="solution-icon">🚗</div><div class="solution-title">智能充电管理</div></div>
+        <ul class="solution-list"><li>有序充电调节功率</li><li>扫码预约分时计费</li><li>充电安全监测保护</li></ul>
       </div>
       <div class="solution-card">
-        <div class="solution-header">
-          <div class="solution-icon">🛡️</div>
-          <div class="solution-title">社区用电安全</div>
-        </div>
-        <ul class="solution-list">
-          <li>智慧用电终端，实时监测电流温度</li>
-          <li>电动车入户报警，联动电梯阻止</li>
-          <li>电气火灾预警，手机APP推送</li>
-        </ul>
+        <div class="solution-header"><div class="solution-icon">🛡️</div><div class="solution-title">用电安全</div></div>
+        <ul class="solution-list"><li>智慧用电终端监测</li><li>电动车入户报警</li><li>电气火灾预警推送</li></ul>
       </div>
       <div class="solution-card">
-        <div class="solution-header">
-          <div class="solution-icon">📱</div>
-          <div class="solution-title">智能物业管理</div>
-        </div>
-        <ul class="solution-list">
-          <li>智能电表远程抄表，账单自动生成</li>
-          <li>公摊电费透明化，业主可查可追溯</li>
-          <li>移动端报修，工单自动派发</li>
-        </ul>
+        <div class="solution-header"><div class="solution-icon">📱</div><div class="solution-title">智能物业</div></div>
+        <ul class="solution-list"><li>远程抄表账单自动</li><li>公摊电费透明化</li><li>移动端报修工单</li></ul>
       </div>
       <div class="solution-card">
-        <div class="solution-header">
-          <div class="solution-icon">🌿</div>
-          <div class="solution-title">社区节能方案</div>
-        </div>
-        <ul class="solution-list">
-          <li>公共照明智能控制，节能30-50%</li>
-          <li>电梯群控优化，降低空载率</li>
-          <li>能耗数据公示，培养节能习惯</li>
-        </ul>
+        <div class="solution-header"><div class="solution-icon">🌿</div><div class="solution-title">社区节能</div></div>
+        <ul class="solution-list"><li>照明智能控制节能30-50%</li><li>电梯群控优化</li><li>能耗数据公示</li></ul>
       </div>
     </div>
-    <div class="effect-grid">
-      <div class="effect-card">
-        <div class="effect-number green">50%</div>
-        <div class="effect-label">安全事故降低</div>
-      </div>
-      <div class="effect-card">
-        <div class="effect-number blue">30%</div>
-        <div class="effect-label">公区能耗降低</div>
-      </div>
-      <div class="effect-card">
-        <div class="effect-number purple">90%</div>
-        <div class="effect-label">抄表效率提升</div>
-      </div>
-    </div>
+    <div id="chart_residential_effect" class="chart-container" style="height: 220px;"></div>
   </div>
 
-  <!-- ==================== 别墅痛点 ==================== -->
+  <!-- 别墅痛点 -->
   <div class="slide" data-index="11">
     <div class="slide-header">
       <div class="slide-tag">场景四 · 别墅</div>
-      <h2 class="slide-title">别墅用电痛点分析</h2>
-      <p class="slide-desc">系统复杂、能效管理缺失、安全隐患隐蔽</p>
+      <h2 class="slide-title">别墅用电痛点</h2>
     </div>
     <div class="pain-container">
       <div class="pain-card">
-        <div class="pain-header">
-          <div class="pain-icon">🔗</div>
-          <div class="pain-title">系统复杂、集成度低</div>
-        </div>
-        <ul class="pain-list">
-          <li>强电、弱电、智能家居各自独立</li>
-          <li>多套系统操作繁琐</li>
-          <li>不同品牌协议不兼容</li>
-        </ul>
+        <div class="pain-header"><div class="pain-icon">🔗</div><div class="pain-title">系统复杂</div></div>
+        <ul class="pain-list"><li>强弱电智能家居独立</li><li>多套系统操作繁琐</li><li>不同品牌协议不兼容</li></ul>
       </div>
       <div class="pain-card">
-        <div class="pain-header">
-          <div class="pain-icon">📊</div>
-          <div class="pain-title">能效管理缺失</div>
-        </div>
-        <ul class="pain-list">
-          <li>地暖、空调、泳池、充电桩能耗大</li>
-          <li>缺乏能耗数据，电费去向不明</li>
-          <li>光伏自发自用比例低</li>
-        </ul>
+        <div class="pain-header"><div class="pain-icon">📊</div><div class="pain-title">能效管理缺失</div></div>
+        <ul class="pain-list"><li>地暖空调泳池能耗大</li><li>电费去向不明</li><li>光伏自用比例低</li></ul>
       </div>
       <div class="pain-card">
-        <div class="pain-header">
-          <div class="pain-icon">⚠️</div>
-          <div class="pain-title">安全隐患隐蔽</div>
-        </div>
-        <ul class="pain-list">
-          <li>地下室潮湿，漏电风险高</li>
-          <li>户外配电易受雷击水浸</li>
-          <li>长时间外出缺乏远程监控</li>
-        </ul>
+        <div class="pain-header"><div class="pain-icon">⚠️</div><div class="pain-title">安全隐患</div></div>
+        <ul class="pain-list"><li>地下室潮湿漏电</li><li>户外配电雷击水浸</li><li>外出缺乏远程监控</li></ul>
       </div>
       <div class="pain-card">
-        <div class="pain-header">
-          <div class="pain-icon">🌡️</div>
-          <div class="pain-title">舒适度与节能矛盾</div>
-        </div>
-        <ul class="pain-list">
-          <li>回家前无法提前开启空调地暖</li>
-          <li>全屋灯光手动控制不便</li>
-          <li>追求舒适导致能耗居高不下</li>
-        </ul>
+        <div class="pain-header"><div class="pain-icon">🌡️</div><div class="pain-title">舒适与节能矛盾</div></div>
+        <ul class="pain-list"><li>回家前无法预冷预热</li><li>全屋灯光手动控制</li><li>舒适导致能耗居高</li></ul>
       </div>
     </div>
+    <div id="chart_villa_pain" class="chart-container" style="height: 220px;"></div>
   </div>
 
-  <!-- ==================== 别墅方案 ==================== -->
+  <!-- 别墅方案 -->
   <div class="slide" data-index="12">
     <div class="slide-header">
       <div class="slide-tag">场景四 · 别墅</div>
       <h2 class="slide-title">别墅智慧配电方案</h2>
-      <p class="slide-desc">全屋智能、光储充一体化、安全防护、场景联动</p>
     </div>
     <div class="solution-container">
       <div class="solution-card">
-        <div class="solution-header">
-          <div class="solution-icon">🏠</div>
-          <div class="solution-title">全屋智能配电</div>
-        </div>
-        <ul class="solution-list">
-          <li>智能配电箱集成强电保护+智能控制</li>
-          <li>KNX/RS485/WiFi多协议兼容</li>
-          <li>场景面板/语音/APP多种控制</li>
-        </ul>
+        <div class="solution-header"><div class="solution-icon">🏠</div><div class="solution-title">全屋智能配电</div></div>
+        <ul class="solution-list"><li>智能配电箱集成控制</li><li>多协议兼容</li><li>场景面板/语音/APP</li></ul>
       </div>
       <div class="solution-card">
-        <div class="solution-header">
-          <div class="solution-icon">☀️</div>
-          <div class="solution-title">光储充一体化</div>
-        </div>
-        <ul class="solution-list">
-          <li>屋顶光伏+储能，自用率提升至80%</li>
-          <li>智能充电桩与光伏联动</li>
-          <li>峰谷套利，年省电费30-40%</li>
-        </ul>
+        <div class="solution-header"><div class="solution-icon">☀️</div><div class="solution-title">光储充一体化</div></div>
+        <ul class="solution-list"><li>光伏+储能自用率80%</li><li>充电桩光伏联动</li><li>峰谷套利年省30-40%</li></ul>
       </div>
       <div class="solution-card">
-        <div class="solution-header">
-          <div class="solution-icon">🛡️</div>
-          <div class="solution-title">安全防护方案</div>
-        </div>
-        <ul class="solution-list">
-          <li>全屋漏电+电弧故障双重保护</li>
-          <li>SPD浪涌保护，防雷击损坏</li>
-          <li>远程断电/复电，外出安心</li>
-        </ul>
+        <div class="solution-header"><div class="solution-icon">🛡️</div><div class="solution-title">安全防护</div></div>
+        <ul class="solution-list"><li>漏电+电弧双重保护</li><li>SPD浪涌防雷击</li><li>远程断电复电</li></ul>
       </div>
       <div class="solution-card">
-        <div class="solution-header">
-          <div class="solution-icon">✨</div>
-          <div class="solution-title">舒适节能方案</div>
-        </div>
-        <ul class="solution-list">
-          <li>离家/回家/会客/影院场景一键切换</li>
-          <li>根据温差自动调节空调地暖</li>
-          <li>人走灯灭、窗帘自动开合</li>
-        </ul>
+        <div class="solution-header"><div class="solution-icon">✨</div><div class="solution-title">舒适节能</div></div>
+        <ul class="solution-list"><li>场景一键切换</li><li>自动调节空调地暖</li><li>人走灯灭窗帘联动</li></ul>
       </div>
     </div>
-    <div class="effect-grid">
-      <div class="effect-card">
-        <div class="effect-number green">30-40%</div>
-        <div class="effect-label">电费节省</div>
-      </div>
-      <div class="effect-card">
-        <div class="effect-number blue">80%</div>
-        <div class="effect-label">光伏自用率</div>
-      </div>
-      <div class="effect-card">
-        <div class="effect-number purple">100%</div>
-        <div class="effect-label">场景覆盖</div>
-      </div>
-    </div>
+    <div id="chart_villa_effect" class="chart-container" style="height: 220px;"></div>
   </div>
 
-  <!-- ==================== 酒店痛点 ==================== -->
+  <!-- 酒店痛点 -->
   <div class="slide" data-index="13">
     <div class="slide-header">
       <div class="slide-tag">场景五 · 酒店</div>
-      <h2 class="slide-title">酒店用电痛点分析</h2>
-      <p class="slide-desc">能耗成本高、客户体验与节能矛盾、运营效率低</p>
+      <h2 class="slide-title">酒店用电痛点</h2>
     </div>
     <div class="pain-container">
       <div class="pain-card">
-        <div class="pain-header">
-          <div class="pain-icon">💰</div>
-          <div class="pain-title">能耗成本占比高</div>
-        </div>
-        <ul class="pain-list">
-          <li>能耗成本占营收8-15%</li>
-          <li>客房空调常开、照明长亮</li>
-          <li>缺乏客房级能耗计量</li>
-        </ul>
+        <div class="pain-header"><div class="pain-icon">💰</div><div class="pain-title">能耗成本高</div></div>
+        <ul class="pain-list"><li>能耗占营收8-15%</li><li>客房空调常开照明长亮</li><li>缺乏客房级计量</li></ul>
       </div>
       <div class="pain-card">
-        <div class="pain-header">
-          <div class="pain-icon">😊</div>
-          <div class="pain-title">体验与节能矛盾</div>
-        </div>
-        <ul class="pain-list">
-          <li>入住前房间未预冷预热</li>
-          <li>退房后电器未及时关闭</li>
-          <li>客房灯光场景单一</li>
-        </ul>
+        <div class="pain-header"><div class="pain-icon">😊</div><div class="pain-title">体验与节能矛盾</div></div>
+        <ul class="pain-list"><li>入住前未预冷预热</li><li>退房后电器未关</li><li>灯光场景单一</li></ul>
       </div>
       <div class="pain-card">
-        <div class="pain-header">
-          <div class="pain-icon">⚡</div>
-          <div class="pain-title">配电可靠性不足</div>
-        </div>
-        <ul class="pain-list">
-          <li>系统复杂，故障定位困难</li>
-          <li>宴会厅、厨房负荷波动大</li>
-          <li>应急电源管理不善</li>
-        </ul>
+        <div class="pain-header"><div class="pain-icon">⚡</div><div class="pain-title">配电可靠性</div></div>
+        <ul class="pain-list"><li>系统复杂故障定位难</li><li>宴会厅厨房负荷波动</li><li>应急电源管理不善</li></ul>
       </div>
       <div class="pain-card">
-        <div class="pain-header">
-          <div class="pain-icon">📋</div>
-          <div class="pain-title">运营管理效率低</div>
-        </div>
-        <ul class="pain-list">
-          <li>客房状态依赖人工确认</li>
-          <li>设备维保执行不到位</li>
-          <li>能耗报表人工统计</li>
-        </ul>
+        <div class="pain-header"><div class="pain-icon">📋</div><div class="pain-title">运营效率低</div></div>
+        <ul class="pain-list"><li>客房状态人工确认</li><li>设备维保不到位</li><li>能耗报表人工统计</li></ul>
       </div>
     </div>
+    <div id="chart_hotel_pain" class="chart-container" style="height: 220px;"></div>
   </div>
 
-  <!-- ==================== 酒店方案 ==================== -->
+  <!-- 酒店方案 -->
   <div class="slide" data-index="14">
     <div class="slide-header">
       <div class="slide-tag">场景五 · 酒店</div>
       <h2 class="slide-title">酒店智慧配电方案</h2>
-      <p class="slide-desc">客房智能控制、能源优化、运营平台</p>
     </div>
     <div class="solution-container">
       <div class="solution-card">
-        <div class="solution-header">
-          <div class="solution-icon">🛏️</div>
-          <div class="solution-title">客房智能控制</div>
-        </div>
-        <ul class="solution-list">
-          <li>房卡取电联动空调灯光</li>
-          <li>入住前远程预冷预热</li>
-          <li>客房能耗实时监测</li>
-        </ul>
+        <div class="solution-header"><div class="solution-icon">🛏️</div><div class="solution-title">客房智能控制</div></div>
+        <ul class="solution-list"><li>房卡取电联动空调灯光</li><li>入住前远程预冷预热</li><li>客房能耗实时监测</li></ul>
       </div>
       <div class="solution-card">
-        <div class="solution-header">
-          <div class="solution-icon">📊</div>
-          <div class="solution-title">能源管理优化</div>
-        </div>
-        <ul class="solution-list">
-          <li>分楼层/区域/客房能耗计量</li>
-          <li>空调群控，根据入住率调节</li>
-          <li>照明分时控制，夜间自动调暗</li>
-        </ul>
+        <div class="solution-header"><div class="solution-icon">📊</div><div class="solution-title">能源管理优化</div></div>
+        <ul class="solution-list"><li>分楼层区域客房计量</li><li>空调群控按入住率调节</li><li>照明分时控制</li></ul>
       </div>
       <div class="solution-card">
-        <div class="solution-header">
-          <div class="solution-icon">🛡️</div>
-          <div class="solution-title">配电系统可靠性</div>
-        </div>
-        <ul class="solution-list">
-          <li>智能母线槽，灵活扩展安全可靠</li>
-          <li>ATS+发电机+UPS三级保障</li>
-          <li>配电设备在线监测预警</li>
-        </ul>
+        <div class="solution-header"><div class="solution-icon">🛡️</div><div class="solution-title">配电系统可靠</div></div>
+        <ul class="solution-list"><li>智能母线槽灵活扩展</li><li>ATS+发电机+UPS三级</li><li>在线监测预警</li></ul>
       </div>
       <div class="solution-card">
-        <div class="solution-header">
-          <div class="solution-icon">📱</div>
-          <div class="solution-title">智慧运营平台</div>
-        </div>
-        <ul class="solution-list">
-          <li>与PMS系统对接，客房状态同步</li>
-          <li>设备维保工单自动生成</li>
-          <li>能耗分析报告自动推送</li>
-        </ul>
+        <div class="solution-header"><div class="solution-icon">📱</div><div class="solution-title">智慧运营平台</div></div>
+        <ul class="solution-list"><li>与PMS系统对接</li><li>维保工单自动生成</li><li>能耗报告自动推送</li></ul>
       </div>
     </div>
-    <div class="effect-grid">
-      <div class="effect-card">
-        <div class="effect-number green">20-35%</div>
-        <div class="effect-label">能耗成本降低</div>
-      </div>
-      <div class="effect-card">
-        <div class="effect-number blue">40%</div>
-        <div class="effect-label">运维效率提升</div>
-      </div>
-      <div class="effect-card">
-        <div class="effect-number purple">98%</div>
-        <div class="effect-label">客户满意度</div>
-      </div>
-    </div>
+    <div id="chart_hotel_effect" class="chart-container" style="height: 220px;"></div>
   </div>
 
-  <!-- ==================== 天正产品 ==================== -->
+  <!-- 天正产品 -->
   <div class="slide" data-index="15">
     <div class="slide-header">
       <div class="slide-tag">产品支撑</div>
       <h2 class="slide-title">天正电气核心产品</h2>
       <p class="slide-desc">为智慧配电提供全系列产品支撑</p>
     </div>
-    <div class="market-grid">
-      <div class="market-card">
-        <div class="market-icon">⚡</div>
-        <div class="market-name">智能断路器</div>
-        <div style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">NA1/NA8系列<br>远程操控、故障预警</div>
+    <div id="chart_product" class="chart-container" style="height: 300px;"></div>
+    <div class="stats-grid" style="margin-top: 20px;">
+      <div class="stat-card">
+        <div class="stat-number" style="font-size: 28px;">NA1/NA8</div>
+        <div class="stat-label">智能断路器</div>
       </div>
-      <div class="market-card">
-        <div class="market-icon">🔌</div>
-        <div class="market-name">智能塑壳</div>
-        <div style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">NM8系列<br>电子脱扣、通信联网</div>
+      <div class="stat-card">
+        <div class="stat-number" style="font-size: 28px;">NM8</div>
+        <div class="stat-label">智能塑壳</div>
       </div>
-      <div class="market-card">
-        <div class="market-icon">📡</div>
-        <div class="market-name">多功能仪表</div>
-        <div style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">PZ系列<br>高精度、多参数</div>
+      <div class="stat-card">
+        <div class="stat-number" style="font-size: 28px;">PZ</div>
+        <div class="stat-label">多功能仪表</div>
       </div>
-      <div class="market-card">
-        <div class="market-icon">🔋</div>
-        <div class="market-name">电能质量</div>
-        <div style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">APF/SVG系列<br>谐波治理、无功补偿</div>
-      </div>
-      <div class="market-card">
-        <div class="market-icon">🏗️</div>
-        <div class="market-name">智能母线</div>
-        <div style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">CCX系列<br>温升低、插接灵活</div>
+      <div class="stat-card">
+        <div class="stat-number" style="font-size: 28px;">APF/SVG</div>
+        <div class="stat-label">电能质量</div>
       </div>
     </div>
   </div>
 
-  <!-- ==================== 结尾页 ==================== -->
-  <div class="slide ending-slide" data-index="16">
+  <!-- 综合效果 -->
+  <div class="slide" data-index="16">
+    <div class="slide-header">
+      <div class="slide-tag">价值总结</div>
+      <h2 class="slide-title">智慧配电综合效果</h2>
+    </div>
+    <div id="chart_final" class="chart-container" style="height: 320px;"></div>
+    <div class="effect-grid">
+      <div class="effect-card">
+        <div class="effect-number green">安全</div>
+        <div class="effect-label">电气火灾预防95%+<br>供电可靠性99.99%</div>
+      </div>
+      <div class="effect-card">
+        <div class="effect-number blue">节能</div>
+        <div class="effect-label">综合能耗降低20-35%<br>碳排放减少30%+</div>
+      </div>
+      <div class="effect-card">
+        <div class="effect-number purple">高效</div>
+        <div class="effect-label">运维效率提升60%<br>故障响应缩短70%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 结尾 -->
+  <div class="slide ending-slide" data-index="17">
     <div class="ending-icon">🏢</div>
     <h2 class="ending-title">感谢<span class="highlight">关注</span></h2>
     <p class="ending-desc">智慧配电，让建筑更安全、更节能、更智能<br>携手共建绿色智慧未来</p>
     <div class="ending-company">
-      <div class="ending-company-name">长沙奥托自动化技术有限公司</div>
-      <div class="ending-company-sub">天正电气 TENGEN 战略合作伙伴</div>
+      <div class="ending-company-name">天正电气 TENGEN</div>
+      <div class="ending-company-sub">战略合作伙伴</div>
     </div>
   </div>
 
 </div>
 
-<!-- ====== 导航控制 ====== -->
-<div class="keyboard-hint">← → 方向键翻页 | 点击圆点跳转</div>
+<div class="keyboard-hint">← → 方向键翻页 | 底部圆点跳转</div>
 <div class="nav-controls">
   <button class="nav-btn" id="prevBtn" onclick="prevSlide()">←</button>
   <div class="page-indicator" id="pageIndicator"></div>
@@ -1635,11 +1132,11 @@ body {
 </div>
 
 <script>
+// 翻页逻辑
 const slides = document.querySelectorAll('.slide');
 const totalSlides = slides.length;
 let currentSlide = 0;
 
-// 初始化页面指示器
 function initPageIndicator() {
   const indicator = document.getElementById('pageIndicator');
   for (let i = 0; i < totalSlides; i++) {
@@ -1650,70 +1147,467 @@ function initPageIndicator() {
   }
 }
 
-// 切换到指定幻灯片
 function goToSlide(index) {
   if (index < 0 || index >= totalSlides) return;
-  
   slides[currentSlide].classList.remove('active');
   currentSlide = index;
   slides[currentSlide].classList.add('active');
-  
-  // 更新指示器
   document.querySelectorAll('.page-dot').forEach((dot, i) => {
     dot.classList.toggle('active', i === currentSlide);
   });
-  
-  // 更新按钮状态
   document.getElementById('prevBtn').disabled = currentSlide === 0;
   document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+  // 触发当前页图表渲染
+  setTimeout(() => renderChartsForSlide(currentSlide), 100);
 }
 
-function nextSlide() {
-  goToSlide(currentSlide + 1);
-}
+function nextSlide() { goToSlide(currentSlide + 1); }
+function prevSlide() { goToSlide(currentSlide - 1); }
 
-function prevSlide() {
-  goToSlide(currentSlide - 1);
-}
-
-// 键盘控制
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowRight' || e.key === ' ') {
-    e.preventDefault();
-    nextSlide();
-  } else if (e.key === 'ArrowLeft') {
-    e.preventDefault();
-    prevSlide();
-  }
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
 });
 
-// 触摸滑动支持
 let touchStartX = 0;
-let touchEndX = 0;
-
-document.addEventListener('touchstart', (e) => {
-  touchStartX = e.changedTouches[0].screenX;
-});
-
+document.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; });
 document.addEventListener('touchend', (e) => {
-  touchEndX = e.changedTouches[0].screenX;
-  handleSwipe();
+  const diff = touchStartX - e.changedTouches[0].screenX;
+  if (Math.abs(diff) > 50) { diff > 0 ? nextSlide() : prevSlide(); }
 });
 
-function handleSwipe() {
-  const diff = touchStartX - touchEndX;
-  if (Math.abs(diff) > 50) {
-    if (diff > 0) {
-      nextSlide();
-    } else {
-      prevSlide();
-    }
-  }
-}
-
-// 初始化
 initPageIndicator();
 goToSlide(0);
+
+// ECharts图表
+const chartInstances = {};
+
+function getChart(id) {
+  if (!chartInstances[id]) {
+    const dom = document.getElementById(id);
+    if (dom) chartInstances[id] = echarts.init(dom);
+  }
+  return chartInstances[id];
+}
+
+const textColor = '#94a3b8';
+const gridStyle = { left: '3%', right: '4%', bottom: '3%', containLabel: true };
+
+// 市场趋势图
+function render_market_trend() {
+  const chart = getChart('chart_market_trend');
+  if (!chart) return;
+  chart.setOption({
+    tooltip: { trigger: 'axis' },
+    grid: gridStyle,
+    xAxis: { type: 'category', data: ['2020', '2021', '2022', '2023', '2024', '2025E', '2026E', '2027E', '2028E', '2029E', '2030E'], axisLabel: { color: textColor }, axisLine: { lineStyle: { color: '#334155' } } },
+    yAxis: { type: 'value', name: '亿元', nameTextStyle: { color: textColor }, axisLabel: { color: textColor }, splitLine: { lineStyle: { color: '#1e293b' } } },
+    series: [{
+      name: '市场规模',
+      type: 'bar',
+      data: [6800, 7800, 8900, 10200, 11800, 15000, 17200, 19800, 22800, 26200, 30000],
+      itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#0ea5e9' }, { offset: 1, color: '#8b5cf6' }]), borderRadius: [4, 4, 0, 0] },
+      label: { show: true, position: 'top', color: textColor, fontSize: 11 }
+    }]
+  });
+}
+
+// 场景市场对比
+function render_scene_market() {
+  const chart = getChart('chart_scene_market');
+  if (!chart) return;
+  chart.setOption({
+    tooltip: { trigger: 'axis' },
+    legend: { data: ['2025', '2030E'], textStyle: { color: textColor }, top: 0 },
+    grid: gridStyle,
+    xAxis: { type: 'category', data: ['医院', '商业', '住宅', '别墅', '酒店'], axisLabel: { color: textColor }, axisLine: { lineStyle: { color: '#334155' } } },
+    yAxis: { type: 'value', name: '亿元', nameTextStyle: { color: textColor }, axisLabel: { color: textColor }, splitLine: { lineStyle: { color: '#1e293b' } } },
+    series: [
+      { name: '2025', type: 'bar', data: [1800, 2500, 3200, 600, 1500], itemStyle: { color: '#0ea5e9', borderRadius: [4, 4, 0, 0] } },
+      { name: '2030E', type: 'bar', data: [3200, 4800, 5600, 1200, 2800], itemStyle: { color: '#8b5cf6', borderRadius: [4, 4, 0, 0] } }
+    ]
+  });
+}
+
+function render_scene_growth() {
+  const chart = getChart('chart_scene_growth');
+  if (!chart) return;
+  chart.setOption({
+    tooltip: { trigger: 'item' },
+    legend: { orient: 'vertical', left: 'left', top: 'center', textStyle: { color: textColor } },
+    series: [{
+      type: 'pie',
+      radius: ['40%', '70%'],
+      center: ['60%', '50%'],
+      label: { color: textColor, formatter: '{b}: {d}%' },
+      data: [
+        { value: 3200, name: '医院', itemStyle: { color: '#0ea5e9' } },
+        { value: 4800, name: '商业综合体', itemStyle: { color: '#8b5cf6' } },
+        { value: 5600, name: '住宅小区', itemStyle: { color: '#10b981' } },
+        { value: 1200, name: '别墅', itemStyle: { color: '#f43f5e' } },
+        { value: 2800, name: '酒店', itemStyle: { color: '#fb923c' } }
+      ]
+    }]
+  });
+}
+
+// 政策时间线
+function render_policy() {
+  const chart = getChart('chart_policy');
+  if (!chart) return;
+  chart.setOption({
+    tooltip: { trigger: 'axis' },
+    grid: gridStyle,
+    xAxis: { type: 'category', data: ['2020', '2021', '2022', '2023', '2024', '2025'], axisLabel: { color: textColor }, axisLine: { lineStyle: { color: '#334155' } } },
+    yAxis: { type: 'value', name: '政策数量', nameTextStyle: { color: textColor }, axisLabel: { color: textColor }, splitLine: { lineStyle: { color: '#1e293b' } } },
+    series: [{
+      type: 'line',
+      data: [3, 5, 8, 12, 15, 18],
+      smooth: true,
+      lineStyle: { color: '#0ea5e9', width: 3 },
+      areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(14,165,233,0.3)' }, { offset: 1, color: 'rgba(14,165,233,0)' }]) },
+      symbol: 'circle',
+      symbolSize: 8,
+      itemStyle: { color: '#0ea5e9' }
+    }]
+  });
+}
+
+// 标准覆盖雷达图
+function render_standard() {
+  const chart = getChart('chart_standard');
+  if (!chart) return;
+  chart.setOption({
+    radar: {
+      indicator: [
+        { name: '配电设计', max: 100 },
+        { name: '智能化', max: 100 },
+        { name: '能效管理', max: 100 },
+        { name: '安全防护', max: 100 },
+        { name: '通信协议', max: 100 },
+        { name: '运维管理', max: 100 }
+      ],
+      axisName: { color: textColor },
+      splitArea: { areaStyle: { color: ['rgba(14,165,233,0.05)', 'rgba(14,165,233,0.1)'] } },
+      splitLine: { lineStyle: { color: '#334155' } },
+      axisLine: { lineStyle: { color: '#334155' } }
+    },
+    series: [{
+      type: 'radar',
+      data: [{
+        value: [95, 85, 80, 90, 75, 70],
+        name: '标准覆盖度',
+        areaStyle: { color: 'rgba(14,165,233,0.2)' },
+        lineStyle: { color: '#0ea5e9' },
+        itemStyle: { color: '#0ea5e9' }
+      }]
+    }]
+  });
+}
+
+// 医院痛点占比
+function render_hospital_pain() {
+  const chart = getChart('chart_hospital_pain');
+  if (!chart) return;
+  chart.setOption({
+    tooltip: { trigger: 'item' },
+    series: [{
+      type: 'pie',
+      radius: ['35%', '65%'],
+      label: { color: textColor, formatter: '{b}\n{d}%' },
+      data: [
+        { value: 35, name: '供电可靠性', itemStyle: { color: '#f43f5e' } },
+        { value: 25, name: '电能质量', itemStyle: { color: '#fb923c' } },
+        { value: 25, name: '能耗管理', itemStyle: { color: '#fbbf24' } },
+        { value: 15, name: '运维效率', itemStyle: { color: '#a78bfa' } }
+      ]
+    }]
+  });
+}
+
+function render_hospital_effect() {
+  const chart = getChart('chart_hospital_effect');
+  if (!chart) return;
+  chart.setOption({
+    tooltip: { trigger: 'axis' },
+    grid: gridStyle,
+    xAxis: { type: 'category', data: ['供电可靠性', '节能效果', '响应提速', '运维效率'], axisLabel: { color: textColor }, axisLine: { lineStyle: { color: '#334155' } } },
+    yAxis: { type: 'value', max: 100, axisLabel: { color: textColor, formatter: '{value}%' }, splitLine: { lineStyle: { color: '#1e293b' } } },
+    series: [{
+      type: 'bar',
+      data: [
+        { value: 99.99, itemStyle: { color: '#10b981' } },
+        { value: 25, itemStyle: { color: '#0ea5e9' } },
+        { value: 60, itemStyle: { color: '#8b5cf6' } },
+        { value: 45, itemStyle: { color: '#f43f5e' } }
+      ],
+      label: { show: true, position: 'top', color: textColor, formatter: '{c}%' },
+      barWidth: '40%'
+    }]
+  });
+}
+
+// 商业综合体
+function render_commercial_pain() {
+  const chart = getChart('chart_commercial_pain');
+  if (!chart) return;
+  chart.setOption({
+    tooltip: { trigger: 'axis' },
+    grid: gridStyle,
+    xAxis: { type: 'category', data: ['空调', '照明', '电梯', '其他'], axisLabel: { color: textColor }, axisLine: { lineStyle: { color: '#334155' } } },
+    yAxis: { type: 'value', name: '占比%', nameTextStyle: { color: textColor }, axisLabel: { color: textColor }, splitLine: { lineStyle: { color: '#1e293b' } } },
+    series: [{
+      type: 'bar',
+      data: [45, 20, 15, 20],
+      itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#f43f5e' }, { offset: 1, color: '#fb923c' }]), borderRadius: [4, 4, 0, 0] },
+      label: { show: true, position: 'top', color: textColor, formatter: '{c}%' }
+    }]
+  });
+}
+
+function render_commercial_effect() {
+  const chart = getChart('chart_commercial_effect');
+  if (!chart) return;
+  chart.setOption({
+    tooltip: { trigger: 'axis' },
+    grid: gridStyle,
+    xAxis: { type: 'category', data: ['能耗降低', '运维效率', '安全隐患消除', '租户满意'], axisLabel: { color: textColor, fontSize: 11 }, axisLine: { lineStyle: { color: '#334155' } } },
+    yAxis: { type: 'value', max: 100, axisLabel: { color: textColor, formatter: '{value}%' }, splitLine: { lineStyle: { color: '#1e293b' } } },
+    series: [{
+      type: 'bar',
+      data: [
+        { value: 30, itemStyle: { color: '#10b981' } },
+        { value: 80, itemStyle: { color: '#0ea5e9' } },
+        { value: 95, itemStyle: { color: '#8b5cf6' } },
+        { value: 90, itemStyle: { color: '#fbbf24' } }
+      ],
+      label: { show: true, position: 'top', color: textColor, formatter: '{c}%' },
+      barWidth: '40%'
+    }]
+  });
+}
+
+// 住宅小区
+function render_residential_pain() {
+  const chart = getChart('chart_residential_pain');
+  if (!chart) return;
+  chart.setOption({
+    tooltip: { trigger: 'item' },
+    series: [{
+      type: 'pie',
+      radius: ['35%', '65%'],
+      label: { color: textColor, formatter: '{b}\n{d}%' },
+      data: [
+        { value: 30, name: '充电设施', itemStyle: { color: '#0ea5e9' } },
+        { value: 30, name: '安全隐患', itemStyle: { color: '#f43f5e' } },
+        { value: 20, name: '物业效率', itemStyle: { color: '#fbbf24' } },
+        { value: 20, name: '能源浪费', itemStyle: { color: '#a78bfa' } }
+      ]
+    }]
+  });
+}
+
+function render_residential_effect() {
+  const chart = getChart('chart_residential_effect');
+  if (!chart) return;
+  chart.setOption({
+    tooltip: { trigger: 'axis' },
+    grid: gridStyle,
+    xAxis: { type: 'category', data: ['安全事故降低', '公区能耗降低', '抄表效率提升', '充电桩利用率'], axisLabel: { color: textColor, fontSize: 11 }, axisLine: { lineStyle: { color: '#334155' } } },
+    yAxis: { type: 'value', max: 100, axisLabel: { color: textColor, formatter: '{value}%' }, splitLine: { lineStyle: { color: '#1e293b' } } },
+    series: [{
+      type: 'bar',
+      data: [
+        { value: 50, itemStyle: { color: '#10b981' } },
+        { value: 30, itemStyle: { color: '#0ea5e9' } },
+        { value: 90, itemStyle: { color: '#8b5cf6' } },
+        { value: 85, itemStyle: { color: '#fbbf24' } }
+      ],
+      label: { show: true, position: 'top', color: textColor, formatter: '{c}%' },
+      barWidth: '40%'
+    }]
+  });
+}
+
+// 别墅
+function render_villa_pain() {
+  const chart = getChart('chart_villa_pain');
+  if (!chart) return;
+  chart.setOption({
+    tooltip: { trigger: 'axis' },
+    grid: gridStyle,
+    xAxis: { type: 'category', data: ['系统复杂', '能效缺失', '安全隐患', '舒适矛盾'], axisLabel: { color: textColor }, axisLine: { lineStyle: { color: '#334155' } } },
+    yAxis: { type: 'value', name: '痛点占比%', nameTextStyle: { color: textColor }, axisLabel: { color: textColor }, splitLine: { lineStyle: { color: '#1e293b' } } },
+    series: [{
+      type: 'bar',
+      data: [30, 28, 22, 20],
+      itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#f43f5e' }, { offset: 1, color: '#fb923c' }]), borderRadius: [4, 4, 0, 0] },
+      label: { show: true, position: 'top', color: textColor, formatter: '{c}%' }
+    }]
+  });
+}
+
+function render_villa_effect() {
+  const chart = getChart('chart_villa_effect');
+  if (!chart) return;
+  chart.setOption({
+    tooltip: { trigger: 'axis' },
+    grid: gridStyle,
+    xAxis: { type: 'category', data: ['电费节省', '光伏自用率', '场景覆盖', '安全防护'], axisLabel: { color: textColor }, axisLine: { lineStyle: { color: '#334155' } } },
+    yAxis: { type: 'value', max: 100, axisLabel: { color: textColor, formatter: '{value}%' }, splitLine: { lineStyle: { color: '#1e293b' } } },
+    series: [{
+      type: 'bar',
+      data: [
+        { value: 35, itemStyle: { color: '#10b981' } },
+        { value: 80, itemStyle: { color: '#0ea5e9' } },
+        { value: 100, itemStyle: { color: '#8b5cf6' } },
+        { value: 95, itemStyle: { color: '#f43f5e' } }
+      ],
+      label: { show: true, position: 'top', color: textColor, formatter: '{c}%' },
+      barWidth: '40%'
+    }]
+  });
+}
+
+// 酒店
+function render_hotel_pain() {
+  const chart = getChart('chart_hotel_pain');
+  if (!chart) return;
+  chart.setOption({
+    tooltip: { trigger: 'axis' },
+    grid: gridStyle,
+    xAxis: { type: 'category', data: ['空调', '照明', '热水', '电梯', '其他'], axisLabel: { color: textColor }, axisLine: { lineStyle: { color: '#334155' } } },
+    yAxis: { type: 'value', name: '能耗占比%', nameTextStyle: { color: textColor }, axisLabel: { color: textColor }, splitLine: { lineStyle: { color: '#1e293b' } } },
+    series: [{
+      type: 'bar',
+      data: [50, 18, 12, 10, 10],
+      itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#f43f5e' }, { offset: 1, color: '#fb923c' }]), borderRadius: [4, 4, 0, 0] },
+      label: { show: true, position: 'top', color: textColor, formatter: '{c}%' }
+    }]
+  });
+}
+
+function render_hotel_effect() {
+  const chart = getChart('chart_hotel_effect');
+  if (!chart) return;
+  chart.setOption({
+    tooltip: { trigger: 'axis' },
+    grid: gridStyle,
+    xAxis: { type: 'category', data: ['能耗降低', '运维效率', '客户满意度', '入住体验'], axisLabel: { color: textColor, fontSize: 11 }, axisLine: { lineStyle: { color: '#334155' } } },
+    yAxis: { type: 'value', max: 100, axisLabel: { color: textColor, formatter: '{value}%' }, splitLine: { lineStyle: { color: '#1e293b' } } },
+    series: [{
+      type: 'bar',
+      data: [
+        { value: 28, itemStyle: { color: '#10b981' } },
+        { value: 40, itemStyle: { color: '#0ea5e9' } },
+        { value: 98, itemStyle: { color: '#8b5cf6' } },
+        { value: 95, itemStyle: { color: '#fbbf24' } }
+      ],
+      label: { show: true, position: 'top', color: textColor, formatter: '{c}%' },
+      barWidth: '40%'
+    }]
+  });
+}
+
+// 产品雷达图
+function render_product() {
+  const chart = getChart('chart_product');
+  if (!chart) return;
+  chart.setOption({
+    radar: {
+      indicator: [
+        { name: '断路器', max: 100 },
+        { name: '塑壳', max: 100 },
+        { name: '微断', max: 100 },
+        { name: '仪表', max: 100 },
+        { name: '电能质量', max: 100 },
+        { name: '母线', max: 100 }
+      ],
+      axisName: { color: textColor },
+      splitArea: { areaStyle: { color: ['rgba(14,165,233,0.05)', 'rgba(14,165,233,0.1)'] } },
+      splitLine: { lineStyle: { color: '#334155' } },
+      axisLine: { lineStyle: { color: '#334155' } }
+    },
+    series: [{
+      type: 'radar',
+      data: [{
+        value: [95, 90, 88, 85, 80, 82],
+        name: '产品竞争力',
+        areaStyle: { color: 'rgba(14,165,233,0.2)' },
+        lineStyle: { color: '#0ea5e9' },
+        itemStyle: { color: '#0ea5e9' }
+      }]
+    }]
+  });
+}
+
+// 综合效果雷达图
+function render_final() {
+  const chart = getChart('chart_final');
+  if (!chart) return;
+  chart.setOption({
+    radar: {
+      indicator: [
+        { name: '安全性', max: 100 },
+        { name: '节能性', max: 100 },
+        { name: '智能化', max: 100 },
+        { name: '可靠性', max: 100 },
+        { name: '经济性', max: 100 },
+        { name: '可扩展', max: 100 }
+      ],
+      axisName: { color: textColor },
+      splitArea: { areaStyle: { color: ['rgba(16,185,129,0.05)', 'rgba(16,185,129,0.1)'] } },
+      splitLine: { lineStyle: { color: '#334155' } },
+      axisLine: { lineStyle: { color: '#334155' } }
+    },
+    series: [{
+      type: 'radar',
+      data: [{
+        value: [95, 88, 90, 99, 85, 88],
+        name: '综合效果',
+        areaStyle: { color: 'rgba(16,185,129,0.2)' },
+        lineStyle: { color: '#10b981' },
+        itemStyle: { color: '#10b981' }
+      }]
+    }]
+  });
+}
+
+// 按需渲染图表
+const chartRenderers = {
+  1: [render_market_trend],
+  2: [render_scene_market, render_scene_growth],
+  3: [render_policy],
+  4: [render_standard],
+  5: [render_hospital_pain],
+  6: [render_hospital_effect],
+  7: [render_commercial_pain],
+  8: [render_commercial_effect],
+  9: [render_residential_pain],
+  10: [render_residential_effect],
+  11: [render_villa_pain],
+  12: [render_villa_effect],
+  13: [render_hotel_pain],
+  14: [render_hotel_effect],
+  15: [render_product],
+  16: [render_final]
+};
+
+const rendered = new Set();
+
+function renderChartsForSlide(index) {
+  if (rendered.has(index)) return;
+  const renderers = chartRenderers[index];
+  if (renderers) {
+    renderers.forEach(fn => fn());
+    rendered.add(index);
+  }
+}
+
+// 窗口resize时重绘
+window.addEventListener('resize', () => {
+  Object.values(chartInstances).forEach(chart => chart.resize());
+});
 </script>
 
 </body>
