@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Excalidraw 手绘风格架构图</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #f5f5f5;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .header {
+    background: white;
+    padding: 12px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header h1 {
+    font-size: 18px;
+    color: #333;
+  }
+  .header .actions {
+    display: flex;
+    gap: 10px;
+  }
+  .header button {
+    padding: 8px 16px;
+    background: #4A90D9;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .header button:hover {
+    background: #357ABD;
+  }
+  .header button.secondary {
+    background: #6c757d;
+  }
+  .header button.secondary:hover {
+    background: #545b62;
+  }
+  #excalidraw-container {
+    flex: 1;
+    width: 100%;
+  }
+  .excalidraw-wrapper {
+    height: 100%;
+    width: 100%;
+  }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>智慧建筑配电解决方案 - 手绘风格架构图</h1>
+  <div class="actions">
+    <button onclick="exportSVG()">导出 SVG</button>
+    <button onclick="exportPNG()">导出 PNG</button>
+    <button class="secondary" onclick="downloadExcalidraw()">下载 .excalidraw</button>
+  </div>
+</div>
+
+<div id="excalidraw-container">
+  <div class="excalidraw-wrapper" id="excalidraw"></div>
+</div>
+
+<!-- React and Excalidraw from CDN -->
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@excalidraw/excalidraw@0.17.0/dist/excalidraw.production.min.js"></script>
+
+<script>
+// The Excalidraw data from our .excalidraw file
+const excalidrawData = {
+  "type": "excalidraw",
+  "version": 2,
+  "source": "hermes-agent",
+  "elements": [
+    {"type":"text","id":"title","x":250,"y":30,"text":"智慧建筑配电解决方案","fontSize":28,"fontFamily":1,"strokeColor":"#1e1e1e","originalText":"智慧建筑配电解决方案","autoResize":true},
+    {"type":"text","id":"subtitle","x":310,"y":70,"text":"五大应用场景","fontSize":18,"fontFamily":1,"strokeColor":"#757575","originalText":"五大应用场景","autoResize":true},
+    {"type":"rectangle","id":"center","x":350,"y":130,"width":200,"height":80,"roundness":{"type":3},"backgroundColor":"#a5d8ff","fillStyle":"solid","strokeWidth":2,"boundElements":[{"id":"t_center","type":"text"}]},
+    {"type":"text","id":"t_center","x":355,"y":140,"width":190,"height":60,"text":"智能配电\n核心系统","fontSize":22,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"center","originalText":"智能配电\n核心系统","autoResize":true},
+    {"type":"rectangle","id":"hosp","x":50,"y":280,"width":160,"height":70,"roundness":{"type":3},"backgroundColor":"#ffc9c9","fillStyle":"solid","boundElements":[{"id":"t_hosp","type":"text"}]},
+    {"type":"text","id":"t_hosp","x":55,"y":290,"width":150,"height":50,"text":"医院配电","fontSize":20,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"hosp","originalText":"医院配电","autoResize":true},
+    {"type":"rectangle","id":"mall","x":250,"y":280,"width":160,"height":70,"roundness":{"type":3},"backgroundColor":"#b2f2bb","fillStyle":"solid","boundElements":[{"id":"t_mall","type":"text"}]},
+    {"type":"text","id":"t_mall","x":255,"y":290,"width":150,"height":50,"text":"商业综合体","fontSize":20,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"mall","originalText":"商业综合体","autoResize":true},
+    {"type":"rectangle","id":"home","x":450,"y":280,"width":160,"height":70,"roundness":{"type":3},"backgroundColor":"#fff3bf","fillStyle":"solid","boundElements":[{"id":"t_home","type":"text"}]},
+    {"type":"text","id":"t_home","x":455,"y":290,"width":150,"height":50,"text":"住宅小区","fontSize":20,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"home","originalText":"住宅小区","autoResize":true},
+    {"type":"rectangle","id":"villa","x":650,"y":280,"width":160,"height":70,"roundness":{"type":3},"backgroundColor":"#d0bfff","fillStyle":"solid","boundElements":[{"id":"t_villa","type":"text"}]},
+    {"type":"text","id":"t_villa","x":655,"y":290,"width":150,"height":50,"text":"别墅住宅","fontSize":20,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"villa","originalText":"别墅住宅","autoResize":true},
+    {"type":"rectangle","id":"hotel","x":850,"y":280,"width":160,"height":70,"roundness":{"type":3},"backgroundColor":"#ffd8a8","fillStyle":"solid","boundElements":[{"id":"t_hotel","type":"text"}]},
+    {"type":"text","id":"t_hotel","x":855,"y":290,"width":150,"height":50,"text":"酒店","fontSize":20,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"hotel","originalText":"酒店","autoResize":true},
+    {"type":"arrow","id":"a1","x":400,"y":210,"width":50,"height":70,"points":[[0,0],[-120,70]],"endArrowhead":"arrow","strokeWidth":2,"startBinding":{"elementId":"center","fixedPoint":[0.2,1]},"endBinding":{"elementId":"hosp","fixedPoint":[0.5,0]}},
+    {"type":"arrow","id":"a2","x":420,"y":210,"width":30,"height":70,"points":[[0,0],[-20,70]],"endArrowhead":"arrow","strokeWidth":2,"startBinding":{"elementId":"center","fixedPoint":[0.35,1]},"endBinding":{"elementId":"mall","fixedPoint":[0.5,0]}},
+    {"type":"arrow","id":"a3","x":450,"y":210,"width":20,"height":70,"points":[[0,0],[50,70]],"endArrowhead":"arrow","strokeWidth":2,"startBinding":{"elementId":"center","fixedPoint":[0.5,1]},"endBinding":{"elementId":"home","fixedPoint":[0.5,0]}},
+    {"type":"arrow","id":"a4","x":480,"y":210,"width":50,"height":70,"points":[[0,0],[120,70]],"endArrowhead":"arrow","strokeWidth":2,"startBinding":{"elementId":"center","fixedPoint":[0.7,1]},"endBinding":{"elementId":"villa","fixedPoint":[0.5,0]}},
+    {"type":"arrow","id":"a5","x":500,"y":210,"width":80,"height":70,"points":[[0,0],[200,70]],"endArrowhead":"arrow","strokeWidth":2,"startBinding":{"elementId":"center","fixedPoint":[0.9,1]},"endBinding":{"elementId":"hotel","fixedPoint":[0.5,0]}},
+    {"type":"rectangle","id":"prod1","x":50,"y":400,"width":140,"height":50,"roundness":{"type":3},"backgroundColor":"#c3fae8","fillStyle":"solid","boundElements":[{"id":"t_prod1","type":"text"}]},
+    {"type":"text","id":"t_prod1","x":55,"y":405,"width":130,"height":40,"text":"断路器","fontSize":18,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"prod1","originalText":"断路器","autoResize":true},
+    {"type":"rectangle","id":"prod2","x":220,"y":400,"width":140,"height":50,"roundness":{"type":3},"backgroundColor":"#c3fae8","fillStyle":"solid","boundElements":[{"id":"t_prod2","type":"text"}]},
+    {"type":"text","id":"t_prod2","x":225,"y":405,"width":130,"height":40,"text":"接触器","fontSize":18,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"prod2","originalText":"接触器","autoResize":true},
+    {"type":"rectangle","id":"prod3","x":390,"y":400,"width":140,"height":50,"roundness":{"type":3},"backgroundColor":"#c3fae8","fillStyle":"solid","boundElements":[{"id":"t_prod3","type":"text"}]},
+    {"type":"text","id":"t_prod3","x":395,"y":405,"width":130,"height":40,"text":"变频器","fontSize":18,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"prod3","originalText":"变频器","autoResize":true},
+    {"type":"rectangle","id":"prod4","x":560,"y":400,"width":140,"height":50,"roundness":{"type":3},"backgroundColor":"#c3fae8","fillStyle":"solid","boundElements":[{"id":"t_prod4","type":"text"}]},
+    {"type":"text","id":"t_prod4","x":565,"y":405,"width":130,"height":40,"text":"电能质量","fontSize":18,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"prod4","originalText":"电能质量","autoResize":true},
+    {"type":"rectangle","id":"prod5","x":730,"y":400,"width":140,"height":50,"roundness":{"type":3},"backgroundColor":"#c3fae8","fillStyle":"solid","boundElements":[{"id":"t_prod5","type":"text"}]},
+    {"type":"text","id":"t_prod5","x":735,"y":405,"width":130,"height":40,"text":"智能仪表","fontSize":18,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"prod5","originalText":"智能仪表","autoResize":true},
+    {"type":"text","id":"prod_title","x":350,"y":370,"text":"核心产品线","fontSize":18,"fontFamily":1,"strokeColor":"#757575","originalText":"核心产品线","autoResize":true},
+    {"type":"rectangle","id":"feat1","x":100,"y":500,"width":180,"height":60,"roundness":{"type":3},"backgroundColor":"#d9e2f3","fillStyle":"solid","boundElements":[{"id":"t_feat1","type":"text"}]},
+    {"type":"text","id":"t_feat1","x":105,"y":505,"width":170,"height":50,"text":"安全可靠","fontSize":18,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"feat1","originalText":"安全可靠","autoResize":true},
+    {"type":"rectangle","id":"feat2","x":330,"y":500,"width":180,"height":60,"roundness":{"type":3},"backgroundColor":"#d9e2f3","fillStyle":"solid","boundElements":[{"id":"t_feat2","type":"text"}]},
+    {"type":"text","id":"t_feat2","x":335,"y":505,"width":170,"height":50,"text":"智能管控","fontSize":18,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"feat2","originalText":"智能管控","autoResize":true},
+    {"type":"rectangle","id":"feat3","x":560,"y":500,"width":180,"height":60,"roundness":{"type":3},"backgroundColor":"#d9e2f3","fillStyle":"solid","boundElements":[{"id":"t_feat3","type":"text"}]},
+    {"type":"text","id":"t_feat3","x":565,"y":505,"width":170,"height":50,"text":"节能高效","fontSize":18,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"feat3","originalText":"节能高效","autoResize":true},
+    {"type":"rectangle","id":"feat4","x":790,"y":500,"width":180,"height":60,"roundness":{"type":3},"backgroundColor":"#d9e2f3","fillStyle":"solid","boundElements":[{"id":"t_feat4","type":"text"}]},
+    {"type":"text","id":"t_feat4","x":795,"y":505,"width":170,"height":50,"text":"灵活扩展","fontSize":18,"fontFamily":1,"strokeColor":"#1e1e1e","textAlign":"center","verticalAlign":"middle","containerId":"feat4","originalText":"灵活扩展","autoResize":true},
+    {"type":"text","id":"feat_title","x":380,"y":475,"text":"核心价值","fontSize":18,"fontFamily":1,"strokeColor":"#757575","originalText":"核心价值","autoResize":true}
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": null
+  }
+};
+
+let excalidrawAPI = null;
+
+// Initialize Excalidraw
+function initExcalidraw() {
+  const { Excalidraw, exportToSvg, exportToBlob } = window.ExcalidrawLib;
+  
+  const App = () => {
+    const [elements, setElements] = React.useState(excalidrawData.elements);
+    const [appState, setAppState] = React.useState(excalidrawData.appState);
+    
+    const handleChange = (newElements, newAppState) => {
+      setElements(newElements);
+      setAppState(newAppState);
+    };
+    
+    const handleExcalidrawAPI = (api) => {
+      excalidrawAPI = api;
+    };
+    
+    return React.createElement(Excalidraw, {
+      initialData: excalidrawData,
+      onChange: handleChange,
+      onExcalidrawAPI: handleExcalidrawAPI,
+      viewModeEnabled: false,
+      zenModeEnabled: false,
+      gridModeEnabled: false
+    });
+  };
+  
+  const root = ReactDOM.createRoot(document.getElementById('excalidraw'));
+  root.render(React.createElement(App));
+}
+
+// Export functions
+async function exportSVG() {
+  if (!excalidrawAPI) return;
+  const { exportToSvg } = window.ExcalidrawLib;
+  const elements = excalidrawAPI.getSceneElements();
+  const appState = excalidrawAPI.getAppState();
+  
+  const svg = await exportToSvg({
+    elements,
+    appState: { ...appState, exportBackground: true, exportWithDarkMode: false },
+    files: excalidrawAPI.getFiles()
+  });
+  
+  const svgData = new XMLSerializer().serializeToString(svg);
+  const blob = new Blob([svgData], { type: 'image/svg+xml' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = '智慧建筑配电方案_手绘图.svg';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+async function exportPNG() {
+  if (!excalidrawAPI) return;
+  const { exportToBlob } = window.ExcalidrawLib;
+  const elements = excalidrawAPI.getSceneElements();
+  const appState = excalidrawAPI.getAppState();
+  
+  const blob = await exportToBlob({
+    elements,
+    appState: { ...appState, exportBackground: true, exportWithDarkMode: false },
+    files: excalidrawAPI.getFiles(),
+    mimeType: 'image/png',
+    quality: 1
+  });
+  
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = '智慧建筑配电方案_手绘图.png';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function downloadExcalidraw() {
+  const data = JSON.stringify(excalidrawData, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = '智慧建筑配电方案_手绘图.excalidraw';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  // Wait for Excalidraw to load
+  const checkExcalidraw = setInterval(() => {
+    if (window.ExcalidrawLib) {
+      clearInterval(checkExcalidraw);
+      initExcalidraw();
+    }
+  }, 100);
+});
+</script>
+</body>
+</html>
