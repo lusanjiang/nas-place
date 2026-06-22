@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>天正电气 · 智慧园区数智化配电解决方案</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --mint: #10A99D;
+  --mint-dark: #087F77;
+  --mint-light: #E6F7F5;
+  --ink: #1A2B3D;
+  --ink-soft: #4A5A6B;
+  --gray: #94A3B8;
+  --gray-light: #E2E8F0;
+  --bg: #FAFBFC;
+  --white: #FFFFFF;
+  --accent: #F97316;
+  --danger: #EF4444;
+  --success: #22C55E;
+}
+
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+  background: #1A2B3D;
+  color: var(--ink);
+  overflow: hidden;
+  height: 100vh;
+  user-select: none;
+}
+
+/* ===== Stage ===== */
+.stage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0F1B2D 0%, #1A2B3D 100%);
+}
+
+.deck {
+  position: relative;
+  width: min(96vw, calc(96vh * 16 / 9));
+  aspect-ratio: 16 / 9;
+  background: var(--bg);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+/* ===== Slide ===== */
+.slide {
+  position: absolute;
+  inset: 0;
+  padding: 56px 64px 48px;
+  background: var(--bg);
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.slide.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.slide.prev {
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+/* ===== Header bar ===== */
+.slide::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--mint) 0%, var(--mint-dark) 50%, transparent 100%);
+}
+
+.slide-num {
+  position: absolute;
+  top: 24px;
+  right: 36px;
+  font-size: 11px;
+  color: var(--gray);
+  font-family: "SF Mono", Consolas, monospace;
+  letter-spacing: 0.1em;
+}
+
+/* ===== Typography ===== */
+h1, h2, h3, h4 { font-weight: 600; color: var(--ink); }
+h1 { font-size: 44px; line-height: 1.2; letter-spacing: -0.02em; }
+h2 { font-size: 30px; line-height: 1.3; }
+h3 { font-size: 20px; line-height: 1.4; }
+h4 { font-size: 15px; line-height: 1.4; }
+
+.eyebrow {
+  font-size: 12px;
+  color: var(--mint);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 1.5px;
+  background: var(--mint);
+}
+
+.sub {
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.7;
+  margin-top: 12px;
+}
+
+/* ===== Components ===== */
+.tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 500;
+  background: var(--mint-light);
+  color: var(--mint-dark);
+}
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--gray-light);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.3s;
+}
+.card:hover {
+  border-color: var(--mint);
+  box-shadow: 0 8px 20px rgba(16, 169, 157, 0.08);
+}
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.grid-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+
+.row { display: flex; gap: 16px; }
+.col { display: flex; flex-direction: column; gap: 12px; }
+.fill { flex: 1; }
+
+/* ===== P1 Cover ===== */
+.cover {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--white) 0%, var(--mint-light) 100%);
+  position: absolute;
+  inset: 0;
+}
+.cover::after {
+  content: '';
+  position: absolute;
+  right: -100px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(16, 169, 157, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.cover-left { flex: 0 0 50%; z-index: 2; padding-right: 20px; }
+.cover-right { flex: 1; position: relative; z-index: 2; }
+
+.cover-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.cover-logo-mark {
+  width: 36px;
+  height: 36px;
+  background: var(--mint);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 18px;
+  font-family: "SF Mono", monospace;
+}
+.cover-logo-text {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+.cover-logo-sub {
+  font-size: 10px;
+  color: var(--gray);
+  letter-spacing: 0.2em;
+  margin-top: 2px;
+}
+
+.cover-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--white);
+  border: 1px solid var(--gray-light);
+  border-radius: 100px;
+  font-size: 12px;
+  color: var(--mint-dark);
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+.cover-tag::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--mint);
+  border-radius: 50%;
+}
+
+.cover h1 {
+  font-size: 52px;
+  line-height: 1.15;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.cover h1 span {
+  display: block;
+  color: var(--mint);
+  font-size: 36px;
+  margin-top: 6px;
+}
+
+.cover-sub {
+  font-size: 16px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  max-width: 480px;
+  margin-bottom: 32px;
+}
+
+.cover-meta {
+  display: flex;
+  gap: 24px;
+  font-size: 12px;
+  color: var(--gray);
+}
+.cover-meta strong { color: var(--ink); }
+
+/* Cover visual */
+.cover-visual {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 280px;
+  height: 280px;
+}
+.cover-arc {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 280px;
+  height: 280px;
+  border: 2px dashed var(--mint);
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: spin 20s linear infinite;
+}
+.cover-arc-2 {
+  width: 200px;
+  height: 200px;
+  border-style: solid;
+  border-width: 1px;
+  opacity: 0.5;
+  animation: spin 15s linear infinite reverse;
+}
+.cover-core {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, var(--mint) 0%, var(--mint-dark) 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 20px 40px rgba(16, 169, 157, 0.3);
+  z-index: 2;
+}
+.cover-node {
+  position: absolute;
+  background: var(--white);
+  border: 1px solid var(--gray-light);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 11px;
+  color: var(--ink);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  z-index: 3;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== P2 TOC ===== */
+.toc-list { display: flex; flex-direction: column; gap: 8px; flex: 1; justify-content: center; max-width: 720px; }
+.toc-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 20px;
+  background: var(--white);
+  border: 1px solid var(--gray-light);
+  border-radius: 10px;
+  transition: all 0.3s;
+}
+.toc-item:hover { border-color: var(--mint); transform: translateX(4px); }
+.toc-num {
+  font-family: "SF Mono", monospace;
+  font-size: 24px;
+  color: var(--mint);
+  font-weight: 600;
+  min-width: 48px;
+}
+.toc-title { font-size: 16px; font-weight: 500; flex: 1; }
+.toc-desc { font-size: 12px; color: var(--gray); }
+.toc-line {
+  height: 1px;
+  background: var(--gray-light);
+  flex: 1;
+  margin: 0 12px;
+}
+
+/* ===== P3 Trends ===== */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.stat-box {
+  background: var(--white);
+  border: 1px solid var(--gray-light);
+  border-left: 3px solid var(--mint);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.stat-label { font-size: 11px; color: var(--gray); margin-bottom: 4px; }
+.stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+  font-family: "SF Mono", monospace;
+  line-height: 1.1;
+}
+.stat-value small { font-size: 13px; color: var(--ink-soft); font-weight: 500; margin-left: 2px; }
+.stat-delta { font-size: 11px; color: var(--success); margin-top: 4px; }
+
+.chart-box {
+  background: var(--white);
+  border: 1px solid var(--gray-light);
+  border-radius: 12px;
+  padding: 16px;
+  flex: 1;
+  min-height: 0;
+}
+.chart-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.chart-title::before {
+  content: '';
+  width: 3px;
+  height: 12px;
+  background: var(--mint);
+  border-radius: 2px;
+}
+.chart-area { width: 100%; height: calc(100% - 28px); min-height: 0; }
+
+/* ===== P4 Pain points ===== */
+.pain-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  flex: 1;
+}
+.pain-card {
+  background: var(--white);
+  border: 1px solid var(--gray-light);
+  border-radius: 12px;
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+}
+.pain-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--mint-light) 0%, transparent 100%);
+  border-radius: 0 0 60px 0;
+}
+.pain-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--mint-light);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+  position: relative;
+  z-index: 1;
+}
+.pain-icon svg { width: 22px; height: 22px; stroke: var(--mint-dark); }
+.pain-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.pain-desc { font-size: 12px; color: var(--ink-soft); line-height: 1.6; }
+.pain-stat {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 3px 10px;
+  background: #FEF2F2;
+  color: var(--danger);
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 100px;
+  font-family: "SF Mono", monospace;
+}
+
+/* ===== P5 Architecture ===== */
+.arch-canvas {
+  flex: 1;
+  background: var(--white);
+  border: 1px solid var(--gray-light);
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.arch-layer {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  align-items: stretch;
+}
+.arch-layer:last-child { margin-bottom: 0; }
+.arch-label {
+  width: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--mint-light);
+  color: var(--mint-dark);
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.arch-items {
+  flex: 1;
+  display: grid;
+  gap: 8px;
+}
+.arch-item {
+  background: linear-gradient(135deg, var(--mint-light) 0%, var(--white) 100%);
+  border: 1px solid rgba(16, 169, 157, 0.2);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.arch-item strong { color: var(--mint-dark); font-size: 13px; }
+.arch-item-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--mint);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ===== P6/7/8 Sub-system ===== */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  flex: 1;
+}
+.feature-card {
+  background: var(--white);
+  border: 1px solid var(--gray-light);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+.feature-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--mint-light);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.feature-icon svg { width: 18px; height: 18px; stroke: var(--mint-dark); }
+.feature-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.feature-desc { font-size: 11px; color: var(--ink-soft); line-height: 1.6; flex: 1; }
+.feature-tag {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 10px;
+  color: var(--mint-dark);
+  font-family: "SF Mono", monospace;
+}
+
+/* ===== P9 ROI ===== */
+.roi-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 16px;
+  flex: 1;
+}
+.roi-list { display: flex; flex-direction: column; gap: 10px; }
+.roi-item {
+  background: var(--white);
+  border: 1px solid var(--gray-light);
+  border-radius: 10px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.roi-num {
+  width: 32px;
+  height: 32px;
+  background: var(--mint);
+  color: white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.roi-content { flex: 1; }
+.roi-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.roi-desc { font-size: 11px; color: var(--gray); }
+.roi-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--mint);
+  font-family: "SF Mono", monospace;
+  white-space: nowrap;
+}
+
+/* ===== P10 End ===== */
+.end {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--mint-dark) 0%, var(--mint) 100%);
+  text-align: center;
+  color: white;
+}
+.end-content { z-index: 2; }
+.end h1 {
+  color: white;
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+}
+.end-sub {
+  font-size: 18px;
+  opacity: 0.9;
+  margin-bottom: 32px;
+}
+.end-meta {
+  font-size: 12px;
+  opacity: 0.7;
+  letter-spacing: 0.1em;
+}
+.end::after {
+  content: '';
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ===== Navigation ===== */
+.nav-bar {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(26, 43, 61, 0.85);
+  backdrop-filter: blur(10px);
+  padding: 6px 12px;
+  border-radius: 100px;
+  z-index: 100;
+}
+.nav-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.nav-dot:hover { background: rgba(255,255,255,0.5); }
+.nav-dot.active {
+  background: var(--mint);
+  width: 24px;
+  border-radius: 4px;
+}
+.nav-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+.nav-btn:hover { opacity: 1; }
+.nav-btn svg { width: 14px; height: 14px; }
+
+.page-info {
+  position: absolute;
+  bottom: 16px;
+  right: 24px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  font-family: "SF Mono", monospace;
+  z-index: 100;
+}
+
+.hint {
+  position: absolute;
+  bottom: 16px;
+  left: 24px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  z-index: 100;
+}
+
+/* ===== Element entrance animation ===== */
+.slide.active .fade-in {
+  animation: fadeUp 0.6s ease forwards;
+}
+.slide.active .fade-in:nth-child(1) { animation-delay: 0.1s; }
+.slide.active .fade-in:nth-child(2) { animation-delay: 0.2s; }
+.slide.active .fade-in:nth-child(3) { animation-delay: 0.3s; }
+.slide.active .fade-in:nth-child(4) { animation-delay: 0.4s; }
+.slide.active .fade-in:nth-child(5) { animation-delay: 0.5s; }
+.slide.active .fade-in:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Pre-hide animated elements */
+.fade-in { opacity: 0; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="deck" id="deck">
+
+    <!-- ============ P1 COVER ============ -->
+    <div class="slide cover active" data-num="01 / 10">
+      <div class="cover-left fade-in">
+        <div class="cover-logo">
+          <div class="cover-logo-mark">T</div>
+          <div>
+            <div class="cover-logo-text">TENGEN</div>
+            <div class="cover-logo-sub">浙江天正电气</div>
+          </div>
+        </div>
+        <div class="cover-tag">数智化 · 配电 · 园区</div>
+        <h1>智慧园区<span>数智化配电解决方案</span></h1>
+        <p class="cover-sub">面向产业园区、商务综合体、科技园区的全场景配电智能化方案，以"安全 · 可靠 · 高效 · 绿色"为核心理念，覆盖从高压配电到末端用电的全链路数智化升级。</p>
+        <div class="cover-meta">
+          <span><strong>应用场景</strong> · 产业园区 / 商务楼宇 / 科技园区</span>
+          <span><strong>核心价值</strong> · 安全可靠 + 节能增效 + 智慧运维</span>
+        </div>
+      </div>
+      <div class="cover-right fade-in">
+        <div class="cover-visual">
+          <div class="cover-arc"></div>
+          <div class="cover-arc cover-arc-2"></div>
+          <div class="cover-core">数智化<br>配电</div>
+          <div class="cover-node" style="top: 40px; left: 60px;">智能监控</div>
+          <div class="cover-node" style="top: 80px; right: 80px;">能源管理</div>
+          <div class="cover-node" style="bottom: 80px; left: 50px;">安全防护</div>
+          <div class="cover-node" style="bottom: 40px; right: 60px;">数据可视</div>
+          <div class="cover-node" style="top: 180px; left: 30px;">故障预警</div>
+          <div class="cover-node" style="top: 200px; right: 30px;">运维管理</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ P2 TOC ============ -->
+    <div class="slide" data-num="02 / 10">
+      <div class="eyebrow fade-in">CONTENTS</div>
+      <h2 class="fade-in" style="margin-bottom: 32px;">目录 · 六大核心章节</h2>
+      <div class="toc-list">
+        <div class="toc-item fade-in">
+          <div class="toc-num">01</div>
+          <div class="toc-title">行业趋势与市场洞察</div>
+          <div class="toc-line"></div>
+          <div class="toc-desc">智慧园区规模 / 政策 / 增长动力</div>
+        </div>
+        <div class="toc-item fade-in">
+          <div class="toc-num">02</div>
+          <div class="toc-title">园区配电核心痛点</div>
+          <div class="toc-line"></div>
+          <div class="toc-desc">四大典型问题与挑战</div>
+        </div>
+        <div class="toc-item fade-in">
+          <div class="toc-num">03</div>
+          <div class="toc-title">整体方案架构</div>
+          <div class="toc-line"></div>
+          <div class="toc-desc">端边云一体化五层架构</div>
+        </div>
+        <div class="toc-item fade-in">
+          <div class="toc-num">04</div>
+          <div class="toc-title">智能配电 · 能源管理 · 安全监控</div>
+          <div class="toc-line"></div>
+          <div class="toc-desc">三大子系统深度解析</div>
+        </div>
+        <div class="toc-item fade-in">
+          <div class="toc-num">05</div>
+          <div class="toc-title">价值收益与投资回报</div>
+          <div class="toc-line"></div>
+          <div class="toc-desc">ROI / 节能 / 增效数据</div>
+        </div>
+        <div class="toc-item fade-in">
+          <div class="toc-num">06</div>
+          <div class="toc-title">合作展望</div>
+          <div class="toc-line"></div>
+          <div class="toc-desc">共建 · 共赢 · 共发展</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ P3 TRENDS ============ -->
+    <div class="slide" data-num="03 / 10">
+      <div class="eyebrow fade-in">01 · MARKET TRENDS</div>
+      <h2 class="fade-in">行业趋势：智慧园区进入高速发展期</h2>
+      <p class="sub fade-in" style="margin-bottom: 18px;">在"双碳"目标、新基建、数字化转型三大引擎驱动下，智慧园区市场规模持续扩大，2026 年预计突破 1.5 万亿元。</p>
+
+      <div class="stats-row fade-in">
+        <div class="stat-box">
+          <div class="stat-label">2026 智慧园区市场规模</div>
+          <div class="stat-value">1.5<small> 万亿</small></div>
+          <div class="stat-delta">↑ 12.8% YoY</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">数智化配电渗透率</div>
+          <div class="stat-value">38<small>%</small></div>
+          <div class="stat-delta">↑ 提升空间大</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">园区年用电量</div>
+          <div class="stat-value">2.8<small> 万亿 kWh</small></div>
+          <div class="stat-delta">占全社会用电 30%+</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">平均节能率</div>
+          <div class="stat-value">15<small>% ~ 25%</small></div>
+          <div class="stat-delta">数智化方案效果</div>
+        </div>
+      </div>
+
+      <div class="row fade-in" style="flex: 1; min-height: 0;">
+        <div class="chart-box" style="flex: 1.4;">
+          <div class="chart-title">智慧园区市场规模 (2020-2026E)</div>
+          <div class="chart-area" id="chart-market"></div>
+        </div>
+        <div class="chart-box" style="flex: 1;">
+          <div class="chart-title">驱动因素占比</div>
+          <div class="chart-area" id="chart-driver"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ P4 PAIN POINTS ============ -->
+    <div class="slide" data-num="04 / 10">
+      <div class="eyebrow fade-in">02 · PAIN POINTS</div>
+      <h2 class="fade-in">园区配电四大核心痛点</h2>
+      <p class="sub fade-in" style="margin-bottom: 18px;">传统园区配电系统普遍存在管理粗放、响应迟缓、能耗偏高、安全隐患多等问题，亟需数智化升级。</p>
+
+      <div class="pain-grid">
+        <div class="pain-card fade-in">
+          <div class="pain-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <div class="pain-title">能耗高 · 管理粗放</div>
+          <div class="pain-desc">缺乏分项计量与实时监测，无法识别能耗黑洞；空调、照明、动力设备能耗占比不清，节能改造无数据支撑。</div>
+          <span class="pain-stat">单位面积能耗高 25%+</span>
+        </div>
+
+        <div class="pain-card fade-in">
+          <div class="pain-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <div class="pain-title">故障响应慢 · 运维被动</div>
+          <div class="pain-desc">传统运维依赖人工巡检，故障发现到处理平均耗时 4 小时以上；缺乏预测性维护手段，突发停电影响生产。</div>
+          <span class="pain-stat">平均故障恢复 &gt; 4h</span>
+        </div>
+
+        <div class="pain-card fade-in">
+          <div class="pain-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="pain-title">安全隐患多 · 预警缺失</div>
+          <div class="pain-desc">电气火灾、漏电、过载等隐患难以及时发现；缺乏智能监测与告警机制，事故预防能力薄弱。</div>
+          <span class="pain-stat">电气事故率 ↑ 18%</span>
+        </div>
+
+        <div class="pain-card fade-in">
+          <div class="pain-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          <div class="pain-title">数据孤岛 · 决策无据</div>
+          <div class="pain-desc">配电、消防、空调、照明等子系统独立运行，数据不互通；运营决策缺乏统一数据视图，效率低下。</div>
+          <span class="pain-stat">数据利用率 &lt; 30%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ P5 ARCHITECTURE ============ -->
+    <div class="slide" data-num="05 / 10">
+      <div class="eyebrow fade-in">03 · ARCHITECTURE</div>
+      <h2 class="fade-in">整体方案架构：端-边-云-用 四层一体</h2>
+      <p class="sub fade-in" style="margin-bottom: 18px;">以天正数智化配电产品矩阵为核心，构建从设备感知、边缘计算、云端管理到业务应用的全栈式解决方案。</p>
+
+      <div class="arch-canvas fade-in">
+        <div class="arch-layer">
+          <div class="arch-label">应用层</div>
+          <div class="arch-items" style="grid-template-columns: repeat(5, 1fr);">
+            <div class="arch-item"><span class="arch-item-dot"></span><strong>智能监控</strong></div>
+            <div class="arch-item"><span class="arch-item-dot"></span><strong>能源管理</strong></div>
+            <div class="arch-item"><span class="arch-item-dot"></span><strong>运维管理</strong></div>
+            <div class="arch-item"><span class="arch-item-dot"></span><strong>安全预警</strong></div>
+            <div class="arch-item"><span class="arch-item-dot"></span><strong>运营决策</strong></div>
+          </div>
+        </div>
+        <div class="arch-layer">
+          <div class="arch-label">平台层</div>
+          <div class="arch-items" style="grid-template-columns: 1fr;">
+            <div class="arch-item" style="background: linear-gradient(135deg, var(--mint) 0%, var(--mint-dark) 100%); color: white; border: none;">
+              <span class="arch-item-dot" style="background: white;"></span>
+              <strong style="color: white;">天正数智化配电云平台</strong>
+              <span style="opacity: 0.8; font-size: 11px; margin-left: auto;">数据中台 · AI算法 · 数字孪生 · 微服务架构</span>
+            </div>
+          </div>
+        </div>
+        <div class="arch-layer">
+          <div class="arch-label">边缘层</div>
+          <div class="arch-items" style="grid-template-columns: repeat(4, 1fr);">
+            <div class="arch-item"><span class="arch-item-dot"></span><strong>智能网关</strong>数据采集</div>
+            <div class="arch-item"><span class="arch-item-dot"></span><strong>边缘计算</strong>本地决策</div>
+            <div class="arch-item"><span class="arch-item-dot"></span><strong>协议转换</strong>多源接入</div>
+            <div class="arch-item"><span class="arch-item-dot"></span><strong>安全隔离</strong>边界防护</div>
+          </div>
+        </div>
+        <div class="arch-layer">
+          <div class="arch-label">设备层</div>
+          <div class="arch-items" style="grid-template-columns: repeat(6, 1fr);">
+            <div class="arch-item"><span class="arch-item-dot"></span><strong>智能断路器</strong></div>
+            <div class="arch-item"><span class="arch-item-dot"></span><strong>测控仪表</strong></div>
+            <div class="arch-item"><span class="arch-item-dot"></span><strong>智能开关</strong></div>
+            <div class="arch-item"><span class="arch-item-dot"></span><strong>双电源</strong></div>
+            <div class="arch-item"><span class="arch-item-dot"></span><strong>电容器</strong></div>
+            <div class="arch-item"><span class="arch-item-dot"></span><strong>传感器</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fade-in" style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
+        <span class="tag">覆盖高压 - 低压 - 末端全链路</span>
+        <span class="tag">支持 Modbus / CAN / 4G / LoRa / WiFi</span>
+        <span class="tag">国密级数据加密</span>
+        <span class="tag">99.99% 平台可用性</span>
+      </div>
+    </div>
+
+    <!-- ============ P6 SMART DISTRIBUTION ============ -->
+    <div class="slide" data-num="06 / 10">
+      <div class="eyebrow fade-in">04 · SMART DISTRIBUTION</div>
+      <h2 class="fade-in">子系统一：智能配电</h2>
+      <p class="sub fade-in" style="margin-bottom: 18px;">从高压进线到末端负载，全链路智能化覆盖，实现"看得见、调得动、防得住"。</p>
+
+      <div class="feature-grid">
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>
+          </div>
+          <div class="feature-title">实时监测</div>
+          <div class="feature-desc">电压、电流、功率、谐波、温度等关键参数秒级采集，全景可视化展示。</div>
+          <div class="feature-tag">1000+ 数据点</div>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </div>
+          <div class="feature-title">远程控制</div>
+          <div class="feature-desc">支持断路器远程分合闸、参数整定、负荷切换，操作可追溯、可审计。</div>
+          <div class="feature-tag">毫秒级响应</div>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+          </div>
+          <div class="feature-title">故障预警</div>
+          <div class="feature-desc">基于 AI 算法的预测性维护，提前识别绝缘老化、过载、接触不良等隐患。</div>
+          <div class="feature-tag">提前 7~30 天</div>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg>
+          </div>
+          <div class="feature-title">电能质量治理</div>
+          <div class="feature-desc">无功补偿、谐波治理、三相平衡，全面提升电能质量，降低线损。</div>
+          <div class="feature-tag">功率因数 ≥ 0.95</div>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          </div>
+          <div class="feature-title">智能联动</div>
+          <div class="feature-desc">消防、空调、照明、门禁等多子系统协同，事件驱动自动响应。</div>
+          <div class="feature-tag">IFC 场景引擎</div>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          <div class="feature-title">数字孪生</div>
+          <div class="feature-desc">园区配电系统 3D 可视化，设备状态、负荷分布、能流路径一屏掌控。</div>
+          <div class="feature-tag">BIM 集成</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ P7 ENERGY MANAGEMENT ============ -->
+    <div class="slide" data-num="07 / 10">
+      <div class="eyebrow fade-in">04 · ENERGY MANAGEMENT</div>
+      <h2 class="fade-in">子系统二：能源管理</h2>
+      <p class="sub fade-in" style="margin-bottom: 18px;">从"用上电"到"用好电"，通过分项计量、负荷预测、节能优化，让每一度电都用在刀刃上。</p>
+
+      <div class="row fade-in" style="flex: 1; min-height: 0; margin-bottom: 14px;">
+        <div class="chart-box" style="flex: 1.3;">
+          <div class="chart-title">园区分项能耗对比（改造前 vs 改造后）</div>
+          <div class="chart-area" id="chart-energy"></div>
+        </div>
+        <div class="chart-box" style="flex: 1;">
+          <div class="chart-title">24h 负荷曲线（智能调度效果）</div>
+          <div class="chart-area" id="chart-load"></div>
+        </div>
+      </div>
+
+      <div class="grid-4 fade-in">
+        <div class="card" style="padding: 12px;">
+          <div style="font-size: 11px; color: var(--gray);">分项计量精度</div>
+          <div style="font-size: 20px; font-weight: 700; color: var(--mint); margin-top: 2px;">0.5S 级</div>
+        </div>
+        <div class="card" style="padding: 12px;">
+          <div style="font-size: 11px; color: var(--gray);">负荷预测准确率</div>
+          <div style="font-size: 20px; font-weight: 700; color: var(--mint); margin-top: 2px;">≥ 95%</div>
+        </div>
+        <div class="card" style="padding: 12px;">
+          <div style="font-size: 11px; color: var(--gray);">峰谷优化收益</div>
+          <div style="font-size: 20px; font-weight: 700; color: var(--mint); margin-top: 2px;">8~15%</div>
+        </div>
+        <div class="card" style="padding: 12px;">
+          <div style="font-size: 11px; color: var(--gray);">综合节能率</div>
+          <div style="font-size: 20px; font-weight: 700; color: var(--mint); margin-top: 2px;">15~25%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ P8 SAFETY ============ -->
+    <div class="slide" data-num="08 / 10">
+      <div class="eyebrow fade-in">04 · SAFETY MONITORING</div>
+      <h2 class="fade-in">子系统三：安全监控</h2>
+      <p class="sub fade-in" style="margin-bottom: 18px;">构建"监-测-警-控"四位一体安全防护体系，将电气安全隐患消灭在萌芽状态。</p>
+
+      <div class="row fade-in" style="flex: 1; min-height: 0;">
+        <div class="col" style="flex: 1.2;">
+          <h3 style="font-size: 16px; margin-bottom: 8px;">🔒 四大监测维度</h3>
+          <div class="grid-2" style="flex: 1;">
+            <div class="card">
+              <div style="font-weight: 600; font-size: 13px; margin-bottom: 4px;">🔥 电气火灾监测</div>
+              <div style="font-size: 11px; color: var(--ink-soft); line-height: 1.5;">剩余电流 · 温度 · 故障电弧 · 烟雾 24h 不间断监测</div>
+            </div>
+            <div class="card">
+              <div style="font-weight: 600; font-size: 13px; margin-bottom: 4px;">⚡ 过载保护</div>
+              <div style="font-size: 11px; color: var(--ink-soft); line-height: 1.5;">实时电流监测 + 智能限载，避免线路过载起火</div>
+            </div>
+            <div class="card">
+              <div style="font-weight: 600; font-size: 13px; margin-bottom: 4px;">🔍 漏电监测</div>
+              <div style="font-size: 11px; color: var(--ink-soft); line-height: 1.5;">分级漏电保护，精准定位漏电支路</div>
+            </div>
+            <div class="card">
+              <div style="font-weight: 600; font-size: 13px; margin-bottom: 4px;">📡 设备健康度</div>
+              <div style="font-size: 11px; color: var(--ink-soft); line-height: 1.5;">断路器机械特性、触点磨损、绝缘状态监测</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col" style="flex: 1;">
+          <h3 style="font-size: 16px; margin-bottom: 8px;">📊 告警分级与响应</h3>
+          <div class="chart-box" style="flex: 1;">
+            <div class="chart-title">月度告警分布</div>
+            <div class="chart-area" id="chart-alert"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fade-in" style="margin-top: 12px; padding: 10px 16px; background: var(--mint-light); border-radius: 8px; display: flex; align-items: center; gap: 12px;">
+        <div style="font-size: 20px;">🛡️</div>
+        <div style="flex: 1; font-size: 12px; color: var(--mint-dark);">
+          <strong>多级告警响应：</strong>预警（短信+APP推送）→ 报警（声光+电话）→ 紧急（自动断电+联动消防），响应时间 &lt; 30 秒
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ P9 ROI ============ -->
+    <div class="slide" data-num="09 / 10">
+      <div class="eyebrow fade-in">05 · VALUE & ROI</div>
+      <h2 class="fade-in">价值收益：投资回报清晰可见</h2>
+      <p class="sub fade-in" style="margin-bottom: 18px;">从节能降本、安全保障、运维效率、资产增值四大维度，为园区带来可量化的综合价值。</p>
+
+      <div class="roi-row">
+        <div class="col">
+          <div class="roi-list">
+            <div class="roi-item fade-in">
+              <div class="roi-num">1</div>
+              <div class="roi-content">
+                <div class="roi-title">能耗成本降低</div>
+                <div class="roi-desc">分项计量 + 智能调度 + 峰谷优化</div>
+              </div>
+              <div class="roi-value">↓ 20%</div>
+            </div>
+            <div class="roi-item fade-in">
+              <div class="roi-num">2</div>
+              <div class="roi-content">
+                <div class="roi-title">运维人力节省</div>
+                <div class="roi-desc">无人值守 + 预测性维护 + 工单数字化</div>
+              </div>
+              <div class="roi-value">↓ 60%</div>
+            </div>
+            <div class="roi-item fade-in">
+              <div class="roi-num">3</div>
+              <div class="roi-content">
+                <div class="roi-title">故障停电损失减少</div>
+                <div class="roi-desc">预警提前 + 远程快速定位 + 备品备件优化</div>
+              </div>
+              <div class="roi-value">↓ 80%</div>
+            </div>
+            <div class="roi-item fade-in">
+              <div class="roi-num">4</div>
+              <div class="roi-content">
+                <div class="roi-title">设备寿命延长</div>
+                <div class="roi-desc">健康监测 + 智能运维 + 延长大修周期</div>
+              </div>
+              <div class="roi-value">↑ 30%</div>
+            </div>
+            <div class="roi-item fade-in">
+              <div class="roi-num">5</div>
+              <div class="roi-content">
+                <div class="roi-title">投资回收期</div>
+                <div class="roi-desc">综合节能 + 效率提升的双向收益</div>
+              </div>
+              <div class="roi-value">2.5 年</div>
+            </div>
+          </div>
+        </div>
+        <div class="chart-box fade-in">
+          <div class="chart-title">5 年累计收益对比（万元）</div>
+          <div class="chart-area" id="chart-roi"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ P10 END ============ -->
+    <div class="slide end" data-num="10 / 10">
+      <div class="end-content fade-in">
+        <div style="font-size: 14px; letter-spacing: 0.3em; opacity: 0.8; margin-bottom: 12px;">THANK YOU</div>
+        <h1>共建 · 共赢 · 数智未来</h1>
+        <p class="end-sub">让每一座园区，都拥有更安全、更高效、更绿色的数智化配电系统</p>
+        <div class="end-meta">
+          <div style="margin-bottom: 6px;">TENGEN · 浙江天正电气股份有限公司</div>
+          <div>长沙奥托自动化技术有限公司 · 技术交流会汇报</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav-bar" id="navBar">
+    <button class="nav-btn" id="prevBtn" title="上一页 (←)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div id="navDots"></div>
+    <button class="nav-btn" id="nextBtn" title="下一页 (→)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+  <div class="hint">← / → 翻页 · 点击底部圆点跳转</div>
+  <div class="page-info" id="pageInfo">01 / 10</div>
+</div>
+
+<script>
+const TOTAL = 10;
+let current = 0;
+const deck = document.getElementById('deck');
+const slides = deck.querySelectorAll('.slide');
+const navDots = document.getElementById('navDots');
+const pageInfo = document.getElementById('pageInfo');
+
+// Build nav dots
+for (let i = 0; i < TOTAL; i++) {
+  const dot = document.createElement('div');
+  dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  dot.onclick = () => goTo(i);
+  navDots.appendChild(dot);
+}
+
+function goTo(idx) {
+  if (idx < 0 || idx >= TOTAL || idx === current) return;
+  // Reset all slides first
+  slides.forEach((s, i) => {
+    s.classList.remove('active', 'prev');
+  });
+  // Mark current as prev if going backward
+  if (idx < current) {
+    slides[current].classList.add('prev');
+  }
+  // Activate target
+  setTimeout(() => {
+    slides[idx].classList.add('active');
+    // Re-trigger fade-in animation
+    slides[idx].querySelectorAll('.fade-in').forEach(el => {
+      el.style.animation = 'none';
+      void el.offsetHeight;
+      el.style.animation = '';
+    });
+  }, 50);
+  current = idx;
+  updateUI();
+  // resize charts when entering slides that have them
+  setTimeout(() => {
+    ['chart-market', 'chart-driver', 'chart-energy', 'chart-load', 'chart-alert', 'chart-roi'].forEach(id => {
+      const chart = echarts.getInstanceByDom(document.getElementById(id));
+      if (chart) chart.resize();
+    });
+  }, 200);
+}
+
+function updateUI() {
+  navDots.querySelectorAll('.nav-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === current);
+  });
+  pageInfo.textContent = String(current + 1).padStart(2, '0') + ' / ' + String(TOTAL).padStart(2, '0');
+}
+
+document.getElementById('prevBtn').onclick = () => goTo(current - 1);
+document.getElementById('nextBtn').onclick = () => goTo(current + 1);
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft' || e.key === 'PageUp') goTo(current - 1);
+  else if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') goTo(current + 1);
+  else if (e.key === 'Home') goTo(0);
+  else if (e.key === 'End') goTo(TOTAL - 1);
+});
+
+// Touch swipe
+let touchStartX = 0;
+deck.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+deck.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 50) goTo(current + (dx < 0 ? 1 : -1));
+}, { passive: true });
+
+// ===== ECHARTS =====
+const COLORS = {
+  mint: '#10A99D',
+  mintDark: '#087F77',
+  mintLight: '#E6F7F5',
+  accent: '#F97316',
+  danger: '#EF4444',
+  gray: '#94A3B8',
+  ink: '#1A2B3D',
+};
+
+const baseTextStyle = { fontFamily: '-apple-system, "PingFang SC", "Microsoft YaHei", sans-serif', fontSize: 11, color: '#4A5A6B' };
+
+function makeChart(id, option) {
+  const chart = echarts.init(document.getElementById(id), null, { renderer: 'svg' });
+  chart.setOption(option);
+  return chart;
+}
+
+// P3 - Market Size
+makeChart('chart-market', {
+  textStyle: baseTextStyle,
+  grid: { left: 40, right: 20, top: 30, bottom: 30 },
+  tooltip: { trigger: 'axis', backgroundColor: 'rgba(26,43,61,0.95)', borderColor: 'transparent', textStyle: { color: '#fff', fontSize: 12 }, borderRadius: 6, padding: [8, 12] },
+  xAxis: {
+    type: 'category',
+    data: ['2020', '2021', '2022', '2023', '2024', '2025E', '2026E'],
+    axisLine: { lineStyle: { color: '#E2E8F0' } },
+    axisTick: { show: false },
+    axisLabel: { color: '#94A3B8', fontSize: 11 }
+  },
+  yAxis: {
+    type: 'value',
+    name: '万亿元',
+    nameTextStyle: { color: '#94A3B8', fontSize: 10 },
+    axisLine: { show: false },
+    axisTick: { show: false },
+    splitLine: { lineStyle: { color: '#F1F5F9', type: 'dashed' } },
+    axisLabel: { color: '#94A3B8', fontSize: 11 }
+  },
+  series: [{
+    type: 'bar',
+    barWidth: '50%',
+    data: [0.72, 0.86, 1.02, 1.18, 1.32, 1.41, 1.5],
+    itemStyle: {
+      color: {
+        type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
+        colorStops: [
+          { offset: 0, color: '#10A99D' },
+          { offset: 1, color: '#E6F7F5' }
+        ]
+      },
+      borderRadius: [6, 6, 0, 0]
+    },
+    label: { show: true, position: 'top', color: '#1A2B3D', fontSize: 11, fontWeight: 600, formatter: '{c}' }
+  }]
+});
+
+// P3 - Driver pie
+makeChart('chart-driver', {
+  textStyle: baseTextStyle,
+  tooltip: { trigger: 'item', backgroundColor: 'rgba(26,43,61,0.95)', borderColor: 'transparent', textStyle: { color: '#fff', fontSize: 12 }, borderRadius: 6, padding: [8, 12], formatter: '{b}: {d}%' },
+  legend: { orient: 'vertical', right: 10, top: 'middle', textStyle: { color: '#4A5A6B', fontSize: 11 }, itemWidth: 8, itemHeight: 8, itemGap: 12 },
+  series: [{
+    type: 'pie',
+    radius: ['45%', '70%'],
+    center: ['32%', '50%'],
+    avoidLabelOverlap: false,
+    label: { show: false },
+    labelLine: { show: false },
+    data: [
+      { value: 35, name: '双碳政策', itemStyle: { color: '#10A99D' } },
+      { value: 28, name: '新基建', itemStyle: { color: '#087F77' } },
+      { value: 20, name: '数字化转型', itemStyle: { color: '#5EEAD4' } },
+      { value: 12, name: '运营降本', itemStyle: { color: '#A7F3D0' } },
+      { value: 5, name: '其他', itemStyle: { color: '#CBD5E1' } }
+    ]
+  }]
+});
+
+// P7 - Energy comparison
+makeChart('chart-energy', {
+  textStyle: baseTextStyle,
+  grid: { left: 50, right: 20, top: 30, bottom: 30 },
+  tooltip: { trigger: 'axis', backgroundColor: 'rgba(26,43,61,0.95)', borderColor: 'transparent', textStyle: { color: '#fff', fontSize: 12 }, borderRadius: 6, padding: [8, 12] },
+  legend: { data: ['改造前', '改造后'], top: 0, right: 10, textStyle: { fontSize: 11, color: '#4A5A6B' }, itemWidth: 10, itemHeight: 10 },
+  xAxis: {
+    type: 'category',
+    data: ['空调', '照明', '动力', '插座', '特殊', '其他'],
+    axisLine: { lineStyle: { color: '#E2E8F0' } },
+    axisTick: { show: false },
+    axisLabel: { color: '#94A3B8', fontSize: 11 }
+  },
+  yAxis: {
+    type: 'value',
+    name: '万 kWh/月',
+    nameTextStyle: { color: '#94A3B8', fontSize: 10 },
+    axisLine: { show: false },
+    axisTick: { show: false },
+    splitLine: { lineStyle: { color: '#F1F5F9', type: 'dashed' } },
+    axisLabel: { color: '#94A3B8', fontSize: 11 }
+  },
+  series: [
+    {
+      name: '改造前', type: 'bar', barWidth: 14, barGap: '20%',
+      data: [42, 18, 25, 12, 8, 6],
+      itemStyle: { color: '#CBD5E1', borderRadius: [3, 3, 0, 0] }
+    },
+    {
+      name: '改造后', type: 'bar', barWidth: 14,
+      data: [32, 11, 21, 10, 7, 5],
+      itemStyle: { color: '#10A99D', borderRadius: [3, 3, 0, 0] },
+      label: { show: true, position: 'top', color: '#10A99D', fontSize: 10, fontWeight: 600, formatter: '-{c}' }
+    }
+  ]
+});
+
+// P7 - 24h load curve
+makeChart('chart-load', {
+  textStyle: baseTextStyle,
+  grid: { left: 40, right: 20, top: 30, bottom: 30 },
+  tooltip: { trigger: 'axis', backgroundColor: 'rgba(26,43,61,0.95)', borderColor: 'transparent', textStyle: { color: '#fff', fontSize: 12 }, borderRadius: 6, padding: [8, 12] },
+  legend: { data: ['传统模式', '智能调度'], top: 0, right: 10, textStyle: { fontSize: 11, color: '#4A5A6B' }, itemWidth: 10, itemHeight: 10 },
+  xAxis: {
+    type: 'category',
+    data: ['0', '4', '8', '12', '16', '20', '24'],
+    axisLine: { lineStyle: { color: '#E2E8F0' } },
+    axisTick: { show: false },
+    axisLabel: { color: '#94A3B8', fontSize: 11, formatter: '{value}h' }
+  },
+  yAxis: {
+    type: 'value',
+    name: 'kW',
+    nameTextStyle: { color: '#94A3B8', fontSize: 10 },
+    axisLine: { show: false },
+    axisTick: { show: false },
+    splitLine: { lineStyle: { color: '#F1F5F9', type: 'dashed' } },
+    axisLabel: { color: '#94A3B8', fontSize: 11 }
+  },
+  series: [
+    {
+      name: '传统模式', type: 'line', smooth: true, symbol: 'none',
+      data: [180, 160, 220, 380, 360, 280, 200],
+      lineStyle: { color: '#CBD5E1', width: 2 },
+      areaStyle: { color: 'rgba(203, 213, 225, 0.3)' }
+    },
+    {
+      name: '智能调度', type: 'line', smooth: true, symbol: 'circle', symbolSize: 4,
+      data: [150, 140, 200, 320, 300, 240, 170],
+      lineStyle: { color: '#10A99D', width: 2.5 },
+      itemStyle: { color: '#10A99D' },
+      areaStyle: { color: 'rgba(16, 169, 157, 0.15)' }
+    }
+  ]
+});
+
+// P8 - Alert pie
+makeChart('chart-alert', {
+  textStyle: baseTextStyle,
+  tooltip: { trigger: 'item', backgroundColor: 'rgba(26,43,61,0.95)', borderColor: 'transparent', textStyle: { color: '#fff', fontSize: 12 }, borderRadius: 6, padding: [8, 12], formatter: '{b}: {c}次 ({d}%)' },
+  legend: { orient: 'vertical', right: 5, top: 'middle', textStyle: { color: '#4A5A6B', fontSize: 10 }, itemWidth: 8, itemHeight: 8, itemGap: 8 },
+  series: [{
+    type: 'pie',
+    radius: ['40%', '65%'],
+    center: ['32%', '50%'],
+    avoidLabelOverlap: false,
+    label: { show: false },
+    labelLine: { show: false },
+    data: [
+      { value: 12, name: '过载预警', itemStyle: { color: '#F97316' } },
+      { value: 8, name: '温度异常', itemStyle: { color: '#10A99D' } },
+      { value: 5, name: '漏电告警', itemStyle: { color: '#EF4444' } },
+      { value: 4, name: '谐波超标', itemStyle: { color: '#8B5CF6' } },
+      { value: 3, name: '其他', itemStyle: { color: '#CBD5E1' } }
+    ]
+  }]
+});
+
+// P9 - ROI
+makeChart('chart-roi', {
+  textStyle: baseTextStyle,
+  grid: { left: 50, right: 20, top: 30, bottom: 30 },
+  tooltip: { trigger: 'axis', backgroundColor: 'rgba(26,43,61,0.95)', borderColor: 'transparent', textStyle: { color: '#fff', fontSize: 12 }, borderRadius: 6, padding: [8, 12] },
+  legend: { data: ['传统方案', '数智化方案'], top: 0, right: 10, textStyle: { fontSize: 11, color: '#4A5A6B' }, itemWidth: 10, itemHeight: 10 },
+  xAxis: {
+    type: 'category',
+    data: ['第1年', '第2年', '第3年', '第4年', '第5年'],
+    axisLine: { lineStyle: { color: '#E2E8F0' } },
+    axisTick: { show: false },
+    axisLabel: { color: '#94A3B8', fontSize: 11 }
+  },
+  yAxis: {
+    type: 'value',
+    name: '万元',
+    nameTextStyle: { color: '#94A3B8', fontSize: 10 },
+    axisLine: { show: false },
+    axisTick: { show: false },
+    splitLine: { lineStyle: { color: '#F1F5F9', type: 'dashed' } },
+    axisLabel: { color: '#94A3B8', fontSize: 11 }
+  },
+  series: [
+    {
+      name: '传统方案', type: 'bar', barWidth: 20, barGap: '30%',
+      data: [-30, -28, -32, -35, -38],
+      itemStyle: { color: '#CBD5E1', borderRadius: [4, 4, 0, 0] }
+    },
+    {
+      name: '数智化方案', type: 'bar', barWidth: 20,
+      data: [-180, 30, 90, 160, 240],
+      itemStyle: {
+        color: function(params) {
+          return params.value >= 0
+            ? { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: '#10A99D' }, { offset: 1, color: '#5EEAD4' }] }
+            : '#FCA5A5';
+        },
+        borderRadius: [4, 4, 0, 0]
+      },
+      label: { show: true, position: 'top', color: '#1A2B3D', fontSize: 10, fontWeight: 600, formatter: function(p) { return p.value > 0 ? '+' + p.value : p.value; } }
+    }
+  ]
+});
+
+// Resize on window resize
+window.addEventListener('resize', () => {
+  ['chart-market', 'chart-driver', 'chart-energy', 'chart-load', 'chart-alert', 'chart-roi'].forEach(id => {
+    const chart = echarts.getInstanceByDom(document.getElementById(id));
+    if (chart) chart.resize();
+  });
+});
+</script>
+</body>
+</html>
