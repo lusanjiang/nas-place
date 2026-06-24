@@ -1,175 +1,503 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>电气资料检索 · dq123</title>
-    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
-    <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#0f0c29 0%,#302b63 50%,#24243e 100%);color:#fff;min-height:100vh}
-        .splash{position:fixed;inset:0;background:linear-gradient(135deg,#0f0c29 0%,#302b63 50%,#24243e 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s}
-        .splash.out{opacity:0;pointer-events:none}
-        .splash h1{font-family:'ZCOOL XiaoWei',serif;font-size:3em;background:linear-gradient(45deg,#00d2ff,#3a7bd5,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px}
-        .splash p{color:#888;font-size:1.1em}
-        .splash small{color:#666;margin-top:30px;font-size:.9em}
-        .wrap{max-width:1000px;margin:0 auto;padding:20px;opacity:0;transition:opacity .5s}
-        .wrap.show{opacity:1}
-        header{text-align:center;padding:30px 0}
-        header h2{font-family:'ZCOOL XiaoWei',serif;font-size:2.2em;background:linear-gradient(45deg,#00d2ff,#3a7bd5);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        header p{color:#888;margin-top:8px;font-size:.95em;letter-spacing:1px}
-        .search{display:flex;gap:10px;max-width:600px;margin:30px auto;background:rgba(255,255,255,.05);border-radius:12px;padding:8px;border:1px solid rgba(255,255,255,.1)}
-        .search input{flex:1;background:transparent;border:none;color:#fff;font-size:1.1em;padding:12px 16px;outline:none}
-        .search input::placeholder{color:#666}
-        .search button{background:linear-gradient(45deg,#00d2ff,#3a7bd5);border:none;color:#fff;padding:12px 24px;border-radius:8px;cursor:pointer;font-size:1em;transition:opacity .3s}
-        .search button:hover{opacity:.8}
-        .search button:disabled{opacity:.5;cursor:not-allowed}
-        .stats{display:flex;justify-content:center;gap:40px;padding:20px 0;margin-bottom:20px}
-        .stat{text-align:center}
-        .stat b{font-size:2em;color:#00d2ff}
-        .stat span{color:#888;font-size:.9em;margin-top:4px;display:block}
-        .loading{display:flex;flex-direction:column;align-items:center;padding:60px 0;color:#888}
-        .spin{width:40px;height:40px;border:3px solid rgba(255,255,255,.1);border-top-color:#00d2ff;border-radius:50%;animation:sp .8s linear infinite;margin-bottom:16px}
-        @keyframes sp{to{transform:rotate(360deg)}}
-        .hint{text-align:center;padding:60px 0;color:#888}
-        .hint .ic{font-size:3em;margin-bottom:16px}
-        .card{background:rgba(255,255,255,.05);border-radius:12px;margin-bottom:16px;border:1px solid rgba(255,255,255,.08);overflow:hidden;transition:border-color .3s}
-        .card:hover{border-color:rgba(0,210,255,.3)}
-        .card-hd{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;cursor:pointer}
-        .card-hd:hover{background:rgba(255,255,255,.03)}
-        .card-name{font-size:1.1em;font-weight:600;display:flex;align-items:center;gap:10px}
-        .cnt{background:rgba(0,210,255,.15);color:#00d2ff;padding:2px 10px;border-radius:12px;font-size:.85em}
-        .badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.75em}
-        .b-tg{background:rgba(255,107,53,.2);color:#ff6b35}
-        .b-sc{background:rgba(69,196,83,.2);color:#45c453}
-        .b-abb{background:rgba(255,68,68,.2);color:#ff4444}
-        .b-ot{background:rgba(150,150,150,.2);color:#999}
-        .exp{transition:transform .3s;color:#666;font-size:1.2em}
-        .exp.on{transform:rotate(180deg)}
-        .card-bd{max-height:0;overflow:hidden;transition:max-height .4s;border-top:1px solid transparent}
-        .card-bd.open{max-height:3000px;border-top-color:rgba(255,255,255,.05)}
-        .pdf-list{padding:12px 20px}
-        .pdf{display:flex;align-items:center;gap:12px;padding:10px 14px;margin-bottom:6px;border-radius:8px;background:rgba(255,255,255,.03);transition:background .2s;text-decoration:none;color:#fff}
-        .pdf:hover{background:rgba(0,210,255,.08)}
-        .pdf .ic{font-size:1.4em;flex-shrink:0}
-        .pdf .info{flex:1;min-width:0}
-        .pdf .nm{font-size:.95em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-        .pdf .sz{color:#888;font-size:.8em;margin-top:2px}
-        .pdf .dl{background:rgba(0,210,255,.15);color:#00d2ff;padding:6px 14px;border-radius:6px;font-size:.85em;flex-shrink:0;transition:background .2s}
-        .pdf:hover .dl{background:rgba(0,210,255,.25)}
-        .no-pdf{padding:20px;text-align:center;color:#666}
-        .mdl{padding:12px 20px}
-        .mi{display:flex;align-items:center;gap:12px;padding:8px 14px;margin-bottom:4px;border-radius:8px;background:rgba(255,255,255,.02)}
-        .mi span:first-child{font-size:.9em;flex:1}
-        .mi .pr{color:#ff6b6b;font-size:.85em;font-weight:600}
-        .mi .pr.na{color:#555;font-weight:normal}
-        footer{text-align:center;padding:40px 0 20px;color:#555;font-size:.85em}
-        footer a{color:#3a7bd5;text-decoration:none}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>dq123 电气型号价格查询 · 天正电气</title>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    background: #F7F9FC;
+    color: #2C3E50;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ============ 顶栏 ============ */
+  .topbar {
+    background: linear-gradient(135deg, #5B9BD5 0%, #7BB4E0 100%);
+    color: #fff;
+    padding: 16px 24px;
+    box-shadow: 0 2px 8px rgba(91,155,213,0.15);
+  }
+  .topbar-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .topbar h1 {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .topbar h1 .badge {
+    background: rgba(255,255,255,0.25);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 400;
+    margin-left: 8px;
+  }
+  .topbar .stats {
+    font-size: 13px;
+    opacity: 0.9;
+  }
+  .topbar .stats strong { font-size: 18px; font-weight: 700; }
+
+  /* ============ 主容器 ============ */
+  .container { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
+
+  /* ============ 搜索区 ============ */
+  .search-bar {
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto auto;
+    gap: 12px;
+    align-items: center;
+  }
+  .search-bar input, .search-bar select {
+    height: 38px;
+    padding: 0 12px;
+    border: 1px solid #E0E6ED;
+    border-radius: 6px;
+    font-size: 14px;
+    background: #FAFBFC;
+    color: #2C3E50;
+    outline: none;
+    transition: all 0.15s;
+  }
+  .search-bar input:focus, .search-bar select:focus {
+    border-color: #5B9BD5;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(91,155,213,0.1);
+  }
+  .search-bar input::placeholder { color: #A0AEC0; }
+  .btn {
+    height: 38px;
+    padding: 0 18px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-primary {
+    background: #5B9BD5;
+    color: #fff;
+  }
+  .btn-primary:hover { background: #4A87C0; }
+  .btn-success {
+    background: #38B249;
+    color: #fff;
+  }
+  .btn-success:hover { background: #2D9C3C; }
+  .btn-ghost {
+    background: #F0F3F7;
+    color: #5A6878;
+  }
+  .btn-ghost:hover { background: #E4E9EF; }
+
+  /* ============ 统计条 ============ */
+  .meta-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 4px;
+    font-size: 13px;
+    color: #7A8896;
+  }
+  .meta-bar .left strong { color: #2C3E50; }
+
+  /* ============ 表格 ============ */
+  .table-wrap {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  table { width: 100%; border-collapse: collapse; }
+  thead { background: #F0F4F8; }
+  th {
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 600;
+    color: #5A6878;
+    font-size: 13px;
+    border-bottom: 1px solid #E0E6ED;
+    white-space: nowrap;
+  }
+  td {
+    padding: 11px 14px;
+    border-bottom: 1px solid #F0F3F7;
+    font-size: 13.5px;
+    color: #2C3E50;
+  }
+  tbody tr { transition: background 0.1s; }
+  tbody tr:hover { background: #F8FAFC; }
+  .price-cell {
+    color: #D9534F;
+    font-weight: 700;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    white-space: nowrap;
+  }
+  .price-cell .yuan { font-size: 12px; font-weight: 400; color: #A0AEC0; margin-right: 1px; }
+  .brand-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+    background: #EBF3FB;
+    color: #4A87C0;
+  }
+  .brand-tag.tengen { background: #FFE8E8; color: #C93135; }
+  .brand-tag.liangxin { background: #FFF4E5; color: #E67E22; }
+  .model-cell {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 13px;
+  }
+  .class-cell {
+    color: #7A8896;
+    font-size: 12.5px;
+  }
+  .no-data {
+    padding: 60px 20px;
+    text-align: center;
+    color: #A0AEC0;
+    font-size: 14px;
+  }
+  .no-data .icon { font-size: 36px; margin-bottom: 10px; opacity: 0.5; }
+
+  /* ============ 翻页 ============ */
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    background: #fff;
+    border-top: 1px solid #F0F3F7;
+  }
+  .page-info { color: #7A8896; font-size: 13px; }
+  .page-info strong { color: #2C3E50; }
+  .page-controls { display: flex; gap: 6px; align-items: center; }
+  .page-btn {
+    min-width: 34px;
+    height: 34px;
+    padding: 0 10px;
+    border: 1px solid #E0E6ED;
+    background: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #5A6878;
+    font-size: 13px;
+    transition: all 0.15s;
+  }
+  .page-btn:hover:not(:disabled) {
+    border-color: #5B9BD5;
+    color: #5B9BD5;
+  }
+  .page-btn.active {
+    background: #5B9BD5;
+    color: #fff;
+    border-color: #5B9BD5;
+  }
+  .page-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .page-jump input {
+    width: 50px;
+    height: 34px;
+    padding: 0 8px;
+    border: 1px solid #E0E6ED;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 13px;
+  }
+
+  /* ============ 加载 ============ */
+  .loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    color: #7A8896;
+  }
+  .spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #E0E6ED;
+    border-top-color: #5B9BD5;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 14px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ============ footer ============ */
+  footer {
+    text-align: center;
+    padding: 24px 16px;
+    color: #A0AEC0;
+    font-size: 12px;
+  }
+
+  /* 响应式 */
+  @media (max-width: 768px) {
+    .search-bar { grid-template-columns: 1fr; }
+    .topbar-inner { flex-direction: column; gap: 8px; align-items: flex-start; }
+    .meta-bar { flex-direction: column; gap: 8px; align-items: flex-start; }
+    th, td { padding: 8px 10px; font-size: 12px; }
+    .class-cell { display: none; }
+  }
+</style>
 </head>
 <body>
-<div class="splash" id="splash">
-    <h1>电气图书馆</h1>
-    <p>Electrical Selection Data Retrieval System</p>
-    <small>作者：TENGEN-LUSANJIANG</small>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <h1>dq123 电气型号价格查询 <span class="badge">天正电气 · 销售支持</span></h1>
+    <div class="stats">共 <strong id="totalCount">-</strong> 条 · 更新于 <strong id="updateTime">-</strong></div>
+  </div>
 </div>
-<div class="wrap" id="main">
-    <header>
-        <h2>天正电气 · 可信赖 更美好</h2>
-        <p>Electrical Selection Data Retrieval System</p>
-    </header>
-    <div class="search">
-        <input id="kw" type="text" placeholder="输入型号或关键词，如 CM5、NXM、TGM1N..." autocomplete="off">
-        <button id="btn" onclick="doSearch()">检索</button>
+
+<div class="container">
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="🔍 输入型号/关键词，如 TGB1N-125、NDM5GZ-1600">
+    <select id="brandFilter">
+      <option value="">全部厂家</option>
+    </select>
+    <select id="pageSize">
+      <option value="20">20 条/页</option>
+      <option value="50" selected>50 条/页</option>
+      <option value="100">100 条/页</option>
+      <option value="200">200 条/页</option>
+    </select>
+    <button class="btn btn-primary" onclick="resetFilter()">🔄 重置</button>
+    <button class="btn btn-success" onclick="exportExcel()">📥 导出 Excel</button>
+  </div>
+
+  <div id="content">
+    <div class="loading">
+      <div class="spinner"></div>
+      <div>正在加载数据…</div>
     </div>
-    <div class="stats" id="stats" style="display:none">
-        <div class="stat"><b id="s1">0</b><span>产品系列</span></div>
-        <div class="stat"><b id="s2">0</b><span>产品型号</span></div>
-        <div class="stat"><b id="s3">0</b><span>PDF样本</span></div>
-    </div>
-    <div id="results">
-        <div class="hint"><div class="ic">🔍</div><p>输入型号开始检索电气资料</p><p style="margin-top:10px;font-size:.9em">支持产品样本、CAD图块、3D模型、认证证书等</p></div>
-    </div>
-    <footer><p>数据来源：<a href="https://www.dq123.com" target="_blank">dq123.com 电天下</a> · 仅供学习交流使用</p></footer>
+  </div>
 </div>
+
+<footer>
+  数据来源：dq123.com · 仅供销售报价参考 · 部署于 GitHub Pages
+</footer>
 
 <script>
-setTimeout(()=>{document.getElementById('splash').classList.add('out');document.getElementById('main').classList.add('show');document.getElementById('kw').focus()},1500);
+  // ============ 全局状态 ============
+  let allData = [];
+  let filteredData = [];
+  let currentPage = 1;
+  let pageSize = 50;
 
-const OSS='https://datafiles.oss-cn-shanghai.aliyuncs.com/dx2_data/proddata/sp/';
-let samplesCache=null;
-
-async function loadSamples(){
-    if(samplesCache)return samplesCache;
-    try{const r=await fetch('./samples_data.json');if(r.ok){samplesCache=await r.json();return samplesCache}}catch(e){}
-    return {};
-}
-
-function jsonp(url){return new Promise((ok,fail)=>{const cb='c_'+Date.now();const s=document.createElement('script');window[cb]=d=>{delete window[cb];s.remove();ok(d)};s.src=url+(url.includes('?')?'&':'?')+'callback='+cb;s.onerror=()=>{s.remove();fail(new Error('JSONP failed'))};document.head.appendChild(s);setTimeout(()=>fail(new Error('Timeout')),15000)})}
-function dec(enc){return JSON.parse(atob(enc.substring(20).replace(/#/g,'+')))}
-function strip(s){return(s||'').replace(/<[^>]+>/g,'').replace(/<\/?\w+/g,'').trim()}
-function esc(s){if(!s)return '';const d=document.createElement('div');d.textContent=s;return d.innerHTML}
-function badge(name){if(!name)return '';if(name.includes('天正'))return '<span class="badge b-tg">天正</span>';if(name.includes('施耐德'))return '<span class="badge b-sc">施耐德</span>';if(name.includes('ABB'))return '<span class="badge b-abb">ABB</span>';return '<span class="badge b-ot">'+esc(name)+'</span>'}
-
-async function doSearch(){
-    const kw=document.getElementById('kw').value.trim();
-    if(!kw)return;
-    const btn=document.getElementById('btn');btn.disabled=true;
-    document.getElementById('results').innerHTML='<div class="loading"><div class="spin"></div><p>正在检索: '+esc(kw)+'</p></div>';
-    document.getElementById('stats').style.display='none';
-
-    try{
-        const samples=await loadSamples();
-        const raw=await jsonp('https://dian.dq123.com/open/sprice?v='+Date.now()+'&fid=&sid=&kw='+encodeURIComponent(kw)+'&pi=1');
-        const data=dec(raw);
-        const products=data.data||[];
-        const remark=data.remark||{};
-
-        if(!products.length){
-            document.getElementById('results').innerHTML='<div class="hint"><div class="ic">😅</div><p>未找到 "'+esc(kw)+'" 相关资料</p><p style="margin-top:10px;font-size:.9em">试试其他关键词</p></div>';
-            btn.disabled=false;return;
-        }
-
-        const sm={};
-        products.forEach(p=>{
-            const sid=p.F_ProductLineID,fid=p.F_ManufactoryID;
-            if(sid&&!sm[sid]){const si=(remark.F_ProductLineID||[]).find(s=>s.Key==sid);sm[sid]={id:sid,fid,name:si?si.Name:'系列 #'+sid,count:si?si.Value:0,products:[]}}
-            if(sid)sm[sid].products.push(p);
-        });
-
-        const fm={};
-        const fr=remark.F_ManufactoryID||[];
-        Object.values(sm).forEach(s=>{const fi=fr.find(f=>f.Key==s.fid);fm[s.fid]=fi?fi.Name:'厂家 #'+s.fid});
-
-        const sl=Object.values(sm).sort((a,b)=>b.count-a.count);
-        document.getElementById('s1').textContent=sl.length;
-        document.getElementById('s2').textContent=products.length;
-        document.getElementById('stats').style.display='flex';
-
-        let totalPdf=0;
-        document.getElementById('results').innerHTML=sl.map(s=>{
-            const samp=samples[String(s.id)];
-            let pdfHtml='';
-            if(samp&&samp.samples&&samp.samples.length>0){
-                totalPdf+=samp.samples.length;
-                pdfHtml=samp.samples.map(p=>'<a class="pdf" href="'+OSS+p.bk+'/'+encodeURIComponent(p.bl)+'" target="_blank"><span class="ic">📄</span><div class="info"><div class="nm">'+esc(p.bl)+'</div><div class="sz">'+p.bm+' MB</div></div><span class="dl">下载</span></a>').join('');
-            }else{pdfHtml='<div class="no-pdf">暂无样本数据</div>'}
-
-            const mdl=s.products.slice(0,20).map(p=>{const m=strip(p.model||'');const pr=p.price?'<span class="pr">¥'+p.price+'</span>':'<span class="pr na">暂无报价</span>';return '<div class="mi"><span>'+esc(m)+'</span>'+pr+'</div>'}).join('');
-
-            return '<div class="card"><div class="card-hd" onclick="toggle('+s.id+')"><div class="card-name">'+badge(fm[s.fid]||'')+'<span>'+esc(s.name)+'</span><span class="cnt">'+s.count+' 产品</span></div><span class="exp" id="e'+s.id+'">▼</span></div><div class="card-bd" id="b'+s.id+'"><div class="pdf-list">'+pdfHtml+'</div><div class="mdl">'+mdl+'</div></div></div>';
-        }).join('');
-
-        document.getElementById('s3').textContent=totalPdf;
-
-    }catch(e){
-        document.getElementById('results').innerHTML='<div class="hint"><div class="ic">❌</div><p>搜索失败: '+esc(e.message)+'</p></div>';
+  // ============ 加载数据 ============
+  async function loadData() {
+    try {
+      const resp = await fetch('./prices.json');
+      const data = await resp.json();
+      allData = data.d || [];
+      document.getElementById('totalCount').textContent = (data.t || allData.length).toLocaleString();
+      document.getElementById('updateTime').textContent = data.u || '-';
+      populateBrandFilter();
+      applyFilter();
+    } catch (e) {
+      document.getElementById('content').innerHTML =
+        '<div class="no-data"><div class="icon">⚠️</div>数据加载失败：' + e.message + '</div>';
     }
-    btn.disabled=false;
-}
+  }
 
-function toggle(id){document.getElementById('b'+id).classList.toggle('open');document.getElementById('e'+id).classList.toggle('on')}
-document.getElementById('kw').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch()});
+  // ============ 厂家筛选下拉 ============
+  function populateBrandFilter() {
+    const brands = [...new Set(allData.map(d => d.f))].sort();
+    const sel = document.getElementById('brandFilter');
+    brands.forEach(b => {
+      const opt = document.createElement('option');
+      opt.value = b;
+      opt.textContent = b;
+      sel.appendChild(opt);
+    });
+  }
+
+  // ============ 应用筛选 ============
+  function applyFilter() {
+    const kw = document.getElementById('searchInput').value.trim().toLowerCase();
+    const brand = document.getElementById('brandFilter').value;
+    pageSize = parseInt(document.getElementById('pageSize').value) || 50;
+
+    filteredData = allData.filter(d => {
+      if (brand && d.f !== brand) return false;
+      if (kw) {
+        const haystack = (d.m + ' ' + d.c + ' ' + d.k + ' ' + d.f).toLowerCase();
+        if (!haystack.includes(kw)) return false;
+      }
+      return true;
+    });
+
+    currentPage = 1;
+    render();
+  }
+
+  // ============ 渲染表格 ============
+  function render() {
+    const total = filteredData.length;
+    const totalPages = Math.max(1, Math.ceil(total / pageSize));
+    if (currentPage > totalPages) currentPage = totalPages;
+    const start = (currentPage - 1) * pageSize;
+    const end = Math.min(start + pageSize, total);
+    const pageData = filteredData.slice(start, end);
+
+    let html = '<div class="meta-bar"><div class="left">匹配 <strong>' + total.toLocaleString() + '</strong> 条 · 第 <strong>' + (start + 1) + '</strong>-<strong>' + end + '</strong> 条 / 共 <strong>' + totalPages + '</strong> 页</div><div class="right">每页 ' + pageSize + ' 条</div></div>';
+    html += '<div class="table-wrap">';
+    html += '<table><thead><tr>';
+    html += '<th style="width:60px">序号</th>';
+    html += '<th>型号</th>';
+    html += '<th>价格</th>';
+    html += '<th>厂家</th>';
+    html += '<th>分类</th>';
+    html += '<th>搜索关键词</th>';
+    html += '</tr></thead><tbody>';
+
+    if (pageData.length === 0) {
+      html += '<tr><td colspan="6" class="no-data"><div class="icon">📭</div>没有匹配的数据</td></tr>';
+    } else {
+      pageData.forEach((d, i) => {
+        const tagClass = d.f === '天正电气' ? 'tengen' : (d.f === '良信' ? 'liangxin' : '');
+        html += '<tr>';
+        html += '<td>' + (start + i + 1) + '</td>';
+        html += '<td class="model-cell">' + esc(d.m) + '</td>';
+        html += '<td class="price-cell"><span class="yuan">¥</span>' + esc(d.p) + '</td>';
+        html += '<td><span class="brand-tag ' + tagClass + '">' + esc(d.f) + '</span></td>';
+        html += '<td class="class-cell">' + esc(d.c) + '</td>';
+        html += '<td>' + esc(d.k) + '</td>';
+        html += '</tr>';
+      });
+    }
+    html += '</tbody></table>';
+
+    // 翻页
+    html += '<div class="pagination">';
+    html += '<div class="page-info">第 <strong>' + currentPage + '</strong> / ' + totalPages + ' 页</div>';
+    html += '<div class="page-controls">';
+    html += '<button class="page-btn" onclick="goPage(1)" ' + (currentPage === 1 ? 'disabled' : '') + '>« 首页</button>';
+    html += '<button class="page-btn" onclick="goPage(' + (currentPage - 1) + ')" ' + (currentPage === 1 ? 'disabled' : '') + '>‹ 上一页</button>';
+
+    // 页码
+    const pages = computePageButtons(currentPage, totalPages);
+    pages.forEach(p => {
+      if (p === '...') {
+        html += '<span style="padding:0 6px;color:#A0AEC0">…</span>';
+      } else {
+        html += '<button class="page-btn ' + (p === currentPage ? 'active' : '') + '" onclick="goPage(' + p + ')">' + p + '</button>';
+      }
+    });
+
+    html += '<button class="page-btn" onclick="goPage(' + (currentPage + 1) + ')" ' + (currentPage >= totalPages ? 'disabled' : '') + '>下一页 ›</button>';
+    html += '<button class="page-btn" onclick="goPage(' + totalPages + ')" ' + (currentPage >= totalPages ? 'disabled' : '') + '>末页 »</button>';
+    html += '<div class="page-jump">跳至 <input type="number" min="1" max="' + totalPages + '" value="' + currentPage + '" onchange="goPage(parseInt(this.value))"> 页</div>';
+    html += '</div></div>';
+
+    html += '</div>';
+    document.getElementById('content').innerHTML = html;
+  }
+
+  // 页码按钮（最多7个，中间省略）
+  function computePageButtons(cur, total) {
+    if (total <= 7) return Array.from({length: total}, (_, i) => i + 1);
+    const pages = [1];
+    if (cur > 4) pages.push('...');
+    const start = Math.max(2, cur - 1);
+    const end = Math.min(total - 1, cur + 1);
+    for (let i = start; i <= end; i++) pages.push(i);
+    if (cur < total - 3) pages.push('...');
+    pages.push(total);
+    return pages;
+  }
+
+  function goPage(p) {
+    if (!p || isNaN(p) || p < 1) return;
+    const totalPages = Math.max(1, Math.ceil(filteredData.length / pageSize));
+    if (p > totalPages) p = totalPages;
+    currentPage = p;
+    render();
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  function resetFilter() {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('brandFilter').value = '';
+    document.getElementById('pageSize').value = '50';
+    applyFilter();
+  }
+
+  function esc(s) {
+    if (s == null) return '';
+    return String(s).replace(/[<>&"]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
+  }
+
+  // ============ 导出 Excel ============
+  function exportExcel() {
+    if (filteredData.length === 0) {
+      alert('当前没有可导出的数据');
+      return;
+    }
+    const rows = filteredData.map((d, i) => ({
+      '序号': i + 1,
+      '型号': d.m,
+      '价格(元)': parseFloat(d.p) || 0,
+      '厂家': d.f,
+      '分类': d.c,
+      '搜索关键词': d.k,
+    }));
+    const ws = XLSX.utils.json_to_sheet(rows);
+    // 列宽
+    ws['!cols'] = [
+      {wch: 6}, {wch: 40}, {wch: 10}, {wch: 10}, {wch: 50}, {wch: 15}
+    ];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, '型号价格');
+
+    const kw = document.getElementById('searchInput').value.trim() || '全部';
+    const brand = document.getElementById('brandFilter').value || '全部厂家';
+    const stamp = new Date().toISOString().slice(0, 10);
+    const filename = `dq123_${kw}_${brand}_${stamp}.xlsx`;
+    XLSX.writeFile(wb, filename);
+  }
+
+  // ============ 事件绑定 ============
+  document.getElementById('searchInput').addEventListener('input', debounce(applyFilter, 200));
+  document.getElementById('brandFilter').addEventListener('change', applyFilter);
+  document.getElementById('pageSize').addEventListener('change', applyFilter);
+
+  function debounce(fn, ms) {
+    let timer;
+    return function() {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn.apply(this, arguments), ms);
+    };
+  }
+
+  // 启动
+  loadData();
 </script>
+
 </body>
 </html>
