@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>粒子 3D 模型 · 凝聚入场 + 鼠标流体扰动</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #0a0a0f;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: #e0e0e0; }
+  canvas { display: block; }
+
+  #ui {
+    position: fixed; top: 20px; left: 20px;
+    background: rgba(20,20,30,0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 18px 22px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    width: 300px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.55);
+    z-index: 10; user-select: none;
+  }
+  #ui h2 { font-size: 15px; font-weight: 600; margin-bottom: 3px; color: #fff; letter-spacing: 0.4px; }
+  #ui .subtitle { font-size: 11px; color: #888; margin-bottom: 14px; }
+
+  .control { margin-bottom: 11px; }
+  .control label { display: block; font-size: 11px; color: #aaa; margin-bottom: 5px; }
+  .control label .val { color: #5ac8fa; font-weight: 600; float: right; font-variant-numeric: tabular-nums; }
+
+  input[type="range"] {
+    -webkit-appearance: none; appearance: none; width: 100%; height: 4px;
+    background: rgba(255,255,255,0.1); border-radius: 2px; outline: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none; width: 14px; height: 14px;
+    background: #5ac8fa; border-radius: 50%; cursor: pointer;
+    box-shadow: 0 0 10px rgba(90,200,250,0.6);
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 14px; height: 14px; background: #5ac8fa; border: none;
+    border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px rgba(90,200,250,0.6);
+  }
+
+  button {
+    width: 100%; padding: 9px 12px;
+    background: rgba(90,200,250,0.15);
+    border: 1px solid rgba(90,200,250,0.35);
+    color: #5ac8fa; border-radius: 6px;
+    font-size: 12px; cursor: pointer;
+    transition: all 0.2s; margin-bottom: 6px;
+    font-family: inherit;
+  }
+  button:hover { background: rgba(90,200,250,0.28); border-color: rgba(90,200,250,0.55); }
+  button:active { transform: scale(0.97); }
+  button.secondary { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.15); color: #ccc; }
+  button.secondary:hover { background: rgba(255,255,255,0.12); }
+
+  #status {
+    margin-top: 10px; padding: 8px 10px;
+    background: rgba(0,0,0,0.35); border-radius: 6px;
+    font-size: 11px; color: #aaa; min-height: 30px;
+    line-height: 1.5;
+    font-variant-numeric: tabular-nums;
+  }
+  #status.ready { color: #5af78e; }
+  #status.error { color: #ff5e5e; }
+
+  .hint {
+    position: fixed; bottom: 16px; right: 18px;
+    font-size: 11px; color: #888; text-align: right; line-height: 1.65;
+    background: rgba(20,20,30,0.55);
+    padding: 8px 14px; border-radius: 8px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  #loader {
+    position: fixed; inset: 0;
+    background: #0a0a0f;
+    display: flex; align-items: center; justify-content: center; flex-direction: column;
+    z-index: 100; transition: opacity 0.5s;
+  }
+  #loader.hidden { opacity: 0; pointer-events: none; }
+  #loader .spinner {
+    width: 44px; height: 44px;
+    border: 3px solid rgba(90,200,250,0.18);
+    border-top-color: #5ac8fa;
+    border-radius: 50%;
+    animation: spin 0.85s linear infinite;
+  }
+  #loader .txt { margin-top: 18px; font-size: 13px; color: #888; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+
+<div id="loader">
+  <div class="spinner"></div>
+  <div class="txt">加载 PLY 模型中…</div>
+</div>
+
+<div id="ui">
+  <h2>粒子 3D 模型查看器</h2>
+  <div class="subtitle">凝聚入场动画 · 鼠标流体扰动</div>
+
+  <button id="loadBtn">📁 加载自己的 .ply 文件</button>
+  <input type="file" id="fileInput" accept=".ply" hidden>
+
+  <button id="replayBtn" class="secondary">▶ 重播凝聚动画</button>
+  <button id="loadFullBtn" class="secondary">⬇ 加载完整版(19MB·127万点)</button>
+
+  <div class="control">
+    <label>点大小 <span class="val" id="sizeVal">0.018</span></label>
+    <input type="range" id="sizeSlider" min="0.001" max="0.08" step="0.001" value="0.018">
+  </div>
+
+  <div class="control">
+    <label>鼠标推力 <span class="val" id="forceVal">0.80</span></label>
+    <input type="range" id="forceSlider" min="0" max="2.5" step="0.05" value="0.80">
+  </div>
+
+  <div class="control">
+    <label>波纹强度 <span class="val" id="waveVal">1.00</span></label>
+    <input type="range" id="waveSlider" min="0" max="2" step="0.05" value="1.00">
+  </div>
+
+  <div class="control">
+    <label>自动旋转 <span class="val" id="rotVal">开</span></label>
+    <input type="range" id="rotSlider" min="0" max="1" step="1" value="1">
+  </div>
+
+  <div id="status" class="">初始化场景…</div>
+</div>
+
+<div class="hint">
+  🖱 拖动旋转 / 滚轮缩放<br>
+  ✨ 移动鼠标推开粒子
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { PLYLoader } from 'three/addons/loaders/PLYLoader.js';
+
+/* =====================================================
+   场景初始化
+===================================================== */
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0a0a0f);
+
+const camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.01, 200);
+camera.position.set(0, 0, 6);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+
+/* =====================================================
+   控制器
+===================================================== */
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.06;
+controls.autoRotate = true;
+controls.autoRotateSpeed = 0.5;
+controls.minDistance = 1.5;
+controls.maxDistance = 20;
+
+/* =====================================================
+   鼠标 NDC 跟踪
+===================================================== */
+const mouseNDC = new THREE.Vector2(0, 0);
+let mouseActive = 0;
+
+window.addEventListener('pointermove', (e) => {
+  mouseNDC.x = (e.clientX / innerWidth) * 2 - 1;
+  mouseNDC.y = -(e.clientY / innerHeight) * 2 + 1;
+  mouseActive = 1.0;
+});
+window.addEventListener('pointerleave', () => { mouseActive = 0; });
+window.addEventListener('blur',       () => { mouseActive = 0; });
+
+/* =====================================================
+   自定义 Shader:凝聚入场 + 鼠标流体扰动
+===================================================== */
+const vertexShader = /* glsl */`
+  precision highp float;
+
+  uniform float uTime;
+  uniform float uProgress;       // 凝聚进度 0=全散 1=成模
+  uniform float uScatterStrength;// 散布总强度
+  uniform float uMouseStrength;  // 鼠标推力系数(外部随移动淡入)
+  uniform vec2  uMouseNDC;       // 鼠标屏幕坐标(NDC)
+  uniform float uWaveStrength;   // 波纹强度
+  uniform float uPointSize;
+  uniform float uPixelRatio;
+
+  attribute vec3  aScatter;      // 预生成的随机散布方向
+  attribute float aAmplitude;    // 每粒子振幅
+  attribute float aSeed;         // 随机种子
+
+  varying vec3  vColor;
+  varying float vAlpha;
+
+  // 简易 hash + value noise
+  float hash(float n) { return fract(sin(n) * 43758.5453); }
+  float noise(vec3 p) {
+    vec3 i = floor(p), f = fract(p);
+    f = f * f * (3.0 - 2.0 * f);
+    float n = i.x + i.y * 57.0 + i.z * 113.0;
+    return mix(
+      mix(mix(hash(n +   0.0), hash(n +   1.0), f.x),
+          mix(hash(n +  57.0), hash(n +  58.0), f.x), f.y),
+      mix(mix(hash(n + 113.0), hash(n + 114.0), f.x),
+          mix(hash(n + 170.0), hash(n + 171.0), f.x), f.y),
+      f.z);
+  }
+
+  void main() {
+    vColor = color;
+
+    /* ===== 凝聚入场:散点 → 模型 ===== */
+    // 散点位置 = 原位置 + 散射方向 * 强度 * 振幅
+    vec3 scatteredPos = position + aScatter * uScatterStrength * aAmplitude;
+    // 加一点噪声扰动,模拟粒子流动感
+    float n = noise(position * 1.5 + uTime * 0.25) * 0.6;
+    scatteredPos += vec3(n) * (1.0 - uProgress);
+
+    float p = smoothstep(0.0, 1.0, uProgress);
+    vec3 modelPos = mix(scatteredPos, position, p);
+
+    /* ===== 投影到屏幕空间 ===== */
+    vec4 mvPos = viewMatrix * modelMatrix * vec4(modelPos, 1.0);
+    vec4 clipPos = projectionMatrix * mvPos;
+    vec2 ndc = clipPos.xy / clipPos.w;
+
+    /* ===== 鼠标流体扰动(屏幕空间径向位移 + 波纹) ===== */
+    vec2 toMouse = ndc - uMouseNDC;
+    float d = length(toMouse);
+    float radius = 0.55;
+
+    // 距离衰减
+    float falloff = smoothstep(radius, 0.0, d);
+
+    // 径向波纹(从鼠标位置向外扩散)
+    float wave = sin(d * 22.0 - uTime * 5.5) * 0.5 + 0.5;
+    float push = falloff * (0.55 + 0.45 * wave * uWaveStrength) * uMouseStrength;
+
+    // 位移方向:从鼠标向外
+    vec2 pushDir = (d > 0.001) ? toMouse / d : vec2(0.0);
+
+    // 深度修正:远处粒子移动幅度大,近处小(更自然)
+    float depthFactor = clamp(1.0 / (-mvPos.z * 0.3 + 1.0), 0.35, 2.0);
+    vec2 screenOffset = pushDir * push * 0.45 * depthFactor;
+
+    // 在 clip space 加位移(乘 w 抵消透视除法)
+    clipPos.xy += screenOffset * clipPos.w;
+
+    gl_Position = clipPos;
+
+    /* ===== 点大小 & 透明度 ===== */
+    // 鼠标附近粒子变小变淡
+    float sizeMul = 1.0 - push * 0.45;
+    gl_PointSize = clamp(uPointSize * uPixelRatio * sizeMul * (180.0 / -mvPos.z), 1.0, 50.0);
+
+    vAlpha = 1.0 - push * 0.55;
+  }
+`;
+
+const fragmentShader = /* glsl */`
+  precision highp float;
+
+  varying vec3  vColor;
+  varying float vAlpha;
+
+  void main() {
+    // 圆形粒子 + 柔和边缘
+    vec2 c = gl_PointCoord - 0.5;
+    float d = length(c);
+    if (d > 0.5) discard;
+
+    float alpha = smoothstep(0.5, 0.05, d) * vAlpha;
+    // 中心稍亮,营造高光
+    vec3 col = vColor + vec3(0.18) * smoothstep(0.4, 0.0, d);
+
+    gl_FragColor = vec4(col, alpha);
+  }
+`;
+
+/* =====================================================
+   当前点云状态
+===================================================== */
+let currentPoints = null;
+let uniforms = null;
+
+const statusEl = document.getElementById('status');
+function setStatus(msg, cls = '') {
+  statusEl.textContent = msg;
+  statusEl.className = cls;
+}
+
+/* =====================================================
+   给几何体添加自定义 attributes(随机散布方向 / 振幅 / 种子)
+===================================================== */
+function decorateGeometry(geometry) {
+  // 自动居中 + 缩放
+  geometry.computeBoundingSphere();
+  const r = geometry.boundingSphere.radius;
+  const targetSize = 2.4;
+  geometry.scale(targetSize / r, targetSize / r, targetSize / r);
+  geometry.center();
+
+  const count = geometry.attributes.position.count;
+  const scatter   = new Float32Array(count * 3);
+  const amplitude = new Float32Array(count);
+  const seed      = new Float32Array(count);
+
+  for (let i = 0; i < count; i++) {
+    // 球面均匀随机方向
+    const u = Math.random(), v = Math.random();
+    const theta = u * Math.PI * 2;
+    const phi   = Math.acos(2 * v - 1);
+    scatter[i * 3 + 0] = Math.sin(phi) * Math.cos(theta);
+    scatter[i * 3 + 1] = Math.sin(phi) * Math.sin(theta);
+    scatter[i * 3 + 2] = Math.cos(phi);
+
+    // 大部分粒子 0.5-1.5,小部分 2-5(让爆炸有远近层次)
+    const t = Math.random();
+    amplitude[i] = t < 0.82 ? 0.5 + t * 1.2 : 2.0 + Math.random() * 3.0;
+    seed[i] = Math.random() * 100;
+  }
+
+  geometry.setAttribute('aScatter',   new THREE.BufferAttribute(scatter, 3));
+  geometry.setAttribute('aAmplitude', new THREE.BufferAttribute(amplitude, 1));
+  geometry.setAttribute('aSeed',      new THREE.BufferAttribute(seed, 1));
+}
+
+/* =====================================================
+   用 Geometry 创建点云对象
+===================================================== */
+function createPointsFromGeometry(geometry, name) {
+  if (currentPoints) {
+    scene.remove(currentPoints);
+    currentPoints.geometry.dispose();
+    if (currentPoints.material) currentPoints.material.dispose();
+    currentPoints = null;
+  }
+
+  decorateGeometry(geometry);
+  const count = geometry.attributes.position.count;
+
+  // 如果没有 color,生成基于位置的渐变色
+  if (!geometry.hasAttribute('color')) {
+    const colors = new Float32Array(count * 3);
+    const pos = geometry.attributes.position;
+    for (let i = 0; i < count; i++) {
+      const y = pos.getY(i);
+      const t = Math.max(0, Math.min(1, (y + 1.2) / 2.4));
+      // 蓝紫渐变
+      colors[i * 3 + 0] = 0.30 + 0.55 * t;
+      colors[i * 3 + 1] = 0.50 + 0.20 * (1 - t);
+      colors[i * 3 + 2] = 0.95 - 0.15 * t;
+    }
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  }
+  geometry.attributes.color.needsUpdate = true;
+
+  // 自定义 uniforms
+  uniforms = {
+    uTime:            { value: 0 },
+    uProgress:        { value: 0 },
+    uScatterStrength: { value: 9.0 },
+    uMouseStrength:   { value: 0.0 },
+    uMouseNDC:        { value: new THREE.Vector2(0, 0) },
+    uWaveStrength:    { value: 1.0 },
+    uPointSize:       { value: parseFloat(sizeSlider.value) },
+    uPixelRatio:      { value: renderer.getPixelRatio() },
+  };
+
+  const material = new THREE.ShaderMaterial({
+    uniforms,
+    vertexShader,
+    fragmentShader,
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    vertexColors: true,
+  });
+
+  currentPoints = new THREE.Points(geometry, material);
+  scene.add(currentPoints);
+
+  // 重置相机
+  camera.position.set(0, 0, 6);
+  controls.target.set(0, 0, 0);
+  controls.update();
+
+  // 触发挥散 → 凝聚 动画
+  playGatherAnimation();
+
+  setStatus(`✓ ${name} · ${count.toLocaleString()} 粒子`, 'ready');
+}
+
+/* =====================================================
+   凝聚入场动画(GSAP 3 秒)
+===================================================== */
+function playGatherAnimation() {
+  if (!uniforms) return;
+  uniforms.uProgress.value = 0;
+  uniforms.uMouseStrength.value = 0;
+
+  // 优先用 GSAP
+  if (window.gsap) {
+    gsap.to(uniforms.uProgress, {
+      value: 1,
+      duration: 3.0,
+      ease: 'expo.out',
+    });
+  } else {
+    // 没有 GSAP 时的回退:4 次缓动
+    const start = performance.now();
+    const tick = () => {
+      const t = Math.min((performance.now() - start) / 3000, 1);
+      const eased = 1 - Math.pow(1 - t, 4);
+      uniforms.uProgress.value = eased;
+      if (t < 1) requestAnimationFrame(tick);
+    };
+    tick();
+  }
+}
+
+/* =====================================================
+   加载 PLY
+===================================================== */
+const loader = new PLYLoader();
+
+function loadPlyFromUrl(url, name) {
+  setStatus(`加载 ${name}…`);
+  loader.load(url,
+    (geometry) => {
+      createPointsFromGeometry(geometry, name);
+      document.getElementById('loader').classList.add('hidden');
+    },
+    (xhr) => {
+      if (xhr.lengthComputable) {
+        const pct = (xhr.loaded / xhr.total * 100).toFixed(0);
+        setStatus(`下载 ${pct}%`);
+      } else {
+        setStatus('下载中…');
+      }
+    },
+    (err) => {
+      console.error(err);
+      setStatus('✗ 加载失败: ' + (err.message || err), 'error');
+    }
+  );
+}
+
+// 默认加载狮子头(简化版,加载快)
+loadPlyFromUrl('./lion_simple.ply', '狮子头(简)');
+
+/* =====================================================
+   UI 绑定
+===================================================== */
+const fileInput = document.getElementById('fileInput');
+document.getElementById('loadBtn').onclick = () => fileInput.click();
+
+fileInput.onchange = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  setStatus(`解析 ${file.name}…`);
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const geometry = loader.parse(ev.target.result);
+      createPointsFromGeometry(geometry, file.name);
+    } catch (err) {
+      console.error(err);
+      setStatus('✗ 解析失败: ' + err.message, 'error');
+    }
+  };
+  reader.onerror = () => setStatus('✗ 文件读取失败', 'error');
+  reader.readAsArrayBuffer(file);
+};
+
+document.getElementById('replayBtn').onclick = playGatherAnimation;
+
+document.getElementById('loadFullBtn').onclick = () => {
+  loadPlyFromUrl('./lion.ply', '狮子头(完整)');
+};
+
+const sizeSlider = document.getElementById('sizeSlider');
+const sizeVal    = document.getElementById('sizeVal');
+sizeSlider.addEventListener('input', (e) => {
+  const v = parseFloat(e.target.value);
+  sizeVal.textContent = v.toFixed(3);
+  if (uniforms) uniforms.uPointSize.value = v;
+});
+
+const forceSlider = document.getElementById('forceSlider');
+const forceVal    = document.getElementById('forceVal');
+forceSlider.addEventListener('input', (e) => {
+  forceVal.textContent = parseFloat(e.target.value).toFixed(2);
+});
+
+const waveSlider = document.getElementById('waveSlider');
+const waveVal    = document.getElementById('waveVal');
+waveSlider.addEventListener('input', (e) => {
+  const v = parseFloat(e.target.value);
+  waveVal.textContent = v.toFixed(2);
+  if (uniforms) uniforms.uWaveStrength.value = v;
+});
+
+const rotSlider = document.getElementById('rotSlider');
+const rotVal    = document.getElementById('rotVal');
+rotSlider.addEventListener('input', (e) => {
+  const on = parseInt(e.target.value) === 1;
+  controls.autoRotate = on;
+  rotVal.textContent = on ? '开' : '关';
+});
+
+/* =====================================================
+   渲染循环
+===================================================== */
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+
+  if (uniforms) {
+    uniforms.uTime.value = t;
+
+    // 鼠标推力:移动时激活,停下时缓慢衰减
+    const targetForce = mouseActive * parseFloat(forceSlider.value);
+    uniforms.uMouseStrength.value += (targetForce - uniforms.uMouseStrength.value) * 0.18;
+    uniforms.uMouseNDC.value.copy(mouseNDC);
+  }
+
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+
+/* =====================================================
+   窗口大小
+===================================================== */
+window.addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+  if (uniforms) uniforms.uPixelRatio.value = renderer.getPixelRatio();
+});
+</script>
+
+<!-- GSAP 用于凝聚动画(可选,有 fallback) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+</body>
+</html>
