@@ -468,8 +468,10 @@ function loadPlyFromUrl(url, name) {
   );
 }
 
-// 默认加载狮子头(简化版,加载快)
-loadPlyFromUrl('./lion_simple.ply', '狮子头(简)');
+// 默认加载狮子头(超精简版,通过 jsDelivr CDN 加速,国内访问快)
+// 也可改回 './lion_tiny.ply' 走本地
+const CDN = 'https://cdn.jsdelivr.net/gh/lusanjiang/nas-place@main/particle-demo/';
+loadPlyFromUrl(CDN + 'lion_tiny.ply', '狮子头(50k点)');
 
 /* =====================================================
    UI 绑定
@@ -498,7 +500,7 @@ fileInput.onchange = (e) => {
 document.getElementById('replayBtn').onclick = playGatherAnimation;
 
 document.getElementById('loadFullBtn').onclick = () => {
-  loadPlyFromUrl('./lion.ply', '狮子头(完整)');
+  loadPlyFromUrl(CDN + 'lion.ply', '狮子头(完整 127万点)');
 };
 
 const sizeSlider = document.getElementById('sizeSlider');
